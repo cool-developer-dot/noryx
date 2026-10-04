@@ -5,9 +5,9 @@ import Reveal from "./Reveal";
 import Rock from "./Rock";
 
 const STATS = [
-  { value: "3x", label: ["Faster", "research"] },
-  { value: "40%", label: ["More", "meaningful conversations"] },
-  { value: "28%", label: ["Higher", "win rates"] },
+  { value: "3x", label: "Faster research" },
+  { value: "40%", label: "More meaningful conversations" },
+  { value: "28%", label: "Higher win rates" },
 ];
 
 function Dot() {
@@ -33,7 +33,7 @@ export default function Hero() {
       </div>
 
       {/* ---------- content ---------- */}
-      <div className="relative flex flex-1 flex-col px-5 pb-28 pt-[96px] sm:px-8 md:pb-32 xl:px-16 xl:pb-0 xl:pt-[124px]">
+      <div className="relative flex flex-1 flex-col px-5 pb-10 pt-[96px] sm:px-8 xl:min-h-[calc(174px+39.2vw)] xl:px-16 xl:pb-8 xl:pt-[124px]">
         <div className="relative z-10 flex w-full min-w-0 max-w-[640px] flex-col xl:w-[42%] xl:max-w-none">
           {/* eyebrow */}
           <div className="reveal flex max-w-[550px] items-center gap-4 font-medium uppercase text-cream/85" style={{ animationDelay: "0.05s" }}>
@@ -97,18 +97,16 @@ export default function Hero() {
 
           {/* stats */}
           <div
-            className="reveal mt-10 flex max-w-[600px] flex-wrap justify-between gap-x-6 gap-y-5 border-t border-white/[0.14] pt-6 xl:mt-[34px]"
+            className="reveal mt-10 grid max-w-[640px] grid-cols-3 gap-x-4 border-t border-white/20 pt-6 sm:gap-x-8 xl:mt-[34px]"
             style={{ animationDelay: "0.5s" }}
           >
             {STATS.map((s) => (
-              <div key={s.value} className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-                <span className="font-display text-[34px] leading-none tracking-[-0.01em] text-cream sm:text-[36px]">
+              <div key={s.value} className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 xl:flex-col xl:items-start xl:gap-2">
+                <span className="font-display text-[38px] leading-none tracking-[-0.01em] text-cream sm:text-[44px]">
                   {s.value.toUpperCase()}
                 </span>
-                <span className="whitespace-nowrap text-[8.5px] font-medium uppercase leading-[1.6] tracking-[0.14em] text-cream/55 sm:text-[9.5px]">
-                  {s.label[0]}
-                  <br />
-                  {s.label[1]}
+                <span className="min-w-0 text-[9px] font-medium uppercase leading-[1.55] tracking-[0.14em] text-cream/80 sm:text-[10.5px]">
+                  {s.label}
                 </span>
               </div>
             ))}
@@ -124,21 +122,21 @@ export default function Hero() {
       </div>
 
       {/* ---------- bottom bar ---------- */}
-      <div className="absolute inset-x-0 bottom-0 z-20 flex items-center gap-4 px-5 pb-8 text-[9.5px] font-medium uppercase tracking-[0.22em] text-cream/55 sm:px-8 xl:px-16 xl:pb-[34px] xl:text-[10.5px]">
-        <span className="hidden h-[32px] w-[32px] shrink-0 items-start justify-center rounded-full border border-white/40 pt-2 sm:flex">
-          <span className="scroll-tick block h-[10px] w-px bg-cream" />
-        </span>
-        <span className="hidden whitespace-nowrap font-mono text-[9.5px] tracking-[0.2em] md:block">
-          Scroll to explore
-        </span>
-        <span className="hidden h-px flex-1 bg-white/20 md:block" />
-        <span className="flex-1 text-center leading-[1.7] md:flex-none md:whitespace-nowrap">
-          The problem — the information exists. The intelligence is fragmented.
-        </span>
-        <span className="hidden h-px flex-1 bg-white/20 md:block" />
-        <span className="hidden whitespace-nowrap font-mono text-[9.5px] tracking-[0.2em] md:block">
-          02 / Intelligence
-        </span>
+      <div className="relative z-20 border-t border-white/[0.14] bg-gradient-to-t from-black/60 to-transparent">
+        <div className="flex items-center gap-4 px-5 py-5 text-[10px] font-medium uppercase tracking-[0.2em] text-cream/80 sm:gap-5 sm:px-8 xl:px-16 xl:py-6 xl:text-[11px]">
+          <a href="#problem" className="group hidden shrink-0 items-center gap-4 sm:flex" aria-label="Scroll to the next section">
+            <span className="flex h-[36px] w-[36px] items-start justify-center rounded-full border border-white/55 pt-[9px] transition-colors group-hover:border-brand">
+              <span className="scroll-tick block h-[10px] w-px bg-cream" />
+            </span>
+            <span className="hidden whitespace-nowrap font-mono tracking-[0.2em] text-cream/90 transition-colors group-hover:text-white md:block">Scroll to explore</span>
+          </a>
+          <span className="hidden h-px flex-1 bg-white/25 xl:block" />
+          <span className="flex-1 text-center leading-[1.7] text-cream/90 xl:flex-none xl:whitespace-nowrap">
+            <span className="text-[#ff3b3b]">The problem</span> — the information exists. The intelligence is fragmented.
+          </span>
+          <span className="hidden h-px flex-1 bg-white/25 xl:block" />
+          <span className="hidden whitespace-nowrap font-mono tracking-[0.2em] text-cream/90 xl:block">02 / Intelligence</span>
+        </div>
       </div>
     </Reveal>
   );
