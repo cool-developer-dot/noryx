@@ -1,6 +1,7 @@
 import { Arrow } from "./Header";
 import HeroDiagram from "./HeroDiagram";
 import { PlayIcon } from "./icons";
+import Reveal from "./Reveal";
 import Rock from "./Rock";
 
 const STATS = [
@@ -17,7 +18,7 @@ function Dot() {
 
 export default function Hero() {
   return (
-    <section className="hero-bg relative isolate flex min-h-[100svh] flex-col overflow-hidden">
+    <Reveal className="hero-bg relative isolate flex min-h-[100svh] flex-col overflow-hidden">
       {/* ---------- background ---------- */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         {/* faint construction lines */}
@@ -139,6 +140,6 @@ export default function Hero() {
           02 / Intelligence
         </span>
       </div>
-    </section>
+    </Reveal>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import Reveal from "./Reveal";
 import { ApolloLogo, CalendarLogo, GmailLogo, LinkedInLogo, SalesforceLogo } from "./icons";
 
 const W = 1536;
@@ -258,32 +259,14 @@ function Flow() {
 }
 
 export default function Stack() {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          el.classList.add("in-view");
-          io.disconnect();
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px -8% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section ref={ref} id="integrations" className="relative overflow-hidden bg-[#f7f5f0] text-[#0c0c14]">
+    <Reveal id="integrations" className="relative overflow-hidden bg-[#f7f5f0] text-[#0c0c14]">
       <div className="relative hidden xl:block">
         <Stage />
       </div>
       <div className="relative xl:hidden">
         <Flow />
       </div>
-    </section>
+    </Reveal>
   );
 }

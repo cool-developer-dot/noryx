@@ -109,36 +109,3 @@ export function RockPhoto({ id, seed = 4, className = "" }: { id: string; seed?:
     </svg>
   );
 }
-
-/** Tall high-contrast tower with a diagonal front edge (bottom-left of the experience section). */
-export function Skyscraper({ className = "" }: { className?: string }) {
-  const id = `sky${useId().replace(/:/g, "")}`;
-  return (
-    <svg viewBox="0 0 265 290" preserveAspectRatio="xMinYMax slice" className={className} aria-hidden>
-      <defs>
-        <FacadePattern id={`${id}-a`} tone="light" skew={14} w={15} h={12} />
-        <FacadePattern id={`${id}-b`} tone="dark" skew={-12} w={13} h={11} />
-        <FacadePattern id={`${id}-c`} tone="mid" skew={-12} w={12} h={10} />
-        <linearGradient id={`${id}-sh`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#000" stopOpacity="0" />
-          <stop offset="1" stopColor="#000" stopOpacity=".55" />
-        </linearGradient>
-        <linearGradient id={`${id}-lt`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#fff" stopOpacity=".35" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {/* left mass (lit) */}
-      <polygon points="0,52 112,118 112,290 0,290" fill={`url(#${id}-a)`} />
-      <polygon points="0,52 112,118 112,290 0,290" fill={`url(#${id}-lt)`} />
-      {/* far right mass (dark) */}
-      <polygon points="112,118 265,40 265,290 112,290" fill={`url(#${id}-b)`} />
-      {/* stepped crown */}
-      <polygon points="150,100 265,40 265,92 150,150" fill={`url(#${id}-c)`} />
-      <polygon points="112,118 150,100 150,150 112,168" fill="#050506" opacity=".85" />
-      {/* hard vertical edge */}
-      <rect x="111" y="118" width="2.5" height="172" fill="#e8e8ec" opacity=".85" />
-      <polygon points="0,0 265,0 265,290 0,290" fill={`url(#${id}-sh)`} />
-    </svg>
-  );
-}

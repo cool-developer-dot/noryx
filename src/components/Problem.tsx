@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import Reveal from "./Reveal";
 import { Facade, RockPhoto, Towers } from "./problem/art";
 import {
   ApolloCard,
@@ -162,7 +163,7 @@ function Item({ x, y, w, h, d = 0, i = 0, depth = 8, kind = "scatter", children 
   } as CSSProperties;
   return (
     <div className={`${kind === "wipe" ? "pwipe" : "pscatter"} absolute`} style={style}>
-      <div className="drift h-full w-full">
+      <div className="drift h-full w-full" data-depth={depth}>
         <div className="floaty h-full w-full" style={float}>
           {children}
         </div>
@@ -174,7 +175,7 @@ function Item({ x, y, w, h, d = 0, i = 0, depth = 8, kind = "scatter", children 
 function Photo({ x, y, w, h, d, depth, clip = "", children }: { x: number; y: number; w: number; h: number; d: number; depth: number; clip?: string; children: ReactNode }) {
   return (
     <div className="pscatter absolute" style={{ ...abs(x, y, w, h, d), "--sx": "0px", "--sy": "30px", "--sr": "0deg", "--depth": depth } as CSSProperties}>
-      <div className={`drift h-full w-full overflow-hidden ${clip}`}>{children}</div>
+      <div className={`drift h-full w-full overflow-hidden ${clip}`} data-depth={depth}>{children}</div>
     </div>
   );
 }
@@ -196,15 +197,33 @@ function Stage() {
     return () => ro.disconnect();
   }, []);
 
+  /* Pointer parallax: write transforms straight onto the ~14 depth layers inside one rAF.
+     (Changing a CSS variable on the stage root would invalidate style for every descendant.) */
+  const target = useRef({ x: 0, y: 0 });
+  const raf = useRef(0);
+
+  const apply = () => {
+    raf.current = 0;
+    const { x, y } = target.current;
+    inner.current?.querySelectorAll<HTMLElement>("[data-depth]").forEach((el) => {
+      const d = Number(el.dataset.depth || 0);
+      el.style.transform = `translate3d(${(x * d).toFixed(2)}px, ${(y * d).toFixed(2)}px, 0)`;
+    });
+  };
+  const schedule = () => {
+    if (!raf.current) raf.current = requestAnimationFrame(apply);
+  };
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
+
   const move = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse") return;
     const r = e.currentTarget.getBoundingClientRect();
-    inner.current?.style.setProperty("--mx", String(((e.clientX - r.left) / r.width - 0.5) * 2));
-    inner.current?.style.setProperty("--my", String(((e.clientY - r.top) / r.height - 0.5) * 2));
+    target.current = { x: ((e.clientX - r.left) / r.width - 0.5) * 2, y: ((e.clientY - r.top) / r.height - 0.5) * 2 };
+    schedule();
   };
   const leave = () => {
-    inner.current?.style.setProperty("--mx", "0");
-    inner.current?.style.setProperty("--my", "0");
+    target.current = { x: 0, y: 0 };
+    schedule();
   };
 
   return (
@@ -396,26 +415,8 @@ function Flow() {
 }
 
 export default function Problem() {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          el.classList.add("in-view");
-          io.disconnect();
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px -8% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section ref={ref} id="problem" className="relative overflow-hidden bg-[#f4f2ec] text-[#0b0b22]">
+    <Reveal id="problem" className="relative overflow-hidden bg-[#f4f2ec] text-[#0b0b22]">
       <div className="problem-grain pointer-events-none absolute inset-0" />
       <div className="relative hidden xl:block">
         <Stage />
@@ -423,6 +424,6 @@ export default function Problem() {
       <div className="relative xl:hidden">
         <Flow />
       </div>
-    </section>
+    </Reveal>
   );
 }

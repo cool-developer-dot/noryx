@@ -34,10 +34,16 @@ export default function Header() {
   /* ---- scroll: the bar stays pinned; it turns solid after a few pixels and shows page progress ---- */
   useEffect(() => {
     let raf = 0;
+    /* page height is read when it changes, not on every scroll frame (reading it mid-scroll can force layout) */
+    let max = document.documentElement.scrollHeight - window.innerHeight;
+    const measure = () => {
+      max = document.documentElement.scrollHeight - window.innerHeight;
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
     const update = () => {
       raf = 0;
       const y = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
       bar.current?.style.setProperty("transform", `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`);
       setScrolled(y > 24);
     };
@@ -50,6 +56,7 @@ export default function Header() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      ro.disconnect();
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -120,9 +127,9 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500 ease-out ${
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-500 ease-out ${
           scrolled || open
-            ? "border-b border-white/[0.1] bg-[#07080a]/94 backdrop-blur-xl"
+            ? "border-b border-white/[0.1] bg-[#07080a]/95"
             : "border-b border-white/[0.14] bg-transparent"
         }`}
       >

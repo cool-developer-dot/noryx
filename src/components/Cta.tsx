@@ -25,9 +25,16 @@ function Diagram() {
     <div className="relative w-full" style={{ aspectRatio: `${VB_W} / ${VB_H}` }}>
       <svg viewBox={`0 0 ${VB_W} ${VB_H}`} className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
         <defs>
-          <filter id="cta-glow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="4" />
-          </filter>
+          {(["blue", "red", "white"] as const).map((t) => (
+            <radialGradient key={t} id={`cta-glow-${t}`}>
+              <stop offset="0" stopColor={TONE[t]} stopOpacity=".55" />
+              <stop offset="1" stopColor={TONE[t]} stopOpacity="0" />
+            </radialGradient>
+          ))}
+          <radialGradient id="cta-glow-core">
+            <stop offset="0" stopColor="#ff2a2a" stopOpacity=".7" />
+            <stop offset="1" stopColor="#ff2a2a" stopOpacity="0" />
+          </radialGradient>
         </defs>
         <g fill="none" strokeLinecap="round">
           {NODES.map((n, i) => (
@@ -41,11 +48,11 @@ function Diagram() {
 
         {NODES.map((n) => (
           <g key={`n-${n.id}`}>
-            <circle cx={n.x} cy={n.y} r="6" fill={TONE[n.tone]} opacity=".35" filter="url(#cta-glow)" />
+            <circle cx={n.x} cy={n.y} r="11" fill={`url(#cta-glow-${n.tone})`} />
             <circle cx={n.x} cy={n.y} r="3" fill={TONE[n.tone]} />
           </g>
         ))}
-        <circle cx="330" cy="300" r="9" fill="#ff2a2a" opacity=".55" filter="url(#cta-glow)" />
+        <circle cx="330" cy="300" r="16" fill="url(#cta-glow-core)" />
         <circle cx="330" cy="300" r="4" fill="#ff2a2a" />
 
         {/* travelling pulses */}
