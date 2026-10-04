@@ -11,7 +11,7 @@ const NAV = [
 ];
 
 /** Sections the nav highlights while you scroll through them. */
-const TRACKED = ["product", "how-it-works", "integrations", "faq"];
+const TRACKED = ["product", "how-it-works", "integrations", "teams", "faq"];
 
 export function Arrow({ className = "" }: { className?: string }) {
   return (

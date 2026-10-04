@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ApolloLogo, CalendarLogo, GmailLogo, LinkedInLogo, SalesforceLogo } from "./icons";
-import { Portrait, type PortraitKind } from "./problem/art";
 
 const W = 1536;
-const H = 790;
+const H = 495;
 const RED = "#ee2f2f";
 const INK = "#0c0c14";
 
@@ -58,13 +57,6 @@ const TOOLS: { key: string; title: string; sub: string[]; logo: ReactNode; x: nu
   { key: "calls", title: "Calls", sub: ["Conversation", "intelligence"], logo: <span className="flex h-[40px] w-[40px] items-center justify-center bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.05)]"><Starburst className="h-[34px] w-[34px]" /></span>, x: 886, w: 189 },
   { key: "cal", title: "Calendar", sub: ["Meetings", "& scheduling"], logo: <CalendarLogo className="h-[40px] w-[40px]" />, x: 1089, w: 191 },
   { key: "ai", title: "AI Models", sub: ["GPT, Claude", "and more"], logo: <OpenAI className="h-[38px] w-[38px]" />, x: 1295, w: 167 },
-];
-
-const ROLES: { n: string; title: string[]; text: string[]; kind: PortraitKind; alt: string; src: string }[] = [
-  { n: "01", title: ["Account", "Executives"], text: ["Walk into every", "conversation prepared."], kind: "beard", alt: "Account Executive", src: "/team/account-executive.jpg" },
-  { n: "02", title: ["SDRs"], text: ["Know who to target", "and why now."], kind: "long", alt: "SDR", src: "/team/sdr.jpg" },
-  { n: "03", title: ["Sales", "Leaders"], text: ["See what’s happening", "across accounts and deals."], kind: "glasses", alt: "Sales Leader", src: "/team/sales-leader.jpg" },
-  { n: "04", title: ["Revenue", "Operations"], text: ["Connect context across", "the revenue stack."], kind: "wavy", alt: "Revenue Operations", src: "/team/revenue-operations.jpg" },
 ];
 
 function ToolCard({ t, compact = false }: { t: (typeof TOOLS)[number]; compact?: boolean }) {
@@ -138,13 +130,6 @@ function Stage() {
     return () => ro.disconnect();
   }, []);
 
-  const cols = [
-    { x: 76, tx: 216, w: 109 },
-    { x: 440, tx: 566, w: 99 },
-    { x: 796, tx: 926, w: 100 },
-    { x: 1171, tx: 1302, w: 100 },
-  ];
-
   return (
     <div ref={wrap} className="relative mx-auto w-full max-w-[1920px]" style={{ aspectRatio: `${W} / ${H}` }}>
       <div
@@ -195,13 +180,6 @@ function Stage() {
               </animateMotion>
             </circle>
           </g>
-          {/* roles label + dividers */}
-          <path d="M322 529 H1463" stroke={INK} strokeOpacity=".3" />
-          <g stroke={INK} strokeOpacity=".14">
-            <path d="M404 554 V719" />
-            <path d="M760 554 V719" />
-            <path d="M1135 554 V719" />
-          </g>
         </svg>
 
         {/* header */}
@@ -239,41 +217,6 @@ function Stage() {
           revenue intelligence
         </Fade>
 
-        {/* roles */}
-        <Fade x={75} y={522} d={0.55} className="whitespace-nowrap text-[10.5px] font-medium uppercase tracking-[0.28em] text-[#0c0c14]">
-          Built for every revenue role
-        </Fade>
-        {ROLES.map((r, i) => {
-          const c = cols[i];
-          const one = r.title.length === 1;
-          return (
-            <div key={r.n}>
-              <Fade x={c.x} y={554} d={0.6 + i * 0.08} className="font-cond text-[19px] font-semibold leading-none text-[#ee2f2f]">
-                {r.n}
-              </Fade>
-              <Fade x={c.x} y={586} w={c.w} h={101} d={0.6 + i * 0.08} className="overflow-hidden">
-                <Portrait kind={r.kind} src={r.src} alt={r.alt} className="h-full w-full" />
-              </Fade>
-              <Fade x={c.tx} y={one ? 588 : 586} d={0.65 + i * 0.08}>
-                <div className="font-display text-[22px] uppercase leading-[25px] tracking-[0.005em] text-[#0c0c14]">
-                  {r.title.map((l) => (
-                    <span key={l} className="block">
-                      {l}
-                    </span>
-                  ))}
-                </div>
-                <span className="mt-[10px] block h-[2px] w-[16px] bg-[#ee2f2f]" />
-                <p className="mt-[12px] whitespace-nowrap font-serif text-[16.5px] font-light leading-[21px] text-[#2b2c3a]">
-                  {r.text.map((l) => (
-                    <span key={l} className="block">
-                      {l}
-                    </span>
-                  ))}
-                </p>
-              </Fade>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
@@ -283,7 +226,7 @@ function Stage() {
 
 function Flow() {
   return (
-    <div className="px-5 pb-16 pt-10 sm:px-8 md:pt-14">
+    <div className="px-5 pb-6 pt-10 sm:px-8 md:pt-14">
       <Eyebrow />
       <div className="mt-6">
         <Headline flow />
@@ -310,26 +253,6 @@ function Flow() {
         Connected revenue intelligence
       </div>
 
-      {/* roles */}
-      <div className="mt-14 flex items-center gap-5 text-[10px] font-medium uppercase tracking-[0.28em]">
-        <span className="whitespace-nowrap">Built for every revenue role</span>
-        <span className="h-px flex-1 bg-[#0c0c14]/25" />
-      </div>
-      <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
-        {ROLES.map((r) => (
-          <div key={r.n} className="pfade">
-            <div className="font-cond text-[19px] font-semibold leading-none text-[#ee2f2f]">{r.n}</div>
-            <div className="mt-4 flex items-start gap-5">
-              <Portrait kind={r.kind} src={r.src} alt={r.alt} className="h-[104px] w-[104px] shrink-0 object-cover" />
-              <div>
-                <div className="font-display text-[22px] uppercase leading-[25px]">{r.title.join(" ")}</div>
-                <span className="mt-[10px] block h-[2px] w-[16px] bg-[#ee2f2f]" />
-                <p className="mt-3 font-serif text-[16.5px] font-light leading-[1.3] text-[#2b2c3a]">{r.text.join(" ")}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
@@ -355,8 +278,6 @@ export default function Stack() {
 
   return (
     <section ref={ref} id="integrations" className="relative overflow-hidden bg-[#f7f5f0] text-[#0c0c14]">
-      {/* anchor for the "For teams" nav link, in both layouts */}
-      <span id="teams" className="pointer-events-none absolute left-0 top-[62%] h-px w-px" aria-hidden />
       <div className="relative hidden xl:block">
         <Stage />
       </div>

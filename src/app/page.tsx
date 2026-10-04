@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import Problem from "@/components/Problem";
+import Roles from "@/components/Roles";
 import Stack from "@/components/Stack";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <HowItWorks />
       <Experience />
       <Stack />
+      <Roles />
       <Faq />
       <Cta />
       <Footer />
