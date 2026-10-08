@@ -28,12 +28,12 @@ function Fade({ x, y, w, h, d, className = "", style, children }: { x: number; y
 function Starburst({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 40 40" className={className} aria-hidden>
-      <g stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+      <g stroke="#6a4cf0" strokeWidth="2.6" strokeLinecap="round">
         {Array.from({ length: 16 }).map((_, i) => {
           const a = (i * Math.PI * 2) / 16;
           const r1 = i % 2 ? 8 : 6;
           const r2 = i % 2 ? 15 : 18;
-          return <line key={i} x1={(20 + Math.cos(a) * r1).toFixed(2)} y1={(20 + Math.sin(a) * r1).toFixed(2)} x2={(20 + Math.cos(a) * r2).toFixed(2)} y2={(20 + Math.sin(a) * r2).toFixed(2)} strokeOpacity={i % 3 === 0 ? 0.7 : 1} />;
+          return <line key={i} x1={(20 + Math.cos(a) * r1).toFixed(2)} y1={(20 + Math.sin(a) * r1).toFixed(2)} x2={(20 + Math.cos(a) * r2).toFixed(2)} y2={(20 + Math.sin(a) * r2).toFixed(2)} stroke={i % 3 === 0 ? "#8a6bff" : "#5b3df0"} />;
         })}
       </g>
     </svg>
@@ -42,7 +42,7 @@ function Starburst({ className = "" }: { className?: string }) {
 
 function OpenAI({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={className} fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
+    <svg viewBox="0 0 32 32" className={className} fill="none" stroke="#0c0c14" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
       {[0, 60, 120].map((r) => (
         <path key={r} transform={`rotate(${r} 16 16)`} d="M16 3.500 24.500 8.400v9.800L16 23.100 7.500 18.200V8.400z" />
       ))}
@@ -55,7 +55,7 @@ const TOOLS: { key: string; title: string; sub: string[]; logo: ReactNode; x: nu
   { key: "email", title: "Email", sub: ["Google Workspace"], logo: <GmailLogo className="h-[28px] w-[38px] text-[#71717a]" />, x: 273, w: 192 },
   { key: "nav", title: "Sales Navigator", sub: ["LinkedIn"], logo: <LinkedInLogo className="h-[36px] w-[36px] text-[#71717a]" />, x: 480, w: 189 },
   { key: "apollo", title: "Apollo", sub: ["Prospecting"], logo: <ApolloLogo className="h-[36px] w-[36px] text-[#71717a]" />, x: 684, w: 187 },
-  { key: "calls", title: "Calls", sub: ["Conversation", "intelligence"], logo: <Starburst className="h-[38px] w-[38px] text-[#71717a]" />, x: 886, w: 189 },
+  { key: "calls", title: "Calls", sub: ["Conversation", "intelligence"], logo: <span className="flex h-[40px] w-[40px] items-center justify-center bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06)]"><Starburst className="h-[34px] w-[34px]" /></span>, x: 886, w: 189 },
   { key: "cal", title: "Calendar", sub: ["Meetings", "& scheduling"], logo: <CalendarLogo className="h-[38px] w-[38px] text-[#71717a]" />, x: 1089, w: 191 },
   { key: "ai", title: "AI Models", sub: ["GPT, Claude", "and more"], logo: <OpenAI className="h-[36px] w-[36px] text-[#71717a]" />, x: 1295, w: 167 },
 ];
