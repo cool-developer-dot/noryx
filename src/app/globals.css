@@ -1,27 +1,54 @@
 @import "tailwindcss";
 
+/*
+ * NORYX design tokens
+ *  - ONE accent colour, used only for primary buttons, key numbers and active states.
+ *    Change --accent here and the whole site follows.
+ *  - Everything else is ink / ivory / grays.
+ *  - ONE font family (Geist) in two weights: 400 body, 700 headlines.
+ */
 :root {
+  --accent: #ff2a2a;
   --background: #07080a;
   --foreground: #f4efe6;
   --cream: #f4efe6;
-  --red: #ff2a2a;
-  --red-deep: #d91414;
-  --blue: #3b82f6;
-  --line: rgba(255, 255, 255, 0.09);
+  --ink: #0c0c14;
+  --ivory: #f7f5f0;
+  --muted-dark: #a1a1aa; /* body copy on near-black */
+  --muted-light: #52525b; /* body copy on ivory */
+  --line: rgba(255, 255, 255, 0.12);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-cream: var(--cream);
-  --color-brand: var(--red);
-  --color-brand-deep: var(--red-deep);
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-anton), Impact, sans-serif;
-  --font-cond: var(--font-barlow), "Arial Narrow", sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --font-serif: var(--font-newsreader), Georgia, serif;
-  --font-league: var(--font-league-src), Impact, sans-serif;
+  --color-ink: var(--ink);
+  --color-ivory: var(--ivory);
+  --color-accent: var(--accent);
+  --color-brand: var(--accent);
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-display: var(--font-geist), system-ui, sans-serif;
+  --font-cond: var(--font-geist), system-ui, sans-serif;
+  --font-serif: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist), system-ui, sans-serif;
+  --font-league: var(--font-geist), system-ui, sans-serif;
+}
+
+/* only two weights exist on this site */
+@theme {
+  --font-weight-light: 400;
+  --font-weight-normal: 400;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 700;
+  --font-weight-black: 700;
+}
+
+.font-display,
+.font-cond {
+  font-weight: 700;
 }
 
 html {
@@ -38,21 +65,103 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-geist), system-ui, sans-serif;
+  font-synthesis: none;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--red);
+  background: var(--accent);
   color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Layout rhythm ---------- */
+/* consistent spacing: each section pads 44px (phone) / 72px (desktop) top and bottom,
+   so the visible gap between two sections is 88px / 144px */
+.section-y {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+@media (min-width: 1024px) {
+  .section-y {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
+.section-x {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 640px) {
+  .section-x {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .section-x {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+}
+@media (min-width: 1280px) {
+  .section-x {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* ---------- Type scale ---------- */
+.eyebrow {
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-dark);
+}
+.on-light .eyebrow,
+.eyebrow-light {
+  color: var(--muted-light);
+}
+.h-display {
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.h-hero {
+  font-size: clamp(2.5rem, 5.5vw, 5rem); /* 40px -> 80px */
+}
+.h-section {
+  font-size: clamp(2.25rem, 4.6vw, 4rem); /* 36px -> 64px */
+}
+.h-sub {
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+.body-copy {
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 62ch;
+  color: var(--muted-dark);
+}
+@media (min-width: 1024px) {
+  .body-copy {
+    font-size: 18px;
+  }
+}
+.body-copy-light {
+  color: var(--muted-light);
 }
 
 /* ---------- Hero background ---------- */
 .hero-bg {
   background:
-    radial-gradient(60% 55% at 78% 62%, rgba(255, 40, 40, 0.16), transparent 70%),
-    radial-gradient(40% 40% at 62% 38%, rgba(255, 40, 40, 0.1), transparent 70%),
-    radial-gradient(70% 60% at 85% 100%, rgba(120, 10, 10, 0.35), transparent 70%),
+    radial-gradient(60% 55% at 78% 62%, rgba(255, 255, 255, 0.05), transparent 70%),
     radial-gradient(90% 80% at 20% 0%, #101218 0%, #07080a 60%),
     #07080a;
 }
@@ -66,40 +175,17 @@ body {
   background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
 }
 
-/* ---------- Headline ---------- */
-.headline {
-  font-size: clamp(3rem, 17vw, 8.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.012em;
-}
-@media (min-width: 1280px) {
-  .headline {
-    font-size: min(7.1vw, 8.6rem);
-    line-height: 0.97;
-  }
-}
-
-/* ---------- Glass cards ---------- */
+/* ---------- Glass cards (product mockups on dark) ---------- */
 .glass {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0) 40%),
-    linear-gradient(160deg, #181a20 0%, #0d0e12 100%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 18px 40px -12px rgba(0, 0, 0, 0.8),
-    0 2px 0 rgba(0, 0, 0, 0.4);
+  background: #12141a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.8);
 }
 
 .glass-core {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 30%),
-    linear-gradient(165deg, #1a1c22 0%, #0c0d11 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    -14px 0 60px -10px rgba(255, 40, 40, 0.55),
-    0 40px 80px -20px rgba(0, 0, 0, 0.9);
+  background: #14161c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.9);
 }
 
 /* ---------- Animations ---------- */
@@ -129,10 +215,10 @@ body {
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.7);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(255, 42, 42, 0);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
   }
 }
 @keyframes float-y {
@@ -239,11 +325,11 @@ body {
 }
 @keyframes hub-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(238, 47, 47, 0.35);
+    box-shadow: 0 0 0 0 rgba(12, 12, 20, 0.25);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 22px rgba(238, 47, 47, 0);
+    box-shadow: 0 0 0 22px rgba(12, 12, 20, 0);
   }
 }
 .draw {
@@ -299,9 +385,7 @@ body {
 }
 .cta-bg {
   background:
-    radial-gradient(60% 50% at 78% 45%, rgba(255, 42, 42, 0.09), transparent 70%),
-    radial-gradient(80% 60% at 10% 0%, #14152a 0%, #0b0c17 60%),
-    #0b0c17;
+    #0a0b10;
 }
 @media (prefers-reduced-motion: reduce) {
   .faq-panel {
@@ -312,9 +396,7 @@ body {
 /* ---------- Footer ---------- */
 .foot-bg {
   background:
-    radial-gradient(70% 50% at 85% 0%, rgba(255, 42, 42, 0.06), transparent 70%),
-    radial-gradient(80% 60% at 0% 100%, rgba(80, 90, 200, 0.05), transparent 70%),
-    #07080f;
+    #07080a;
 }
 .foot-link {
   position: relative;
@@ -330,7 +412,7 @@ body {
   bottom: -5px;
   height: 1px;
   width: 100%;
-  background: #ff2a2a;
+  background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -393,8 +475,8 @@ body {
 .mask-line {
   display: block;
   overflow: hidden;
-  padding: 0.08em 0 0.04em;
-  margin: -0.08em 0 -0.04em;
+  padding: 0.08em 0 0.2em;
+  margin: -0.08em 0 -0.2em;
 }
 .mask-line > span {
   display: block;
@@ -431,11 +513,11 @@ body {
   pointer-events: none;
 }
 .is-live .glitch::before {
-  color: #ee3b3b;
+  color: #6b6c78;
   animation: glitch-a 7.5s steps(1, end) 3.2s infinite;
 }
 .is-live .glitch::after {
-  color: #3b78ee;
+  color: #b4b5c0;
   animation: glitch-b 7.5s steps(1, end) 3.2s infinite;
 }
 @keyframes glitch-a {
@@ -635,7 +717,7 @@ body {
   bottom: -2px;
   height: 1px;
   width: 100%;
-  background: #ff2a2a;
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -654,7 +736,6 @@ body {
 }
 .burger:hover .burger-l2 {
   width: 100%;
-  background: #ff3b3b;
 }
 .burger.is-open .burger-l1 {
   top: 50%;
@@ -668,7 +749,7 @@ body {
   transform: translateY(-50%) rotate(-45deg);
 }
 .burger.is-open .burger-line {
-  background: #ff3b3b;
+  background: var(--accent);
 }
 .burger-ring {
   transition:
@@ -676,7 +757,7 @@ body {
     border-color 0.3s ease;
 }
 .burger:hover .burger-ring {
-  border-color: rgba(255, 42, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 .burger-ring-fill {
   opacity: 0;
@@ -732,7 +813,7 @@ body {
 }
 .menu-bg {
   background:
-    radial-gradient(70% 45% at 100% 0%, rgba(255, 42, 42, 0.16), transparent 70%),
+    
     radial-gradient(80% 60% at 0% 100%, rgba(70, 80, 190, 0.14), transparent 70%),
     #07080b;
 }
@@ -885,7 +966,7 @@ body {
   transition: transform 0.9s cubic-bezier(0.65, 0, 0.2, 1) 0.5s;
 }
 .hiw-underline {
-  background-image: linear-gradient(#ff2a2a, #ff2a2a);
+  background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
@@ -1069,11 +1150,11 @@ body {
 /* attention cues — they run only while the section is on screen and stop after the first interaction */
 @keyframes xp-ping {
   0% {
-    box-shadow: 0 0 0 0 rgba(238, 47, 47, 0.55);
+    box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.55);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 7px rgba(238, 47, 47, 0);
+    box-shadow: 0 0 0 7px rgba(255, 42, 42, 0);
   }
 }
 @keyframes xp-nudge {
@@ -1111,4 +1192,39 @@ body {
   .is-live .xp-hint-l {
     animation: none;
   }
+}
+
+/* ---------- Buttons ---------- */
+/* primary: the one place the accent colour is used as a fill */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 52px;
+  padding: 0 26px;
+  background: var(--accent);
+  color: #14080a;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.btn-primary:hover {
+  background: #fff;
+  color: #07080a;
+}
+/* secondary: text only */
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  color: #e4e4e7;
+  transition: color 0.25s ease;
+}
+.btn-text:hover {
+  color: #fff;
 }

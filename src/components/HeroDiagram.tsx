@@ -25,12 +25,12 @@ const H = 600;
 type Source = { key: string; title: string; sub: [string, string]; logo: ReactNode };
 
 const SOURCES: Source[] = [
-  { key: "crm", title: "CRM", sub: ["Account data,", "deal history"], logo: <SalesforceLogo className="h-[34px] w-[48px]" /> },
-  { key: "nav", title: "Sales Navigator", sub: ["People, roles,", "company insights"], logo: <LinkedInLogo className="h-[40px] w-[40px]" /> },
-  { key: "apollo", title: "Apollo", sub: ["Prospects,", "intent signals"], logo: <ApolloLogo className="h-[40px] w-[40px]" /> },
-  { key: "email", title: "Email", sub: ["Conversations,", "relationships"], logo: <GmailLogo className="h-[32px] w-[42px]" /> },
-  { key: "calls", title: "Calls", sub: ["Transcripts,", "key moments"], logo: <ZoomLogo className="h-[42px] w-[42px]" /> },
-  { key: "cal", title: "Calendar", sub: ["Meetings,", "upcoming touchpoints"], logo: <CalendarLogo className="h-[42px] w-[42px]" /> },
+  { key: "crm", title: "CRM", sub: ["Account data,", "deal history"], logo: <SalesforceLogo className="h-[34px] w-[48px] text-cream/65" /> },
+  { key: "nav", title: "Sales Navigator", sub: ["People, roles,", "company insights"], logo: <LinkedInLogo className="h-[38px] w-[38px] text-cream/65" /> },
+  { key: "apollo", title: "Apollo", sub: ["Prospects,", "intent signals"], logo: <ApolloLogo className="h-[38px] w-[38px] text-cream/65" /> },
+  { key: "email", title: "Email", sub: ["Conversations,", "relationships"], logo: <GmailLogo className="h-[30px] w-[40px] text-cream/65" /> },
+  { key: "calls", title: "Calls", sub: ["Transcripts,", "key moments"], logo: <ZoomLogo className="h-[40px] w-[40px] text-cream/65" /> },
+  { key: "cal", title: "Calendar", sub: ["Meetings,", "upcoming touchpoints"], logo: <CalendarLogo className="h-[40px] w-[40px] text-cream/65" /> },
 ];
 
 type Output = { key: string; title: string; sub: [string, string]; icon: ReactNode };
@@ -69,16 +69,16 @@ function SourceCard({ s, style }: { s: Source; style?: React.CSSProperties }) {
     <div className="glass absolute flex items-center gap-[12px] rounded-[6px] pl-[14px]" style={style}>
       <div className="flex w-[40px] shrink-0 items-center justify-center">{s.logo}</div>
       <div className="min-w-0">
-        <div className="font-cond whitespace-nowrap text-[12.5px] font-semibold uppercase leading-none tracking-[0.1em] text-cream">
+        <div className="whitespace-nowrap text-[13px] font-bold leading-none tracking-[-0.005em] text-cream">
           {s.title}
         </div>
-        <div className="mt-[7px] whitespace-nowrap text-[10px] leading-[1.3] text-[#8f949f]">
+        <div className="mt-[7px] whitespace-nowrap text-[10.5px] leading-[1.35] text-[#a1a1aa]">
           {s.sub[0]}
           <br />
           {s.sub[1]}
         </div>
       </div>
-      <span className="absolute right-0 top-1/2 h-[7px] w-[7px] -translate-y-1/2 translate-x-1/2 rounded-full bg-[#4c8dff] shadow-[0_0_10px_2px_rgba(76,141,255,0.8)]" />
+      <span className="absolute right-0 top-1/2 h-[7px] w-[7px] -translate-y-1/2 translate-x-1/2 rounded-full bg-cream/80" />
     </div>
   );
 }
@@ -86,18 +86,18 @@ function SourceCard({ s, style }: { s: Source; style?: React.CSSProperties }) {
 function OutputCard({ o, style }: { o: Output; style?: React.CSSProperties }) {
   return (
     <div className="glass absolute rounded-[6px] px-[16px] py-[14px]" style={style}>
-      <div className="flex items-center gap-[9px] text-brand">
+      <div className="flex items-center gap-[9px] text-cream/80">
         {o.icon}
-        <span className="font-cond whitespace-nowrap text-[13px] font-semibold uppercase leading-none tracking-[0.08em] text-cream">
+        <span className="whitespace-nowrap text-[13px] font-bold leading-none tracking-[-0.005em] text-cream">
           {o.title}
         </span>
       </div>
-      <div className="mt-[10px] whitespace-nowrap pl-[2px] text-[10px] leading-[1.3] text-[#8f949f]">
+      <div className="mt-[10px] whitespace-nowrap pl-[2px] text-[10.5px] leading-[1.35] text-[#a1a1aa]">
         {o.sub[0]}
         <br />
         {o.sub[1]}
       </div>
-      <span className="absolute left-0 top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_2px_rgba(255,42,42,0.85)]" />
+      <span className="absolute left-0 top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cream/80" />
     </div>
   );
 }
@@ -113,33 +113,30 @@ function AcmeMark({ className = "" }: { className?: string }) {
 
 function CoreCard({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={`glass-core relative overflow-hidden rounded-[6px] ${compact ? "w-full" : "h-full w-full"}`}>
-      {/* red glowing left edge */}
-      <span className="pointer-events-none absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-transparent via-brand to-transparent shadow-[0_0_18px_4px_rgba(255,42,42,0.8)]" />
-
+    <div className={`glass-core relative overflow-hidden rounded-[6px] ${compact ? "w-full text-[11.5px] [&_.row]:!h-auto [&_.row]:!min-h-[40px] [&_.row]:!grid-cols-[104px_1fr] [&_.row]:!whitespace-normal [&_.row]:!py-2 [&_.row]:!text-[12px]" : "h-full w-full"}`}>
       {/* header */}
       <div className="flex h-[56px] items-center justify-between border-b border-white/[0.07] px-[22px]">
-        <span className="font-display text-[22px] leading-none tracking-[-0.01em] text-cream/90">NORYX</span>
-        <span className="flex items-center gap-[7px] text-[8.5px] font-medium uppercase tracking-[0.18em] text-[#8f949f]">
+        <span className="text-[20px] font-bold leading-none tracking-[-0.04em] text-cream">NORYX</span>
+        <span className="flex items-center gap-[7px] text-[9.5px] uppercase tracking-[0.16em] text-[#a1a1aa]">
           Intelligence layer
-          <span className="pulse-dot h-[7px] w-[7px] rounded-full bg-brand" />
+          <span className="pulse-dot h-[6px] w-[6px] rounded-full bg-cream/80" />
         </span>
       </div>
 
       {/* company */}
       <div className="flex items-center gap-[16px] px-[22px] pb-[16px] pt-[18px]">
-        <div className="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-[#2a2c33] to-[#101115] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
+        <div className="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-[#2a2c33] to-[#101115] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
           <AcmeMark className="h-[30px] w-[30px]" />
         </div>
         <div className="min-w-0">
-          <div className="font-cond text-[26px] font-medium uppercase leading-none tracking-[0.1em] text-cream">
+          <div className="text-[24px] font-bold leading-none tracking-[-0.03em] text-cream">
             Acme Corp
           </div>
           <div className="mt-[10px] flex flex-wrap gap-[7px]">
-            <span className="bg-brand px-[8px] py-[4px] text-[8.5px] font-semibold uppercase leading-none tracking-[0.12em] text-white">
+            <span className="bg-white/[0.14] px-[8px] py-[4px] text-[9.5px] font-bold uppercase leading-none tracking-[0.1em] text-cream">
               High priority
             </span>
-            <span className="border border-white/30 px-[8px] py-[3px] text-[8.5px] font-medium uppercase leading-none tracking-[0.12em] text-cream/90">
+            <span className="border border-white/30 px-[8px] py-[3px] text-[9.5px] uppercase leading-none tracking-[0.1em] text-cream/90">
               Expansion signal
             </span>
           </div>
@@ -153,15 +150,15 @@ function CoreCard({ compact = false }: { compact?: boolean }) {
             <PersonGlyph className="h-[14px] w-[14px] text-cream/80" />
             Expansion initiative detected
           </span>
-          <span className="text-[13px] text-brand">↗</span>
+          <span className="text-[13px] text-cream/60">↗</span>
         </div>
         <Row icon={<PersonGlyph className="h-[13px] w-[13px]" />} label="Key stakeholder" value="VP Revenue" />
         <Row icon={<PersonLines className="h-[14px] w-[14px]" />} label="Likely priority" value="Pipeline efficiency" />
-        <div className="grid h-[38px] grid-cols-[123px_1fr] items-center border-t border-white/[0.07] pl-[10px] text-[10.5px] whitespace-nowrap">
+        <div className="row grid h-[38px] grid-cols-[123px_1fr] items-center border-t border-white/[0.07] pl-[10px] text-[10.5px] whitespace-nowrap">
           <span className="text-cream/85">Suggested next move</span>
           <span className="flex items-center gap-[6px] text-cream">
             Discuss forecasting workflow
-            <span className="text-brand">→</span>
+            <span className="text-cream/60">→</span>
           </span>
         </div>
       </div>
@@ -170,7 +167,7 @@ function CoreCard({ compact = false }: { compact?: boolean }) {
       <div className="mx-[22px] mt-[10px] flex items-center justify-between border-t border-white/[0.07] pb-[16px] pt-[16px]">
         <div className="flex items-center gap-[10px]">
           <div className="flex items-center">
-            <span className="flex h-[26px] w-[26px] items-center justify-center rounded-full border border-white/40 bg-[#14151a] text-[9px] font-medium text-cream">
+            <span className="flex h-[26px] w-[26px] items-center justify-center rounded-full border border-white/40 bg-[#14151a] text-[9px] text-cream">
               JD
             </span>
             <span className="-ml-[6px] flex h-[26px] w-[26px] items-center justify-center rounded-full border border-white/25 bg-[#1b1c22] text-cream/80">
@@ -180,9 +177,9 @@ function CoreCard({ compact = false }: { compact?: boolean }) {
               +3
             </span>
           </div>
-          <span className="text-[9.5px] text-[#8f949f]">Insights from 12 sources</span>
+          <span className="text-[10px] text-[#a1a1aa]">Insights from 12 sources</span>
         </div>
-        <svg viewBox="0 0 24 24" className="h-[22px] w-[22px] text-[#3b6fd8]" aria-hidden>
+        <svg viewBox="0 0 24 24" className="h-[22px] w-[22px] text-cream/55" aria-hidden>
           <rect x="3" y="13" width="4" height="8" fill="currentColor" />
           <rect x="10" y="4" width="4" height="17" fill="currentColor" />
           <rect x="17" y="9" width="4" height="12" fill="currentColor" />
@@ -194,9 +191,9 @@ function CoreCard({ compact = false }: { compact?: boolean }) {
 
 function Row({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="grid h-[38px] grid-cols-[123px_1fr] items-center border-t border-white/[0.07] pl-[10px] text-[10.5px] whitespace-nowrap">
-      <span className="flex items-center gap-[9px] text-cream/70">
-        <span className="text-cream/50">{icon}</span>
+    <div className="row grid h-[38px] grid-cols-[123px_1fr] items-center border-t border-white/[0.07] pl-[10px] text-[10.5px] whitespace-nowrap">
+      <span className="flex items-center gap-[9px] text-cream/75">
+        <span className="text-cream/55">{icon}</span>
         {label}
       </span>
       <span className="text-cream">{value}</span>
@@ -233,27 +230,27 @@ function ScaledDiagram() {
         {/* connectors */}
         <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden>
           <defs>
-            <linearGradient id="ln-blue" x1="0" x2="1">
-              <stop offset="0" stopColor="#4c8dff" stopOpacity=".95" />
-              <stop offset="1" stopColor="#c8d8ff" stopOpacity=".9" />
+            <linearGradient id="ln-in" x1="0" x2="1">
+              <stop offset="0" stopColor="#a1a1aa" stopOpacity=".9" />
+              <stop offset="1" stopColor="#f4efe6" stopOpacity=".9" />
             </linearGradient>
-            <linearGradient id="ln-red" x1="0" x2="1">
-              <stop offset="0" stopColor="#ff2a2a" stopOpacity=".9" />
-              <stop offset="1" stopColor="#ff6a55" stopOpacity=".95" />
+            <linearGradient id="ln-out" x1="0" x2="1">
+              <stop offset="0" stopColor="#f4efe6" stopOpacity=".9" />
+              <stop offset="1" stopColor="#a1a1aa" stopOpacity=".9" />
             </linearGradient>
           </defs>
           {SOURCES.map((s, i) => (
             <g key={s.key}>
-              <path d={srcPath(i)} fill="none" stroke="url(#ln-blue)" strokeWidth="1" opacity=".55" />
-              <path d={srcPath(i)} fill="none" stroke="#dbe6ff" strokeWidth="1.4" className="flow-line" style={{ animationDelay: `${i * -0.25}s` }} />
+              <path d={srcPath(i)} fill="none" stroke="url(#ln-in)" strokeWidth="1" opacity=".55" />
+              <path d={srcPath(i)} fill="none" stroke="#f4efe6" strokeOpacity=".75" strokeWidth="1.4" className="flow-line" style={{ animationDelay: `${i * -0.25}s` }} />
               <circle cx={CORE.x} cy={SRC_END[i]} r="2.2" fill="#fff" />
             </g>
           ))}
           {OUTPUTS.map((o, i) => (
             <g key={o.key}>
-              <path d={outPath(i)} fill="none" stroke="url(#ln-red)" strokeWidth="1" opacity=".6" />
-              <path d={outPath(i)} fill="none" stroke="#ff7a6a" strokeWidth="1.4" className="flow-line" style={{ animationDelay: `${i * -0.3}s` }} />
-              <circle cx={CORE.x + CORE.w} cy={OUT_START[i]} r="2.2" fill="#ff5a4a" />
+              <path d={outPath(i)} fill="none" stroke="url(#ln-out)" strokeWidth="1" opacity=".6" />
+              <path d={outPath(i)} fill="none" stroke="#f4efe6" strokeOpacity=".75" strokeWidth="1.4" className="flow-line" style={{ animationDelay: `${i * -0.3}s` }} />
+              <circle cx={CORE.x + CORE.w} cy={OUT_START[i]} r="2.2" fill="#fff" />
             </g>
           ))}
         </svg>
@@ -305,17 +302,17 @@ function StackedDiagram() {
     <div className="relative mx-auto w-full max-w-[420px]">
       <div className="grid grid-cols-2 gap-2.5">
         {SOURCES.map((s) => (
-          <div key={s.key} className="glass relative flex items-center gap-3 rounded-[6px] px-3 py-3">
-            <div className="flex w-9 shrink-0 items-center justify-center [&>svg]:max-h-[30px] [&>svg]:max-w-[36px]">
+          <div key={s.key} className="glass relative flex items-center gap-2.5 rounded-[6px] px-3 py-3">
+            <div className="flex w-8 shrink-0 items-center justify-center [&>svg]:max-h-[30px] [&>svg]:max-w-[36px]">
               {s.logo}
             </div>
             <div className="min-w-0">
-              <div className="truncate font-cond text-[12.5px] font-semibold uppercase leading-none tracking-[0.1em] text-cream">
-                {s.title}
+              <div className="text-[13px] font-bold leading-[1.2] tracking-[-0.005em] text-cream">{s.title}</div>
+              <div className="mt-1.5 text-[11.5px] leading-[1.35] text-[#a1a1aa]">
+                {s.sub[0]} {s.sub[1]}
               </div>
-              <div className="mt-1.5 text-[10px] leading-[1.3] text-[#8f949f]">{s.sub[0]}</div>
             </div>
-            <span className="absolute bottom-0 left-1/2 h-[6px] w-[6px] -translate-x-1/2 translate-y-1/2 rounded-full bg-[#4c8dff] shadow-[0_0_10px_2px_rgba(76,141,255,0.8)]" />
+            <span className="absolute bottom-0 left-1/2 h-[6px] w-[6px] -translate-x-1/2 translate-y-1/2 rounded-full bg-cream/80" />
           </div>
         ))}
       </div>
@@ -334,16 +331,16 @@ function StackedDiagram() {
             key={o.key}
             className={`glass relative rounded-[6px] px-4 py-3.5 ${i === OUTPUTS.length - 1 ? "col-span-2" : ""}`}
           >
-            <div className="flex items-center gap-2.5 text-brand">
+            <div className="flex items-center gap-2.5 text-cream/80">
               <span className="[&>svg]:h-[22px] [&>svg]:w-[22px]">{o.icon}</span>
-              <span className="font-cond text-[14px] font-semibold uppercase leading-none tracking-[0.1em] text-cream">
+              <span className="text-[14px] font-bold leading-none tracking-[-0.005em] text-cream">
                 {o.title}
               </span>
             </div>
-            <div className="mt-2 text-[10.5px] leading-[1.35] text-[#8f949f]">
+            <div className="mt-2 text-[11px] leading-[1.4] text-[#a1a1aa]">
               {o.sub[0]} {o.sub[1]}
             </div>
-            <span className="absolute left-1/2 top-0 h-[6px] w-[6px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_2px_rgba(255,42,42,0.85)]" />
+            <span className="absolute left-1/2 top-0 h-[6px] w-[6px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cream/80" />
           </div>
         ))}
       </div>
@@ -352,7 +349,7 @@ function StackedDiagram() {
 }
 
 function Connector({ color }: { color: "blue" | "red" }) {
-  const c = color === "blue" ? "#8fb4ff" : "#ff5a4a";
+  const c = color === "blue" ? "#a1a1aa" : "#f4efe6";
   return (
     <svg viewBox="0 0 2 44" className="mx-auto block h-11 w-[2px] overflow-visible" aria-hidden>
       <line x1="1" y1="0" x2="1" y2="44" stroke={c} strokeWidth="1.4" className="flow-line" />

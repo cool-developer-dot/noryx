@@ -5,8 +5,8 @@ import Reveal from "./Reveal";
 import { ApolloLogo, CalendarLogo, GmailLogo, LinkedInLogo, SalesforceLogo } from "./icons";
 
 const W = 1536;
-const H = 495;
-const RED = "#ee2f2f";
+const TOP = 280; /* the headline now lives in normal page flow, so the diagram starts here */
+const H = 495 - TOP;
 const INK = "#0c0c14";
 
 const abs = (x: number, y: number, w?: number, h?: number, d = 0): CSSProperties => {
@@ -28,12 +28,12 @@ function Fade({ x, y, w, h, d, className = "", style, children }: { x: number; y
 function Starburst({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 40 40" className={className} aria-hidden>
-      <g stroke="#6a4cf0" strokeWidth="2.6" strokeLinecap="round">
+      <g stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
         {Array.from({ length: 16 }).map((_, i) => {
           const a = (i * Math.PI * 2) / 16;
           const r1 = i % 2 ? 8 : 6;
           const r2 = i % 2 ? 15 : 18;
-          return <line key={i} x1={(20 + Math.cos(a) * r1).toFixed(2)} y1={(20 + Math.sin(a) * r1).toFixed(2)} x2={(20 + Math.cos(a) * r2).toFixed(2)} y2={(20 + Math.sin(a) * r2).toFixed(2)} stroke={i % 3 === 0 ? "#8a6bff" : "#5b3df0"} />;
+          return <line key={i} x1={(20 + Math.cos(a) * r1).toFixed(2)} y1={(20 + Math.sin(a) * r1).toFixed(2)} x2={(20 + Math.cos(a) * r2).toFixed(2)} y2={(20 + Math.sin(a) * r2).toFixed(2)} strokeOpacity={i % 3 === 0 ? 0.7 : 1} />;
         })}
       </g>
     </svg>
@@ -42,7 +42,7 @@ function Starburst({ className = "" }: { className?: string }) {
 
 function OpenAI({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={className} fill="none" stroke="#0c0c14" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
+    <svg viewBox="0 0 32 32" className={className} fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
       {[0, 60, 120].map((r) => (
         <path key={r} transform={`rotate(${r} 16 16)`} d="M16 3.500 24.500 8.400v9.800L16 23.100 7.500 18.200V8.400z" />
       ))}
@@ -51,24 +51,24 @@ function OpenAI({ className = "" }: { className?: string }) {
 }
 
 const TOOLS: { key: string; title: string; sub: string[]; logo: ReactNode; x: number; w: number }[] = [
-  { key: "crm", title: "CRM", sub: ["Salesforce"], logo: <SalesforceLogo className="h-[30px] w-[42px]" />, x: 82, w: 176 },
-  { key: "email", title: "Email", sub: ["Google Workspace"], logo: <GmailLogo className="h-[28px] w-[38px]" />, x: 273, w: 192 },
-  { key: "nav", title: "Sales Navigator", sub: ["LinkedIn"], logo: <LinkedInLogo className="h-[37px] w-[37px]" />, x: 480, w: 189 },
-  { key: "apollo", title: "Apollo", sub: ["Prospecting"], logo: <ApolloLogo className="h-[38px] w-[38px]" />, x: 684, w: 187 },
-  { key: "calls", title: "Calls", sub: ["Conversation", "intelligence"], logo: <span className="flex h-[40px] w-[40px] items-center justify-center bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.05)]"><Starburst className="h-[34px] w-[34px]" /></span>, x: 886, w: 189 },
-  { key: "cal", title: "Calendar", sub: ["Meetings", "& scheduling"], logo: <CalendarLogo className="h-[40px] w-[40px]" />, x: 1089, w: 191 },
-  { key: "ai", title: "AI Models", sub: ["GPT, Claude", "and more"], logo: <OpenAI className="h-[38px] w-[38px]" />, x: 1295, w: 167 },
+  { key: "crm", title: "CRM", sub: ["Salesforce"], logo: <SalesforceLogo className="h-[30px] w-[42px] text-[#71717a]" />, x: 82, w: 176 },
+  { key: "email", title: "Email", sub: ["Google Workspace"], logo: <GmailLogo className="h-[28px] w-[38px] text-[#71717a]" />, x: 273, w: 192 },
+  { key: "nav", title: "Sales Navigator", sub: ["LinkedIn"], logo: <LinkedInLogo className="h-[36px] w-[36px] text-[#71717a]" />, x: 480, w: 189 },
+  { key: "apollo", title: "Apollo", sub: ["Prospecting"], logo: <ApolloLogo className="h-[36px] w-[36px] text-[#71717a]" />, x: 684, w: 187 },
+  { key: "calls", title: "Calls", sub: ["Conversation", "intelligence"], logo: <Starburst className="h-[38px] w-[38px] text-[#71717a]" />, x: 886, w: 189 },
+  { key: "cal", title: "Calendar", sub: ["Meetings", "& scheduling"], logo: <CalendarLogo className="h-[38px] w-[38px] text-[#71717a]" />, x: 1089, w: 191 },
+  { key: "ai", title: "AI Models", sub: ["GPT, Claude", "and more"], logo: <OpenAI className="h-[36px] w-[36px] text-[#71717a]" />, x: 1295, w: 167 },
 ];
 
 function ToolCard({ t, compact = false }: { t: (typeof TOOLS)[number]; compact?: boolean }) {
   return (
-    <div className={`tool-card flex h-full w-full items-center border border-[#e8e5de] bg-[#fbfaf7] ${compact ? "gap-[10px] px-3" : "gap-[14px] px-[16px]"}`}>
-      <span className="flex w-[42px] shrink-0 items-center justify-center">{t.logo}</span>
+    <div className={`tool-card flex h-full w-full items-center border border-[#e8e5de] bg-[#fbfaf7] ${compact ? "gap-[8px] px-3" : "gap-[14px] px-[16px]"}`}>
+      <span className={`flex shrink-0 items-center justify-center ${compact ? "w-[34px]" : "w-[42px]"}`}>{t.logo}</span>
       <div className="min-w-0">
-        <div className="whitespace-nowrap text-[12px] font-semibold leading-none text-[#0c0c14]">{t.title}</div>
-        <div className="mt-[7px] text-[10.5px] leading-[1.45] text-[#7a7b86]">
+        <div className={`${compact ? "" : "whitespace-nowrap"} text-[14px] font-bold leading-[1.15] tracking-[-0.01em] text-[#0c0c14]`}>{t.title}</div>
+        <div className="mt-[7px] text-[12px] leading-[1.4] text-[#71717a]">
           {t.sub.map((l) => (
-            <span key={l} className="block whitespace-nowrap">
+            <span key={l} className={`block ${compact ? "" : "whitespace-nowrap"}`}>
               {l}
             </span>
           ))}
@@ -78,29 +78,27 @@ function ToolCard({ t, compact = false }: { t: (typeof TOOLS)[number]; compact?:
   );
 }
 
-function Eyebrow() {
+const COPY = "NORYX connects intelligence across the tools your revenue team already uses — bringing the right context to every seller, leader, and operator at the right moment.";
+
+function Header() {
   return (
-    <div className="flex items-center gap-[27px]">
-      <span className="h-[3px] w-[36px] bg-[#ee2f2f]" />
-      <span className="text-[10.5px] font-medium uppercase tracking-[0.3em] text-[#0c0c14]">05 / Built for your team &amp; stack</span>
+    <div className="section-x section-y !pb-8 lg:!pb-10">
+      <div className="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-[6vw]">
+        <div>
+          <p className="eyebrow eyebrow-light pfade">Your stack</p>
+          <h2 className="h-display h-section pfade mt-5 text-[#0c0c14] lg:mt-6" style={{ ["--d" as string]: "0.1s" } as CSSProperties}>
+            Your tools stay.
+            <br />
+            Your team gets smarter.
+          </h2>
+        </div>
+        <p className="body-copy body-copy-light pfade" style={{ ["--d" as string]: "0.2s" } as CSSProperties}>
+          {COPY}
+        </p>
+      </div>
     </div>
   );
 }
-
-function Headline({ flow = false }: { flow?: boolean }) {
-  const line = flow ? "pfade block whitespace-nowrap text-[clamp(1.8rem,8.4vw,5.4rem)] leading-[1]" : "pfade block text-[84px] leading-[84px]";
-  return (
-    <h2 className="font-display uppercase text-[#0c0c14]" style={{ letterSpacing: "-0.035em" }}>
-      <span className={line}>Your tools stay.</span>
-      <span className={line} style={{ ["--d" as string]: "0.12s" }}>
-        Your team gets smarter.
-        <span className="ml-[0.08em] inline-block rounded-full bg-[#ee2f2f]" style={{ width: "0.15em", height: "0.15em" }} />
-      </span>
-    </h2>
-  );
-}
-
-const COPY = "NORYX connects intelligence across the tools your revenue team already uses — bringing the right context to every seller, leader, and operator at the right moment.";
 
 /* ---------- desktop stage ---------- */
 
@@ -132,13 +130,14 @@ function Stage() {
   }, []);
 
   return (
-    <div ref={wrap} className="relative mx-auto w-full max-w-[1920px]" style={{ aspectRatio: `${W} / ${H}` }}>
+    <div ref={wrap} className="relative mx-auto w-full max-w-[1920px] overflow-hidden" style={{ aspectRatio: `${W} / ${H}` }}>
       <div
         className="absolute left-0 top-0 origin-top-left"
         style={{ width: W, height: H, transform: `scale(${scale ?? 1})`, opacity: scale === null ? 0 : 1 }}
       >
+        <div className="absolute left-0 w-full" style={{ top: -TOP, height: H + TOP }}>
         {/* lines */}
-        <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="pointer-events-none absolute inset-0" aria-hidden>
+        <svg viewBox={`0 0 ${W} ${H + TOP}`} width={W} height={H + TOP} className="pointer-events-none absolute inset-0" aria-hidden>
           {/* stack bracket */}
           <path d="M74 312 V294 H88 M280 294 H1462 V312" stroke={INK} strokeOpacity=".28" fill="none" />
           {/* gap dots */}
@@ -156,12 +155,12 @@ function Stage() {
           ))}
           <circle cx="678" cy={BUS} r="3" fill="#f7f5f0" stroke={INK} strokeOpacity=".5" />
           <circle cx="868" cy={BUS} r="3" fill="#f7f5f0" stroke={INK} strokeOpacity=".5" />
-          {/* red flows */}
-          <path id="p-in" d={IN_PATH} pathLength={1} className="draw" style={{ ["--d" as string]: "1.1s" }} stroke={RED} strokeWidth="1" fill="none" />
-          <path d="M692 441 l-8 -3 v6z" fill={RED} className="pfade" style={{ ["--d" as string]: "2.2s" }} />
-          <path id="p-out" d={OUT_PATH} pathLength={1} className="draw" style={{ ["--d" as string]: "1.5s" }} stroke={RED} strokeWidth="1" fill="none" />
-          <path d="M1266 448 l-8 -3 v6z" fill={RED} className="pfade" style={{ ["--d" as string]: "2.6s" }} />
-          <circle cx="870" cy="442" r="2.4" fill={RED} />
+          {/* flows in and out of NORYX */}
+          <path id="p-in" d={IN_PATH} pathLength={1} className="draw" style={{ ["--d" as string]: "1.1s" }} stroke={INK} strokeOpacity=".7" strokeWidth="1" fill="none" />
+          <path d="M692 441 l-8 -3 v6z" fill={INK} className="pfade" style={{ ["--d" as string]: "2.2s" }} />
+          <path id="p-out" d={OUT_PATH} pathLength={1} className="draw" style={{ ["--d" as string]: "1.5s" }} stroke={INK} strokeOpacity=".7" strokeWidth="1" fill="none" />
+          <path d="M1266 448 l-8 -3 v6z" fill={INK} className="pfade" style={{ ["--d" as string]: "2.6s" }} />
+          <circle cx="870" cy="442" r="2.4" fill={INK} />
           <g className="pulses">
             {GREY_PATHS.slice(0, 5).map((g, k) => (
               <circle key={g.id} r="2.3" fill={INK} opacity=".75">
@@ -170,12 +169,12 @@ function Stage() {
                 </animateMotion>
               </circle>
             ))}
-            <circle r="3" fill={RED}>
+            <circle r="3" fill={INK}>
               <animateMotion dur="3.6s" begin="2.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".4 0 .2 1">
                 <mpath href="#p-in" />
               </animateMotion>
             </circle>
-            <circle r="3" fill={RED}>
+            <circle r="3" fill={INK}>
               <animateMotion dur="3.6s" begin="3.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".4 0 .2 1">
                 <mpath href="#p-out" />
               </animateMotion>
@@ -183,20 +182,8 @@ function Stage() {
           </g>
         </svg>
 
-        {/* header */}
-        <div className="absolute" style={{ left: 73, top: 33 }}>
-          <Eyebrow />
-        </div>
-        <div className="absolute" style={{ left: 70, top: 72 }}>
-          <Headline />
-        </div>
-        <span className="absolute w-px bg-[#0c0c14]/30" style={{ left: 975, top: 143, height: 104 }} />
-        <Fade x={1024} y={140} w={430} d={0.3} className="font-serif text-[22px] font-light leading-[27px] text-[#14141f]">
-          NORYX connects intelligence across the tools your revenue team already uses — bringing the right context to every seller, leader, and operator at the right moment.
-        </Fade>
-
         {/* stack */}
-        <Fade x={90} y={286} d={0.3} className="text-[10.5px] font-medium uppercase tracking-[0.28em] text-[#0c0c14]">
+        <Fade x={90} y={282} d={0.3} className="text-[12px] uppercase tracking-[0.14em] text-[#52525b]">
           Your existing stack
         </Fade>
         {TOOLS.map((t, i) => (
@@ -209,15 +196,14 @@ function Stage() {
 
         {/* hub */}
         <Fade x={700} y={413} w={144} h={63} d={0.5} className="hub-pulse flex items-center justify-center bg-[#0c0c10]">
-          <span className="font-display text-[38px] leading-none tracking-[-0.01em] text-white">NORYX</span>
-          <span className="pulse-dot ml-[6px] mt-[16px] h-[8px] w-[8px] rounded-full bg-[#ee2f2f]" />
+          <span className="text-[30px] font-bold leading-none tracking-[-0.05em] text-white">NORYX</span>
         </Fade>
-        <Fade x={1288} y={431} d={0.55} className="text-[10.5px] font-medium uppercase leading-[17px] tracking-[0.22em] text-[#0c0c14]">
+        <Fade x={1288} y={429} d={0.55} className="text-[13px] leading-[1.5] text-[#3f3f46]">
           Connected
           <br />
           revenue intelligence
         </Fade>
-
+        </div>
       </div>
     </div>
   );
@@ -227,33 +213,24 @@ function Stage() {
 
 function Flow() {
   return (
-    <div className="px-5 pb-6 pt-10 sm:px-8 md:pt-14">
-      <Eyebrow />
-      <div className="mt-6">
-        <Headline flow />
-      </div>
-      <p className="pfade mt-7 max-w-[560px] font-serif text-[clamp(1.1rem,4.4vw,1.4rem)] font-light leading-[1.4] text-[#14141f]" style={{ ["--d" as string]: "0.2s" }}>
-        {COPY}
-      </p>
-
-      {/* stack */}
-      <div className="mt-12 text-[10px] font-medium uppercase tracking-[0.28em]">Your existing stack</div>
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-        {TOOLS.map((t) => (
-          <div key={t.key} className="pfade h-[72px]">
-            <ToolCard t={t} compact />
+    <div className="section-x pb-11">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="text-[12px] uppercase tracking-[0.14em] text-[#52525b]">Your existing stack</div>
+        <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {TOOLS.map((t) => (
+            <div key={t.key} className="pfade h-[72px]">
+              <ToolCard t={t} compact />
+            </div>
+          ))}
+          <div className="pfade col-span-2 flex h-[72px] items-center justify-center bg-[#0c0c10] md:col-span-1">
+            <span className="text-[28px] font-bold leading-none tracking-[-0.05em] text-white">NORYX</span>
           </div>
-        ))}
-        <div className="pfade col-span-2 flex h-[72px] items-center justify-center gap-3 bg-[#0c0c10] md:col-span-1">
-          <span className="font-display text-[34px] leading-none text-white">NORYX</span>
-          <span className="mt-[14px] h-[7px] w-[7px] rounded-full bg-[#ee2f2f]" />
         </div>
+        <p className="mt-5 flex items-center gap-4 text-[14px] text-[#3f3f46]">
+          <span className="h-px w-10 bg-[#0c0c14]/50" />
+          Connected revenue intelligence
+        </p>
       </div>
-      <div className="mt-5 flex items-center gap-4 text-[10px] font-medium uppercase leading-[1.7] tracking-[0.22em]">
-        <span className="h-px w-10 bg-[#ee2f2f]" />
-        Connected revenue intelligence
-      </div>
-
     </div>
   );
 }
@@ -261,7 +238,8 @@ function Flow() {
 export default function Stack() {
   return (
     <Reveal id="integrations" className="relative overflow-hidden bg-[#f7f5f0] text-[#0c0c14]">
-      <div className="relative hidden xl:block">
+      <Header />
+      <div className="relative hidden xl:block xl:pb-[72px]">
         <Stage />
       </div>
       <div className="relative xl:hidden">

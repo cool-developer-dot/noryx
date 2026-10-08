@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 
 const NAV = [
-  { label: "Product", href: "#product", n: "01" },
-  { label: "How it works", href: "#how-it-works", n: "02" },
-  { label: "Integrations", href: "#integrations", n: "03" },
-  { label: "For teams", href: "#teams", n: "04" },
-  { label: "FAQ", href: "#faq", n: "05" },
+  { label: "Product", href: "#product" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Integrations", href: "#integrations" },
+  { label: "For teams", href: "#teams" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 /** Sections the nav highlights while you scroll through them. */
@@ -120,8 +120,8 @@ export default function Header() {
   }, []);
 
   const linkCls = (href: string) =>
-    `nav-link relative py-2 text-[11px] font-medium uppercase tracking-[0.17em] transition-colors ${
-      active === href ? "text-white" : "text-cream/80 hover:text-white"
+    `nav-link relative py-2 text-[14px] tracking-[-0.005em] transition-colors ${
+      active === href ? "text-white" : "text-[#c4c4cc] hover:text-white"
     } ${active === href ? "is-active" : ""}`;
 
   return (
@@ -129,7 +129,7 @@ export default function Header() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-500 ease-out ${
           scrolled || open
-            ? "border-b border-white/[0.1] bg-[#07080a]/95"
+            ? "border-b border-white/[0.1] bg-[#07080a]"
             : "border-b border-white/[0.14] bg-transparent"
         }`}
       >
@@ -140,7 +140,7 @@ export default function Header() {
               onClick={(e) => {
                 if (open) go(e, "#top");
               }}
-              className="font-display text-[34px] leading-none tracking-[-0.01em] text-cream lg:text-[38px]"
+              className="text-[26px] font-bold leading-none tracking-[-0.05em] text-cream lg:text-[28px]"
               aria-label="NORYX home"
             >
               NORYX
@@ -157,13 +157,13 @@ export default function Header() {
           <div className="flex items-center gap-4 sm:gap-6 xl:gap-9">
             <a
               href="#signin"
-              className="hidden text-[11px] font-medium uppercase tracking-[0.17em] text-cream/80 transition-colors hover:text-white lg:block"
+              className="hidden text-[14px] tracking-[-0.005em] text-[#c4c4cc] transition-colors hover:text-white lg:block"
             >
               Sign in
             </a>
             <a
               href="#demo"
-              className="group hidden h-[40px] items-center gap-3 bg-brand px-5 font-cond text-[17px] font-semibold uppercase tracking-[0.14em] text-[#14080a] transition-all hover:bg-white sm:inline-flex lg:h-[50px] lg:px-[22px] lg:text-[18px]"
+              className="btn-primary group !hidden !h-[40px] !px-5 !text-[15px] sm:!inline-flex lg:!h-[46px]"
             >
               Book a demo
               <Arrow className="h-3 w-6 transition-transform group-hover:translate-x-1" />
@@ -179,15 +179,15 @@ export default function Header() {
               onClick={() => setOpen((v) => !v)}
               className={`burger group relative flex h-[46px] items-center gap-3 pl-1 lg:hidden ${open ? "is-open" : ""}`}
             >
-              <span className="hidden text-[10px] font-medium uppercase tracking-[0.28em] text-cream/80 sm:block">
-                <span className="relative block h-[12px] w-[54px] overflow-hidden text-right">
-                  <span className="burger-label-in absolute inset-x-0 top-0 block leading-[12px]">Menu</span>
-                  <span className="burger-label-out absolute inset-x-0 top-0 block leading-[12px] text-[#ff3b3b]">Close</span>
+              <span className="hidden text-[12px] uppercase tracking-[0.16em] text-[#c4c4cc] sm:block">
+                <span className="relative block h-[14px] w-[54px] overflow-hidden text-right">
+                  <span className="burger-label-in absolute inset-x-0 top-0 block leading-[14px]">Menu</span>
+                  <span className="burger-label-out absolute inset-x-0 top-0 block leading-[14px] text-cream">Close</span>
                 </span>
               </span>
               <span className="relative block h-[46px] w-[46px]">
                 <span className="burger-ring absolute inset-0 rounded-full border border-white/25" />
-                <span className="burger-ring-fill absolute inset-0 rounded-full border border-[#ff2a2a]" />
+                <span className="burger-ring-fill absolute inset-0 rounded-full border border-accent" />
                 <span className="absolute left-1/2 top-1/2 block h-[14px] w-[20px] -translate-x-1/2 -translate-y-1/2">
                   <span className="burger-line burger-l1 absolute left-0 top-0 h-[1.5px] w-full bg-cream" />
                   <span className="burger-line burger-l2 absolute right-0 top-1/2 h-[1.5px] w-[68%] -translate-y-1/2 bg-cream" />
@@ -202,7 +202,7 @@ export default function Header() {
         <span className="pointer-events-none absolute inset-x-0 bottom-[-1px] block h-[2px] overflow-hidden" aria-hidden>
           <span
             ref={bar}
-            className="block h-full w-full origin-left bg-gradient-to-r from-[#ff2a2a] via-[#ff5a4a] to-[#ff2a2a]"
+            className="block h-full w-full origin-left bg-accent"
             style={{ transform: "scaleX(0)" }}
           />
         </span>
@@ -219,18 +219,17 @@ export default function Header() {
       >
         <div className="menu-bg absolute inset-0" />
         <div className="hero-grain pointer-events-none absolute inset-0" />
-        <span className="menu-orb pointer-events-none absolute -right-24 top-[28%] h-[320px] w-[320px] rounded-full bg-[#ff2a2a]/25 blur-[90px]" />
+        <span className="menu-orb pointer-events-none absolute -right-24 top-[28%] h-[320px] w-[320px] rounded-full bg-white/[0.07] blur-[90px]" />
         <span className="menu-ghost pointer-events-none absolute -bottom-[7vw] left-[-2vw] select-none font-display text-[44vw] leading-[0.8] text-transparent" aria-hidden>
           NORYX
         </span>
 
         <div className="relative mx-auto flex h-full max-w-[720px] flex-col overflow-y-auto px-5 pb-8 pt-[92px] sm:px-8 sm:pt-[110px]">
           {/* brand rail */}
-          <span className="menu-rail pointer-events-none absolute bottom-8 left-[14px] top-[96px] w-px bg-gradient-to-b from-[#ff2a2a] via-white/15 to-transparent sm:left-[22px]" aria-hidden />
+          <span className="menu-rail pointer-events-none absolute bottom-8 left-[14px] top-[96px] w-px bg-gradient-to-b from-white/40 via-white/10 to-transparent sm:left-[22px]" aria-hidden />
 
-          <p className="menu-fade font-mono text-[10px] uppercase tracking-[0.3em] text-cream/45" style={{ ["--i" as string]: 0 }}>
-            <span className="mr-3 inline-block h-[3px] w-[22px] translate-y-[-3px] bg-[#ff2a2a]" />
-            Navigate
+          <p className="menu-fade eyebrow" style={{ ["--i" as string]: 0 }}>
+            Menu
           </p>
 
           <ul className="mt-6 sm:mt-8">
@@ -240,15 +239,14 @@ export default function Header() {
                   ref={i === 0 ? firstLink : undefined}
                   href={n.href}
                   onClick={(e) => go(e, n.href)}
-                  className={`menu-link group flex items-center gap-4 py-[14px] sm:gap-7 sm:py-[18px] ${active === n.href ? "text-[#ff3b3b]" : "text-cream"}`}
+                  className={`menu-link group flex items-center gap-4 py-[16px] sm:py-[20px] ${active === n.href ? "text-accent" : "text-cream"}`}
                 >
-                  <span className="w-7 font-mono text-[11px] tracking-[0.12em] text-cream/40 transition-colors group-hover:text-[#ff3b3b]">{n.n}</span>
-                  <span className="font-display text-[clamp(2.4rem,11.4vw,4.6rem)] uppercase leading-[0.98] tracking-[-0.01em] transition-[transform,color] duration-500 ease-out group-hover:translate-x-3 group-hover:text-[#ff3b3b]">
+                  <span className="text-[clamp(2.25rem,10.4vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.045em] transition-[transform,color] duration-500 ease-out group-hover:translate-x-3 group-hover:text-white">
                     {n.label}
                   </span>
                   <svg
                     viewBox="0 0 12 12"
-                    className="ml-auto h-[16px] w-[16px] shrink-0 -translate-x-2 text-[#ff3b3b] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
+                    className="ml-auto h-[16px] w-[16px] shrink-0 -translate-x-2 text-cream/70 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.3"
@@ -265,14 +263,14 @@ export default function Header() {
             <a
               href="#demo"
               onClick={(e) => go(e, "#demo")}
-              className="menu-fade group flex h-[58px] items-center justify-between bg-[#ff2a2a] px-6 font-cond text-[24px] font-semibold uppercase tracking-[0.12em] text-white shadow-[0_18px_50px_-16px_rgba(255,42,42,0.8)] transition-colors hover:bg-white hover:text-[#07080a]"
+              className="menu-fade btn-primary group !flex !h-[58px] !w-full !justify-between !px-6 !text-[18px]"
               style={{ ["--i" as string]: 6 }}
             >
               Book a demo
               <Arrow className="h-3 w-7 transition-transform duration-500 group-hover:translate-x-2" />
             </a>
 
-            <div className="menu-fade mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.24em] text-cream/50" style={{ ["--i" as string]: 7 }}>
+            <div className="menu-fade mt-6 flex items-center justify-between text-[13px] text-[#a1a1aa]" style={{ ["--i" as string]: 7 }}>
               <a href="#signin" onClick={(e) => go(e, "#signin")} className="transition-colors hover:text-white">
                 Sign in
               </a>

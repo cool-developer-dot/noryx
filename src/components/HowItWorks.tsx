@@ -14,7 +14,7 @@ const STAGES = [
 /** What the account has "learned" by the end of each stage (desktop ledger). */
 const LEDGER = ["Fit 92%", "Expansion signal", "Brief ready", "Pain identified", "Action recommended"];
 
-const COBALT = "#4c8dff";
+const DOT = "#a1a1aa";
 
 function Arrow({ className = "" }: { className?: string }) {
   return (
@@ -34,11 +34,11 @@ function Rv({ i, className = "", children }: { i: number; className?: string; ch
 }
 
 function Kicker({ children }: { children: ReactNode }) {
-  return <div className="font-mono text-[10px] uppercase leading-none tracking-[0.22em] text-cream/50 lg:text-[10.5px]">{children}</div>;
+  return <div className="text-[12px] uppercase leading-none tracking-[0.14em] text-[#a1a1aa]">{children}</div>;
 }
 
 function Dot() {
-  return <span className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full" style={{ background: COBALT }} />;
+  return <span className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full" style={{ background: DOT }} />;
 }
 
 /* ---------------------------------------------------------------- stage content */
@@ -56,11 +56,11 @@ function Discover() {
           <Kicker>Account match</Kicker>
         </Rv>
         <Rv i={1} className="mt-3 flex items-end gap-3 lg:mt-5">
-          <span className="font-display text-[56px] leading-[0.85] tracking-[-0.01em] text-cream lg:text-[132px]">92%</span>
-          <span className="pb-1 font-mono text-[10px] uppercase tracking-[0.22em] text-[#ff3b3b] lg:pb-3 lg:text-[11px]">Fit</span>
+          <span className="text-[64px] font-bold leading-[0.85] tracking-[-0.06em] text-accent lg:text-[132px]">92%</span>
+          <span className="pb-1 text-[12px] uppercase tracking-[0.14em] text-[#a1a1aa] lg:pb-3">Fit</span>
         </Rv>
         <Rv i={2}>
-          <p className="mt-4 max-w-[30ch] font-serif text-[1.05rem] font-light leading-[1.4] text-cream/85 lg:mt-6 lg:text-[1.45rem] lg:leading-[1.3]">
+          <p className="mt-4 max-w-[30ch] text-[1.0625rem] leading-[1.5] text-[#d4d4d8] lg:mt-6 lg:text-[1.375rem] lg:leading-[1.45]">
             Strong ICP match with relevant growth signals.
           </p>
         </Rv>
@@ -72,10 +72,10 @@ function Discover() {
         <ul className="mt-3 lg:mt-5">
           {signals.map(([t, s], k) => (
             <Rv key={t} i={4 + k}>
-              <li className="flex items-start gap-3 border-t border-white/10 py-[11px] text-[14px] leading-[1.35] text-cream/90 lg:py-[15px] lg:text-[15.5px]">
+              <li className="flex items-start gap-3 border-t border-white/10 py-[12px] text-[16px] leading-[1.4] text-[#e4e4e7] lg:py-[16px] lg:text-[17px]">
                 <Dot />
                 <span className="flex-1">{t}</span>
-                <span className="hidden font-mono text-[9.5px] uppercase tracking-[0.18em] text-cream/35 lg:inline">{s}</span>
+                <span className="hidden text-[12px] text-[#71717a] lg:inline">{s}</span>
               </li>
             </Rv>
           ))}
@@ -98,12 +98,12 @@ function Prioritize() {
           <Kicker>Why now</Kicker>
         </Rv>
         <Rv i={1}>
-          <p className="mt-3 max-w-[26ch] font-serif text-[1.3rem] font-normal leading-[1.22] text-cream lg:mt-5 lg:text-[2.1rem] lg:leading-[1.16]">
+          <p className="mt-3 max-w-[26ch] text-[1.375rem] font-bold leading-[1.2] tracking-[-0.03em] text-cream lg:mt-5 lg:text-[2.125rem] lg:leading-[1.15]">
             ACME is expanding into two new markets while building its Revenue Operations function.
           </p>
         </Rv>
         <Rv i={2}>
-          <p className="mt-3 font-mono text-[10px] uppercase leading-[1.8] tracking-[0.16em] text-cream/45 lg:mt-5 lg:text-[10.5px]">
+          <p className="mt-3 text-[13px] leading-[1.6] text-[#a1a1aa] lg:mt-5">
             Expansion signal · 3 sources · updated 08:42
           </p>
         </Rv>
@@ -120,14 +120,14 @@ function Prioritize() {
             <Rv key={name} i={4 + k} className={hot ? "" : "hidden lg:block"}>
               <li className="border-t border-white/10 py-3 lg:py-[16px]">
                 <div className="flex items-baseline justify-between text-[14px] lg:text-[15.5px]">
-                  <span className={hot ? "text-cream" : "text-cream/45"}>
-                    <span className="mr-3 font-mono text-[10px] tracking-[0.12em] text-cream/35">{String(k + 1).padStart(2, "0")}</span>
+                  <span className={hot ? "text-cream" : "text-[#71717a]"}>
+                    
                     {name}
                   </span>
-                  <span className={`font-mono text-[11px] tabular-nums ${hot ? "text-[#ff3b3b]" : "text-cream/35"}`}>{score}</span>
+                  <span className={`text-[14px] font-bold tabular-nums ${hot ? "text-accent" : "text-[#71717a]"}`}>{score}</span>
                 </div>
                 <div className="mt-[10px] h-px bg-white/10">
-                  <div className={`hiw-bar h-px ${hot ? "bg-[#ff2a2a]" : "bg-cream/30"}`} style={{ ["--w" as string]: score / 100 } as CSSProperties} />
+                  <div className={`hiw-bar h-px ${hot ? "bg-accent" : "bg-cream/30"}`} style={{ ["--w" as string]: score / 100 } as CSSProperties} />
                 </div>
               </li>
             </Rv>
@@ -151,10 +151,10 @@ function Prepare() {
           <Kicker>Pre-call brief</Kicker>
         </Rv>
         <Rv i={1}>
-          <div className="mt-3 font-display text-[34px] uppercase leading-[0.95] tracking-[-0.005em] text-cream lg:mt-5 lg:text-[64px]">Sarah Chen</div>
+          <div className="mt-3 text-[36px] font-bold leading-[1] tracking-[-0.045em] text-cream lg:mt-5 lg:text-[60px]">Sarah Chen</div>
         </Rv>
         <Rv i={2}>
-          <p className="mt-2 font-mono text-[10px] uppercase leading-[1.8] tracking-[0.16em] text-cream/50 lg:mt-4 lg:text-[10.5px]">
+          <p className="mt-2 text-[14px] leading-[1.6] text-[#a1a1aa] lg:mt-4">
             VP Revenue · primary stakeholder
             <span className="hidden lg:inline">
               <br />
@@ -167,8 +167,8 @@ function Prepare() {
         {rows.map(([k, v], n) => (
           <Rv key={k} i={3 + n}>
             <li className="grid grid-cols-[72px_1fr] gap-3 border-t border-white/10 py-[11px] lg:grid-cols-[104px_1fr] lg:py-[18px]">
-              <span className="pt-[3px] font-mono text-[10px] uppercase tracking-[0.2em] text-[#ff3b3b]">{k}</span>
-              <span className="text-[14px] leading-[1.4] text-cream/90 lg:font-serif lg:text-[1.2rem] lg:font-light lg:leading-[1.35]">{v}</span>
+              <span className="pt-[3px] text-[12px] uppercase tracking-[0.14em] text-[#a1a1aa]">{k}</span>
+              <span className="text-[16px] leading-[1.5] text-[#e4e4e7] lg:text-[1.125rem]">{v}</span>
             </li>
           </Rv>
         ))}
@@ -190,7 +190,7 @@ function Understand() {
           <Kicker>Conversation · 42:17</Kicker>
         </Rv>
         <Rv i={1}>
-          <p className="mt-3 max-w-[24ch] font-serif text-[1.35rem] font-light leading-[1.25] text-cream lg:mt-5 lg:text-[2.2rem] lg:leading-[1.2]">
+          <p className="mt-3 max-w-[24ch] text-[1.375rem] leading-[1.3] tracking-[-0.02em] text-cream lg:mt-5 lg:text-[2.125rem] lg:leading-[1.22]">
             “Forecasting is still <span className="hiw-underline">largely manual</span> across regions.”
           </p>
         </Rv>
@@ -199,7 +199,7 @@ function Understand() {
         <Rv i={2}>
           <Kicker>
             <span className="inline-flex items-center gap-2">
-              <Arrow className="h-[7px] w-[14px] rotate-90 text-[#ff3b3b] lg:rotate-0" />
+              <Arrow className="h-[7px] w-[14px] rotate-90 text-cream/70 lg:rotate-0" />
               Turned into intelligence
             </span>
           </Kicker>
@@ -208,8 +208,8 @@ function Understand() {
           {rows.map(([k, v], n) => (
             <Rv key={k} i={3 + n}>
               <li className="grid grid-cols-[84px_1fr] gap-3 border-t border-white/10 py-[11px] lg:grid-cols-[110px_1fr] lg:py-[17px]">
-                <span className="pt-[3px] font-mono text-[10px] uppercase tracking-[0.2em] text-[#ff3b3b]">{k}</span>
-                <span className="text-[14px] leading-[1.35] text-cream/90 lg:text-[16px]">{v}</span>
+                <span className="pt-[3px] text-[12px] uppercase tracking-[0.14em] text-[#a1a1aa]">{k}</span>
+                <span className="text-[16px] leading-[1.4] text-[#e4e4e7] lg:text-[17px]">{v}</span>
               </li>
             </Rv>
           ))}
@@ -224,17 +224,17 @@ function Act() {
   return (
     <div className="relative grid gap-5 lg:min-h-full lg:grid-cols-[1.25fr_1fr] lg:gap-14">
       {/* the intelligence thread ends here: a stub from the last node into the action */}
-      <span className="hiw-stub absolute -left-[34px] bottom-[4px] hidden h-px w-[30px] bg-[#ff2a2a] lg:block" aria-hidden />
+      <span className="hiw-stub absolute -left-[34px] bottom-[4px] hidden h-px w-[30px] bg-accent lg:block" aria-hidden />
       <div className="flex flex-col lg:justify-between">
         <Rv i={0}>
           <Kicker>Next best action</Kicker>
         </Rv>
         <div className="relative mt-3 lg:mt-0">
           <Rv i={1}>
-            <h3 className="font-display text-[36px] uppercase leading-[0.96] tracking-[-0.005em] text-cream lg:text-[68px]">Speak with Sarah Chen.</h3>
+            <h3 className="h-display text-[38px] text-cream lg:text-[64px]">Speak with Sarah Chen.</h3>
           </Rv>
           <Rv i={2}>
-            <p className="mt-3 max-w-[34ch] font-serif text-[1.05rem] font-light leading-[1.4] text-cream/80 lg:mt-5 lg:text-[1.35rem]">
+            <p className="mt-3 max-w-[34ch] text-[1.0625rem] leading-[1.5] text-[#d4d4d8] lg:mt-5 lg:text-[1.25rem]">
               Lead with forecast visibility during international expansion.
             </p>
           </Rv>
@@ -254,11 +254,11 @@ function Act() {
         </Rv>
         <Rv i={4}>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3 lg:mt-5">
-            <span className="inline-flex h-[44px] items-center gap-4 border border-[#ff2a2a] px-5 font-cond text-[15px] font-semibold uppercase tracking-[0.14em] text-[#ff3b3b]">
+            <span className="inline-flex h-[46px] items-center gap-4 border border-white/35 px-5 text-[15px] font-bold tracking-[-0.005em] text-cream">
               Prepare discovery questions
               <Arrow className="h-[8px] w-[16px]" />
             </span>
-            <span className="font-mono text-[9.5px] uppercase leading-[1.7] tracking-[0.2em] text-cream/45">
+            <span className="text-[12px] leading-[1.5] text-[#a1a1aa]">
               Human decision
               <br />
               required
@@ -276,7 +276,7 @@ const PANELS = [Discover, Prioritize, Prepare, Understand, Act];
 
 function Odometer({ i }: { i: number }) {
   return (
-    <span className="hiw-odo font-display text-[26px] leading-none text-cream lg:text-[40px]" aria-hidden>
+    <span className="hiw-odo text-[28px] font-bold leading-none tracking-[-0.04em] text-cream lg:text-[40px]" aria-hidden>
       <span className="hiw-odo-col" style={{ transform: `translateY(${-i * 20}%)` }}>
         {STAGES.map((s) => (
           <span key={s.n}>{s.n}</span>
@@ -291,7 +291,7 @@ function node(k: number, i: number, shape: "round" | "square") {
   const current = k === i;
   return `absolute block h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 border transition-[background-color,border-color,box-shadow] duration-500 ${
     shape === "square" ? "" : "rounded-full"
-  } ${reached ? "border-[#ff2a2a] bg-[#ff2a2a]" : "border-white/30 bg-[#0c0e13]"} ${
+  } ${reached ? "border-accent bg-accent" : "border-white/30 bg-[#0c0e13]"} ${
     current ? "shadow-[0_0_0_4px_rgba(255,42,42,0.16)]" : ""
   }`;
 }
@@ -323,22 +323,16 @@ export default function HowItWorks() {
 
   return (
     <Reveal id="how-it-works" className="relative bg-[#07080a] text-cream">
-      <div className="mx-auto flex max-w-[1600px] flex-col px-5 pb-14 pt-14 sm:px-6 lg:min-h-[min(100svh,980px)] lg:px-[5vw] lg:pb-14 lg:pt-[116px] xl:px-[64px]">
+      <div className="section-x section-y mx-auto flex max-w-[1600px] flex-col">
+        <div className="mb-10 max-w-[860px] lg:mb-14">
+          <p className="eyebrow pfade">How it works</p>
+          <h2 className="h-display h-section pfade mt-5 text-cream lg:mt-6" style={{ ["--d" as string]: "0.1s" } as CSSProperties}>
+            One intelligence layer. Every stage of the deal.
+          </h2>
+        </div>
         <div className="grid flex-1 gap-6 lg:grid-cols-[25fr_75fr] lg:gap-x-[4vw]">
-          {/* ------------------------------------------------ left: intro + stage navigation */}
+          {/* ------------------------------------------------ left: stage navigation */}
           <div className="min-w-0">
-            <div className="pfade flex items-center gap-[18px]">
-              <span className="h-[3px] w-[28px] bg-[#ff2a2a]" />
-              <span className="text-[10.5px] font-medium uppercase tracking-[0.3em]">03 / How NORYX works</span>
-            </div>
-
-            <h2
-              className="pfade mt-5 font-display uppercase text-cream [text-wrap:balance] lg:mt-8"
-              style={{ ["--d" as string]: "0.1s", letterSpacing: "-0.03em", lineHeight: 0.98 } as CSSProperties}
-            >
-              <span className="block text-[clamp(1.75rem,8.4vw,3rem)] lg:text-[clamp(2rem,2.9vw,3.1rem)]">One intelligence layer.</span>
-              <span className="block text-[clamp(1.75rem,8.4vw,3rem)] lg:text-[clamp(2rem,2.9vw,3.1rem)]">Every stage of the deal.</span>
-            </h2>
 
             {/* stage rail (mobile) / vertical list (desktop) */}
             <div
@@ -347,7 +341,7 @@ export default function HowItWorks() {
               aria-label="Deal stages"
               aria-orientation="vertical"
               onKeyDown={onKey}
-              className="pfade hiw-rail -mx-5 mt-6 flex overflow-x-auto px-5 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-12 lg:flex-col lg:overflow-visible lg:px-0"
+              className="pfade hiw-rail -mx-5 flex overflow-x-auto px-5 sm:-mx-8 sm:px-8 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0"
               style={{ ["--d" as string]: "0.2s" } as CSSProperties}
             >
               {STAGES.map((s, k) => (
@@ -364,14 +358,14 @@ export default function HowItWorks() {
                   tabIndex={i === k ? 0 : -1}
                   onClick={() => go(k)}
                   className={`hiw-tab group relative flex shrink-0 items-baseline gap-2 whitespace-nowrap px-3 py-3 text-left transition-colors duration-300 first:pl-0 lg:gap-4 lg:border-t lg:border-white/10 lg:px-0 lg:py-[14px] ${
-                    i === k ? "is-active text-[#ff3b3b]" : "text-cream/45 hover:text-cream/80"
+                    i === k ? "is-active text-accent" : "text-[#a1a1aa] hover:text-cream"
                   }`}
                 >
-                  <span className="font-mono text-[10px] tracking-[0.14em] lg:w-6 lg:text-[11px]">{s.n}</span>
-                  <span className="font-cond text-[15px] font-semibold uppercase leading-none tracking-[0.12em] lg:font-display lg:text-[26px] lg:font-normal lg:tracking-[0.01em]">
+                  <span className="text-[12px] tabular-nums tracking-[0.04em] lg:w-7 lg:text-[13px]">{s.n}</span>
+                  <span className="text-[16px] font-bold leading-none tracking-[-0.01em] lg:text-[26px] lg:tracking-[-0.035em]">
                     {s.label}
                   </span>
-                  <span className="hiw-tab-line absolute bottom-0 left-3 right-3 h-[2px] bg-[#ff2a2a] group-first:left-0 lg:hidden" aria-hidden />
+                  <span className="hiw-tab-line absolute bottom-0 left-3 right-3 h-[2px] bg-accent group-first:left-0 lg:hidden" aria-hidden />
                 </button>
               ))}
             </div>
@@ -383,8 +377,8 @@ export default function HowItWorks() {
               {/* header */}
               <div className="flex items-start justify-between gap-4 px-4 pt-4 sm:px-6 sm:pt-5 lg:px-8 lg:pt-7">
                 <div className="min-w-0">
-                  <div className="font-cond text-[24px] font-semibold uppercase leading-none tracking-[0.06em] text-cream lg:text-[34px]">Acme Corp</div>
-                  <div className="mt-2 font-mono text-[9.5px] uppercase leading-[1.6] tracking-[0.16em] text-cream/45 lg:text-[10.5px]">
+                  <div className="text-[26px] font-bold leading-none tracking-[-0.045em] text-cream lg:text-[34px]">Acme Corp</div>
+                  <div className="mt-2 text-[13px] leading-[1.5] text-[#a1a1aa]">
                     Enterprise software
                     <span className="hidden sm:inline"> · 1,240 employees</span>
                     <span className="hidden lg:inline"> · San Francisco, CA</span>
@@ -393,14 +387,14 @@ export default function HowItWorks() {
                 <div className="shrink-0 text-right">
                   <div className="flex items-baseline justify-end gap-1.5">
                     <Odometer i={i} />
-                    <span className="font-mono text-[10px] tracking-[0.1em] text-cream/40">/05</span>
+                    <span className="text-[12px] tracking-[0.04em] text-[#71717a]">/05</span>
                   </div>
-                  <div className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.2em] text-[#ff3b3b] lg:text-[10.5px]">{STAGES[i].label}</div>
+                  <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-accent">{STAGES[i].label}</div>
                 </div>
               </div>
 
               {/* context ledger — what this one account has accumulated so far (desktop) */}
-              <ul className="hidden flex-wrap items-center gap-x-3 gap-y-1 px-8 pt-5 font-mono text-[10px] uppercase tracking-[0.18em] lg:flex" aria-label="Context so far">
+              <ul className="hidden flex-wrap items-center gap-x-3 gap-y-1 px-8 pt-5 text-[13px] lg:flex" aria-label="Context so far">
                 {LEDGER.map((l, k) => (
                   <li key={l} className={`hiw-ledger flex items-center gap-3 ${k <= i ? "is-on" : ""}`}>
                     {k > 0 && <span className="text-cream/20">/</span>}
@@ -413,7 +407,7 @@ export default function HowItWorks() {
               <div className="px-4 pt-5 sm:px-6 lg:hidden" aria-hidden>
                 <div className="relative mx-[4px] h-[7px]" style={{ ["--p" as string]: p } as CSSProperties}>
                   <span className="absolute inset-x-0 top-1/2 h-px bg-white/15" />
-                  <span className="hiw-fill-x absolute inset-x-0 top-1/2 h-px bg-[#ff2a2a]" />
+                  <span className="hiw-fill-x absolute inset-x-0 top-1/2 h-px bg-accent" />
                   {STAGES.map((s, k) => (
                     <span key={s.n} className={node(k, i, k === STAGES.length - 1 ? "square" : "round")} style={{ left: `${(k / 4) * 100}%`, top: "50%" }} />
                   ))}
@@ -425,7 +419,7 @@ export default function HowItWorks() {
                 {/* intelligence thread — vertical on desktop */}
                 <div className="relative hidden lg:block" style={{ ["--p" as string]: p } as CSSProperties} aria-hidden>
                   <span className="absolute bottom-[4px] left-1/2 top-[4px] w-px -translate-x-1/2 bg-white/15" />
-                  <span className="hiw-fill-y absolute bottom-[4px] left-1/2 top-[4px] w-px -translate-x-1/2 bg-[#ff2a2a]" />
+                  <span className="hiw-fill-y absolute bottom-[4px] left-1/2 top-[4px] w-px -translate-x-1/2 bg-accent" />
                   {STAGES.map((s, k) => (
                     <span
                       key={s.n}
@@ -435,7 +429,7 @@ export default function HowItWorks() {
                   ))}
                 </div>
 
-                <div className="grid min-h-[272px] sm:min-h-[260px] lg:min-h-[340px]">
+                <div className="grid min-h-[272px] sm:min-h-[260px] lg:min-h-[330px]">
                   {PANELS.map((Panel, k) => (
                     <section
                       key={STAGES[k].n}
@@ -457,7 +451,7 @@ export default function HowItWorks() {
                 <div className="hidden flex-1 items-center gap-2 lg:flex" aria-hidden>
                   {STAGES.map((s, k) => (
                     <span key={s.n} className="relative h-[2px] flex-1 bg-white/10">
-                      <span className="hiw-seg absolute inset-0 bg-[#ff2a2a]" style={{ transform: `scaleX(${k <= i ? 1 : 0})` }} />
+                      <span className="hiw-seg absolute inset-0 bg-accent" style={{ transform: `scaleX(${k <= i ? 1 : 0})` }} />
                     </span>
                   ))}
                 </div>
@@ -476,7 +470,7 @@ export default function HowItWorks() {
                   <button
                     type="button"
                     onClick={() => go(i + 1)}
-                    className="group flex h-[44px] flex-1 items-center justify-between gap-6 bg-[#ff2a2a] px-5 font-cond text-[16px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-white hover:text-[#07080a] lg:w-[240px] lg:flex-none"
+                    className="group flex h-[44px] flex-1 items-center justify-between gap-6 bg-accent px-5 text-[16px] font-bold tracking-[-0.01em] text-[#14080a] transition-colors hover:bg-white hover:text-[#07080a] lg:w-[240px] lg:flex-none"
                   >
                     <span className="whitespace-nowrap">
                       Next<span className="hidden lg:inline"> · {STAGES[i + 1].label}</span>
@@ -486,7 +480,7 @@ export default function HowItWorks() {
                 ) : (
                   <a
                     href="#demo"
-                    className="group flex h-[44px] flex-1 items-center justify-between gap-6 bg-[#ff2a2a] px-5 font-cond text-[16px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-white hover:text-[#07080a] lg:w-[240px] lg:flex-none"
+                    className="group flex h-[44px] flex-1 items-center justify-between gap-6 bg-accent px-5 text-[16px] font-bold tracking-[-0.01em] text-[#14080a] transition-colors hover:bg-white hover:text-[#07080a] lg:w-[240px] lg:flex-none"
                   >
                     Book a demo
                     <Arrow className="h-[8px] w-[18px] transition-transform duration-300 group-hover:translate-x-1" />
@@ -499,14 +493,14 @@ export default function HowItWorks() {
 
         {/* ------------------------------------------------ closing statement */}
         <div className="pfade mt-8 flex flex-col gap-5 border-t border-white/10 pt-6 lg:mt-10 lg:flex-row lg:items-end lg:justify-between" style={{ ["--d" as string]: "0.4s" } as CSSProperties}>
-          <p className="font-mono text-[10.5px] font-medium uppercase leading-[1.9] tracking-[0.2em] sm:text-[11px]">
-            <span className="block text-[#ff3b3b]">Research becomes context.</span>
-            <span className="block text-[#ff3b3b]">Context becomes conversation.</span>
-            <span className="block text-cream">Conversation becomes action.</span>
+          <p className="text-[16px] leading-[1.7] text-[#a1a1aa] lg:text-[18px]">
+            <span className="block">Research becomes context.</span>
+            <span className="block">Context becomes conversation.</span>
+            <span className="block font-bold text-cream">Conversation becomes action.</span>
           </p>
-          <a href="#demo" className="group inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-cream/65 transition-colors hover:text-white">
+          <a href="#demo" className="group inline-flex items-center gap-3 text-[14px] text-[#c4c4cc] transition-colors hover:text-white">
             One continuous revenue workflow
-            <Arrow className="h-[8px] w-[16px] text-[#ff3b3b] transition-transform group-hover:translate-x-1" />
+            <Arrow className="h-[8px] w-[16px] transition-transform group-hover:translate-x-1" />
           </a>
         </div>
       </div>

@@ -18,40 +18,60 @@ import {
 
 /* Design space of the desktop composition (px). */
 const W = 1536;
-const H = 1024;
+const TOP = 340; /* the headline now lives in normal page flow above the stage, so the composition starts here */
+const H = 1024 - TOP;
 
 const INK = "#0b0b22";
-const RED = "#ee3b3b";
+const MARK = "#0b0b22"; /* broken-link markers and travelling signals: ink, not colour */
 
 /* ---------- small building blocks ---------- */
 
-function Eyebrow() {
+function Label({ lines, style }: { lines: string[]; style?: CSSProperties }) {
   return (
-    <div className="flex items-center gap-[21px]">
-      <span className="h-[3px] w-[28px] bg-[#ee3b3b]" />
-      <span className="text-[10.5px] font-medium uppercase tracking-[0.3em] text-[#0b0b22]">
-        02 / The problem
-      </span>
-    </div>
-  );
-}
-
-function Dot({ className = "" }: { className?: string }) {
-  return <span className={`inline-block rounded-full bg-[#ee3b3b] ${className}`} />;
-}
-
-function Label({ n, lines, style }: { n: string; lines: string[]; style?: CSSProperties }) {
-  return (
-    <div className="absolute flex h-[52px] flex-col justify-center pl-[11px]" style={style}>
-      <span className="grow-line absolute left-0 top-0 h-full w-px bg-[#0b0b22]" />
-      <span className="text-[13.5px] font-bold leading-none tracking-[0.08em] text-[#0b0b22]">{n}</span>
-      <span className="mt-[8px] text-[8.5px] font-medium uppercase leading-[1.55] tracking-[0.22em] text-[#33344a]">
+    <div className="absolute flex h-[40px] flex-col justify-center pl-[12px]" style={style}>
+      <span className="grow-line absolute left-0 top-0 h-full w-px bg-[#0b0b22]/60" />
+      <span className="text-[11px] uppercase leading-[1.5] tracking-[0.12em] text-[#52525b]">
         {lines.map((l) => (
           <span key={l} className="block">
             {l}
           </span>
         ))}
       </span>
+    </div>
+  );
+}
+
+/* ---------- shared header (headline + intro), used on every screen size ---------- */
+
+function Header() {
+  return (
+    <div className="section-x section-y !pb-8 lg:!pb-10">
+      <div className="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-[6vw]">
+        <div>
+          <p className="eyebrow eyebrow-light pfade">The problem</p>
+          <h2 className="h-display h-section mt-5 text-[#0b0b22] lg:mt-6">
+            <span className="mask-line">
+              <span>The information exists.</span>
+            </span>
+            <span className="mask-line">
+              <span style={{ ["--d" as string]: "0.15s" }}>
+                The intelligence is{" "}
+                <span className="glitch" data-text="fragmented.">
+                  fragmented.
+                </span>
+              </span>
+            </span>
+          </h2>
+        </div>
+        <div className="pfade" style={{ ["--d" as string]: "0.25s" } as CSSProperties}>
+          <p className="text-[18px] leading-[1.5] text-[#0b0b22] lg:text-[20px]">
+            Your sales team does not need another isolated tool. They need the right information at the right moment.
+          </p>
+          <p className="body-copy body-copy-light mt-4">
+            Sellers move between Sales Navigator, Apollo, CRM, email, conversation intelligence, spreadsheets, search, and AI copilots.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -88,25 +108,25 @@ const REDRING: [number, number][] = [[446, 521], [753, 462], [1077, 436], [474, 
 
 function Connectors() {
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} className="pointer-events-none absolute inset-0" aria-hidden>
+    <svg viewBox={`0 0 ${W} ${H + TOP}`} width={W} height={H + TOP} className="pointer-events-none absolute inset-0" aria-hidden>
       <g fill="none" stroke="#8b8c97" strokeWidth="1" strokeDasharray="1.6 3.2" strokeLinecap="round" strokeLinejoin="round">
         {LINES.map((d) => (
           <path key={d} d={d} />
         ))}
-        <path d="M1332 940 V1000" stroke={RED} strokeDasharray="none" strokeWidth="1.2" />
-        <path d="M1327 992 L1332 1000 L1337 992" stroke={RED} strokeDasharray="none" strokeWidth="1.2" />
+        
       </g>
       {RING.map(([x, y]) => (
         <circle key={`${x}${y}`} cx={x} cy={y} r="3.2" fill="#f4f2ec" stroke="#6f707c" strokeWidth="1" />
       ))}
       {REDRING.map(([x, y]) => (
-        <circle key={`r${x}${y}`} cx={x} cy={y} r="3.4" fill="#f4f2ec" stroke={RED} strokeWidth="1.3" />
+        <circle key={`r${x}${y}`} cx={x} cy={y} r="3.4" fill="#f4f2ec" stroke="#6f707c" strokeWidth="1.3" />
       ))}
       {CROSS.map(([x, y], k) => (
         <path
           key={`x${x}${y}`}
           d={`M${x - 3.2} ${y - 3.2} l6.4 6.4 M${x + 3.2} ${y - 3.2} l-6.4 6.4`}
-          stroke={RED}
+          stroke={MARK}
+          strokeOpacity=".75"
           strokeWidth="1.8"
           strokeLinecap="round"
           className="x-blink"
@@ -116,7 +136,7 @@ function Connectors() {
       {/* signals try to travel, then die at the break */}
       <g className="pulses">
         {LINES.map((d, k) => (
-          <circle key={`s${k}`} r="2.4" fill={RED}>
+          <circle key={`s${k}`} r="2.4" fill={MARK} opacity="0">
             <animateMotion dur={`${3 + (k % 4) * 0.7}s`} begin={`${1.6 + k * 0.45}s`} repeatCount="indefinite" path={d} />
             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.85;1" dur={`${3 + (k % 4) * 0.7}s`} begin={`${1.6 + k * 0.45}s`} repeatCount="indefinite" />
           </circle>
@@ -233,6 +253,7 @@ function Stage() {
         className="absolute left-0 top-0 origin-top-left"
         style={{ width: W, height: H, transform: `scale(${scale ?? 1})`, opacity: scale === null ? 0 : 1 }}
       >
+        <div className="absolute left-0 w-full" style={{ top: -TOP, height: H + TOP }}>
         {/* photography */}
         <Photo x={0} y={475} w={266} h={108} d={0.2} depth={-6} clip="[clip-path:polygon(0_22%,70%_0,100%_0,100%_100%,0_100%)]">
           <Facade id="fa" className="h-full w-full" />
@@ -249,62 +270,27 @@ function Stage() {
 
         <Connectors />
 
-        {/* header */}
-        <div className="absolute" style={{ left: 70, top: 31 }}>
-          <Eyebrow />
-        </div>
-        <h2 className="absolute font-display uppercase text-[#0b0b22]" style={{ left: 69, top: 64, letterSpacing: "-0.035em" }}>
-          <span className="mask-line text-[56px] leading-[1.2]">
-            <span>The information exists.</span>
-          </span>
-          <span className="mask-line text-[110px] leading-[0.985]">
-            <span style={{ ["--d" as string]: "0.15s" }}>The intelligence</span>
-          </span>
-          <span className="mask-line text-[110px] leading-[0.985]">
-            <span style={{ ["--d" as string]: "0.3s" }}>
-              <span className="glitch" data-text="is fragmented.">
-                is fragmented.
-              </span>
-              <Dot className="pop-dot ml-[8px] h-[27px] w-[27px]" />
-            </span>
-          </span>
-        </h2>
-
-        <div className="pfade absolute font-serif font-light text-[#0b0b22]" style={{ left: 877, top: 132, ["--d" as string]: "0.25s" }}>
-          <p className="text-[24.4px] leading-[1.2]">
-            Your sales team does not need another isolated tool.
-            <br />
-            They need the right information at the right moment.
-          </p>
-          <p className="mt-[34px] text-[19px] leading-[1.3]">
-            Sellers move between Sales Navigator, Apollo, CRM, email,
-            <br />
-            conversation intelligence, spreadsheets, search, and AI copilots.
-          </p>
-        </div>
-
         {/* company note */}
         <div className="pfade absolute" style={{ left: 1426, top: 382, ["--d" as string]: "0.3s" }}>
-          <div className="font-cond text-[17px] font-semibold uppercase leading-none tracking-[0.04em]">Acme Corp</div>
-          <div className="mt-[10px] text-[10px] leading-[1.55] text-[#85869a]">
+          <div className="text-[15px] font-bold leading-none tracking-[-0.01em]">Acme Corp</div>
+          <div className="mt-[10px] text-[11px] leading-[1.55] text-[#71717a]">
             Software
             <br />
             1,200+ employees
             <br />
             San Francisco, CA
           </div>
-          <span className="mt-[11px] block h-[2px] w-[14px] bg-[#ee3b3b]" />
         </div>
 
         {/* labels */}
-        <Label n="01" lines={["ACCOUNT", "DATA"]} style={{ left: 59, top: 426 }} />
-        <Label n="02" lines={["PEOPLE", "DATA"]} style={{ left: 759, top: 376 }} />
-        <Label n="03" lines={["CONVERSATION", "DATA"]} style={{ left: 105, top: 596 }} />
-        <Label n="04" lines={["INTENT", "SIGNAL"]} style={{ left: 1087, top: 349 }} />
-        <Label n="05" lines={["DEAL", "CONTEXT"]} style={{ left: 95, top: 851 }} />
-        <Label n="06" lines={["TIMING", "AND NEXT", "STEPS"]} style={{ left: 956, top: 766, height: 62 }} />
-        <Label n="07" lines={["COMPANY", "CONTEXT"]} style={{ left: 1426, top: 549 }} />
-        <Label n="08" lines={["ISOLATED", "OUTPUTS"]} style={{ left: 1423, top: 722 }} />
+        <Label lines={["ACCOUNT", "DATA"]} style={{ left: 59, top: 426 }} />
+        <Label lines={["PEOPLE", "DATA"]} style={{ left: 759, top: 376 }} />
+        <Label lines={["CONVERSATION", "DATA"]} style={{ left: 105, top: 596 }} />
+        <Label lines={["INTENT", "SIGNAL"]} style={{ left: 1087, top: 349 }} />
+        <Label lines={["DEAL", "CONTEXT"]} style={{ left: 95, top: 851 }} />
+        <Label lines={["TIMING", "AND NEXT", "STEPS"]} style={{ left: 956, top: 766, height: 62 }} />
+        <Label lines={["COMPANY", "CONTEXT"]} style={{ left: 1426, top: 549 }} />
+        <Label lines={["ISOLATED", "OUTPUTS"]} style={{ left: 1423, top: 722 }} />
 
         {/* cards */}
         <Item i={0} depth={6} x={190} y={393} w={229} h={166} d={0.1}><CrmCard /></Item>
@@ -319,19 +305,6 @@ function Stage() {
         <Item i={8} depth={3} x={614} y={558} w={346} h={137} d={0.5}><GapBox /></Item>
         <Item kind="wipe" i={9} depth={4} x={469} y={880} w={713} h={87} d={0.7}><Banner /></Item>
 
-        {/* footer notes */}
-        <div className="pfade absolute flex items-start gap-[21px]" style={{ left: 65, top: 970, ["--d" as string]: "0.5s" }}>
-          <span className="mt-[3px] h-[3px] w-[28px] bg-[#ee3b3b]" />
-          <span className="ml-[0px] text-[8.5px] font-medium uppercase leading-[1.8] tracking-[0.2em] text-[#0b0b22]">
-            Data exists.
-            <br />
-            Context doesn&apos;t flow.
-          </span>
-        </div>
-        <div className="pfade absolute text-[8.5px] font-medium uppercase leading-[1.8] tracking-[0.15em]" style={{ left: 1354, top: 957, ["--d" as string]: "0.5s" }}>
-          <span className="text-[#33344a]">Next</span>
-          <br />
-          <span className="font-semibold text-[#0b0b22]">The intelligence layer</span>
         </div>
       </div>
     </div>
@@ -340,75 +313,36 @@ function Stage() {
 
 /* ---------- tablet / phone flow layout ---------- */
 
-const FLOW: { n: string; label: string; node: ReactNode }[] = [
-  { n: "01", label: "Account data", node: <CrmCard /> },
-  { n: "02", label: "People data", node: <SalesNavCard /> },
-  { n: "03", label: "Conversation data", node: <EmailCard /> },
-  { n: "04", label: "Intent signal", node: <ApolloCard /> },
-  { n: "05", label: "Deal context", node: <CallCard /> },
-  { n: "06", label: "Timing and next steps", node: <CalendarCard /> },
-  { n: "07", label: "Company context", node: <ResearchCard /> },
-  { n: "08", label: "Isolated outputs", node: <CopilotCard /> },
+const FLOW: { label: string; node: ReactNode }[] = [
+  { label: "Account data", node: <CrmCard /> },
+  { label: "People data", node: <SalesNavCard /> },
+  { label: "Conversation data", node: <EmailCard /> },
+  { label: "Intent signal", node: <ApolloCard /> },
+  { label: "Deal context", node: <CallCard /> },
+  { label: "Timing and next steps", node: <CalendarCard /> },
+  { label: "Company context", node: <ResearchCard /> },
+  { label: "Isolated outputs", node: <CopilotCard /> },
 ];
 
 function Flow() {
   return (
-    <div className="px-5 pb-12 pt-10 sm:px-8 md:pt-14">
-      <Eyebrow />
-
-      <h2 className="mt-6 font-display uppercase text-[#0b0b22]" style={{ letterSpacing: "-0.035em" }}>
-        <span className="pfade block text-[clamp(1.6rem,7.2vw,3.6rem)] leading-[1.15]">The information exists.</span>
-        <span className="pfade block whitespace-nowrap text-[clamp(2.5rem,14.2vw,7.4rem)] leading-[0.95]" style={{ ["--d" as string]: "0.1s" }}>
-          The intelligence
-        </span>
-        <span className="pfade block whitespace-nowrap text-[clamp(2.5rem,14.2vw,7.4rem)] leading-[0.95]" style={{ ["--d" as string]: "0.2s" }}>
-          is fragmented.
-          <Dot className="ml-[0.08em] h-[0.24em] w-[0.24em]" />
-        </span>
-      </h2>
-
-      <div className="pfade mt-8 max-w-[640px] font-serif font-light text-[#0b0b22]" style={{ ["--d" as string]: "0.25s" }}>
-        <p className="text-[clamp(1.2rem,4.6vw,1.6rem)] leading-[1.25]">
-          Your sales team does not need another isolated tool. They need the right information at the right moment.
-        </p>
-        <p className="mt-5 text-[clamp(1rem,3.9vw,1.2rem)] leading-[1.4]">
-          Sellers move between Sales Navigator, Apollo, CRM, email, conversation intelligence, spreadsheets, search, and AI copilots.
-        </p>
-      </div>
-
-      <div className="mt-10 grid gap-x-5 gap-y-7 sm:grid-cols-2">
+    <div className="section-x pb-11">
+      <div className="mx-auto grid max-w-[1000px] gap-x-5 gap-y-8 sm:grid-cols-2">
         {FLOW.map((f, i) => (
-          <div key={f.n} className="pfade" style={{ ["--d" as string]: `${(i % 2) * 0.08}s` }}>
-            <div className="mb-3 flex items-center gap-3 border-l border-[#0b0b22] pl-3">
-              <span className="text-[13px] font-bold tracking-[0.08em]">{f.n}</span>
-              <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-[#33344a]">{f.label}</span>
-            </div>
+          <div key={f.label} className="pfade" style={{ ["--d" as string]: `${(i % 2) * 0.08}s` }}>
+            <div className="mb-3 border-l border-[#0b0b22]/50 pl-3 text-[12px] uppercase tracking-[0.12em] text-[#52525b]">{f.label}</div>
             <div className="min-h-[150px]">{f.node}</div>
           </div>
         ))}
       </div>
 
-      <div className="pfade mt-10 h-[170px] max-w-[560px] sm:mx-auto">
-        <GapBox />
-      </div>
-      <div className="pfade mt-8">
-        <Banner />
-      </div>
-
-      <div className="mt-8 flex items-start justify-between gap-6 text-[9.5px] font-medium uppercase leading-[1.75] tracking-[0.2em]">
-        <div className="flex items-start gap-4">
-          <span className="mt-[7px] h-[3px] w-[22px] shrink-0 bg-[#ee3b3b]" />
-          <span>
-            Data exists.
-            <br />
-            Context doesn&apos;t flow.
-          </span>
+      <div className="mx-auto mt-10 max-w-[1000px]">
+        <div className="pfade h-[170px] max-w-[560px] sm:mx-auto">
+          <GapBox />
         </div>
-        <span className="text-right">
-          <span className="text-[#33344a]">Next</span>
-          <br />
-          <span className="font-semibold">The intelligence layer</span>
-        </span>
+        <div className="pfade mt-8">
+          <Banner />
+        </div>
       </div>
     </div>
   );
@@ -418,7 +352,10 @@ export default function Problem() {
   return (
     <Reveal id="problem" className="relative overflow-hidden bg-[#f4f2ec] text-[#0b0b22]">
       <div className="problem-grain pointer-events-none absolute inset-0" />
-      <div className="relative hidden xl:block">
+      <div className="relative">
+        <Header />
+      </div>
+      <div className="relative hidden xl:block xl:pb-[72px]">
         <Stage />
       </div>
       <div className="relative xl:hidden">
