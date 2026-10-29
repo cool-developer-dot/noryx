@@ -2,129 +2,112 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import { Rv } from "./ui";
 
-const FAQS: { q: string; lead?: string; a: string; chips?: string[]; cta?: boolean }[] = [
+const GROUPS: { name: string; items: { q: string; a: string }[] }[] = [
   {
-    q: "What exactly does NORYX do?",
-    lead: "One connected layer for your revenue team.",
-    a: "NORYX brings together prospecting data, account research, conversations, CRM history, and calendar context — then turns it into a clear brief: who to engage, what matters, why now, what to say, and what to do next.",
+    name: "Getting started",
+    items: [
+      {
+        q: "What does NORYX do?",
+        a: "NORYX takes your target accounts and what you sell, researches each account from permitted sources, and tells you which accounts deserve attention now, who to contact, why, and what to say. Every recommendation shows its evidence and dates.",
+      },
+      {
+        q: "What do I need to start?",
+        a: "A short description of what you sell and five to ten target companies. Apollo is optional and only needed for people search and contact lookups. You don't need a CRM, inbox access or your own AI subscription.",
+      },
+    ],
   },
   {
-    q: "Does NORYX replace our existing sales tools?",
-    lead: "No. Your tools stay.",
-    a: "NORYX connects intelligence across the systems your revenue team already uses — carrying context from research and conversations into preparation, follow-up, and next actions.",
-    chips: ["CRM", "Sales Navigator", "Apollo", "Conversations", "Calendar", "AI"],
+    name: "Data and credits",
+    items: [
+      {
+        q: "Which tools does NORYX connect to?",
+        a: "Apollo, with your own account, is live today. CRM, email, calendar and call tools come next, in the order our pilot users ask for them. We only show a tool as connected after checking that it actually works.",
+      },
+      {
+        q: "Will NORYX spend my Apollo credits?",
+        a: "Only when you approve it. People search is free. A contact lookup asks for your approval first, showing the person, the fields and the expected credits. Page loads, imports and refreshes never spend credits.",
+      },
+      {
+        q: "Do I need my own AI subscription?",
+        a: "No. NORYX runs and manages the AI engine for you, starting with Anthropic's Claude. Usage is measured for each workspace, against a budget you can see.",
+      },
+    ],
   },
   {
-    q: "What information can NORYX bring together?",
-    lead: "Everything that already exists — in one place.",
-    a: "Account and deal data from your CRM, people and role insights, intent signals, email and call context, calendar touchpoints, and public company research. Every insight is traceable to its source.",
-  },
-  {
-    q: "Who is NORYX built for?",
-    lead: "Everyone who touches revenue.",
-    a: "Account executives, SDRs, sales leaders, and revenue operations — each seeing the context they need, at the moment they need it.",
-    chips: ["Account Executives", "SDRs", "Sales Leaders", "Revenue Operations"],
-  },
-  {
-    q: "Does NORYX make decisions for sellers?",
-    lead: "No. NORYX recommends. People decide.",
-    a: "Every suggested next step is explainable, editable, and rooted in sources your team can verify. The seller always stays in control of the conversation.",
-  },
-  {
-    q: "How do we see NORYX in action?",
-    lead: "Best seen on a real account.",
-    a: "Book a short demo. We’ll walk through a real account — from the first question to the next best action.",
-    cta: true,
+    name: "Trust",
+    items: [
+      {
+        q: "Does NORYX send emails for me?",
+        a: "No. NORYX writes an editable draft from cited evidence and your approved claims. You copy or export it and send it yourself.",
+      },
+      {
+        q: "Is my data shared with other customers?",
+        a: "No. Each workspace's accounts, research and recommendations stay in that workspace, and members only see what their role allows. We don't train models on your private data.",
+      },
+      {
+        q: "How is this different from a general AI assistant?",
+        a: "A general assistant answers the question you type. NORYX runs the account workflow for you: it checks evidence, dates events, qualifies signals against what you sell, asks before spending credits and keeps a history of every step.",
+      },
+    ],
   },
 ];
 
-function Icon({ open }: { open: boolean }) {
+function Plus({ open }: { open: boolean }) {
   return (
-    <span
-      className={`relative block h-[18px] w-[18px] shrink-0 transition-[transform,color] duration-500 ease-out ${open ? "rotate-45 text-accent" : "text-[#52525b] group-hover:text-[#0c0c14]"}`}
-      aria-hidden
-    >
-      <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
-      <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current" />
+    <span className={`relative block h-[16px] w-[16px] shrink-0 transition-transform duration-300 ${open ? "rotate-45 text-accent" : "text-fg-2"}`} aria-hidden>
+      <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 bg-current" />
+      <span className="absolute left-1/2 top-0 h-full w-[1.5px] -translate-x-1/2 bg-current" />
     </span>
   );
 }
 
 export default function Faq() {
-  // All questions are closed by default.
-  const [open, setOpen] = useState<number | null>(null);
+  /* every question starts closed */
+  const [open, setOpen] = useState<string | null>(null);
 
   return (
-    <Reveal id="faq" className="relative bg-[#f9f7f2] text-[#0c0c14]">
-      <div className="section-x section-y mx-auto max-w-[1600px]">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-[6vw]">
-          {/* left */}
-          <div>
-            <p className="eyebrow eyebrow-light pfade">FAQ</p>
-            <h2 className="h-display h-section pfade mt-5 text-[#0c0c14] lg:mt-6" style={{ ["--d" as string]: "0.1s" }}>
-              Questions, answered.
-            </h2>
-            <p className="body-copy body-copy-light pfade mt-6 max-w-[34ch] lg:mt-8" style={{ ["--d" as string]: "0.2s" }}>
-              Everything you need to know before seeing NORYX in action.
-            </p>
-          </div>
+    <Reveal id="faq" className="relative border-t border-white/[0.08]">
+      <div className="frame pad-x py-14 lg:py-20">
+        <Rv>
+          <h2 className="display text-[clamp(2.1rem,6.4vw,3.6rem)] text-fg">Questions, answered.</h2>
+        </Rv>
 
-          {/* right */}
-          <ul className="border-t border-[#0c0c14]/20" role="list">
-            {FAQS.map((f, i) => {
-              const isOpen = open === i;
-              return (
-                <li
-                  key={f.q}
-                  className={`pfade border-b transition-colors duration-500 ${isOpen ? "border-[#0c0c14]/60" : "border-[#0c0c14]/20"}`}
-                  style={{ ["--d" as string]: `${0.1 + i * 0.07}s` }}
-                >
-                  <h3>
-                    <button
-                      type="button"
-                      id={`faq-q-${i}`}
-                      aria-expanded={isOpen}
-                      aria-controls={`faq-a-${i}`}
-                      onClick={() => setOpen(isOpen ? null : i)}
-                      className="group flex w-full items-start justify-between gap-6 py-6 text-left lg:py-7"
-                    >
-                      <span className="text-[clamp(1.125rem,4.6vw,1.375rem)] font-bold leading-[1.3] tracking-[-0.025em] text-[#0c0c14]">{f.q}</span>
-                      <span className="pt-[4px]">
-                        <Icon open={isOpen} />
-                      </span>
-                    </button>
-                  </h3>
-
-                  <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} data-open={isOpen} className="faq-panel">
-                    <div>
-                      <div className="pb-8 pr-2 sm:pr-10">
-                        {f.lead && <p className="text-[clamp(1.125rem,4.6vw,1.375rem)] leading-[1.35] tracking-[-0.02em] text-[#0c0c14]">{f.lead}</p>}
-                        <p className="body-copy body-copy-light mt-3">{f.a}</p>
-                        {f.chips && (
-                          <ul className="mt-5 flex flex-wrap gap-2">
-                            {f.chips.map((c) => (
-                              <li key={c} className="border border-[#0c0c14]/20 px-3 py-1.5 text-[13px] text-[#3f3f46]">
-                                {c}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {f.cta && (
-                          <a href="#demo" className="btn-primary group mt-6">
-                            Book a demo
-                            <svg viewBox="0 0 22 10" className="h-[9px] w-[20px] transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
-                              <path d="M0 5h19M15 1l4 4-4 4" />
-                            </svg>
-                          </a>
-                        )}
+        <div className="mt-8 lg:mt-10">
+          {GROUPS.map((g, gi) => (
+            <Rv key={g.name} d={0.05 * gi} className="grid gap-2 pb-8 last:pb-0 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-10 lg:pb-10">
+              <p className="eyebrow pt-1 lg:pt-6">{g.name}</p>
+              <ul>
+                {g.items.map((it) => {
+                  const on = open === it.q;
+                  const id = it.q.replace(/\W+/g, "-").toLowerCase();
+                  return (
+                    <li key={it.q} className="border-b border-white/[0.1]">
+                      <h3>
+                        <button
+                          type="button"
+                          id={`q-${id}`}
+                          aria-expanded={on}
+                          aria-controls={`a-${id}`}
+                          onClick={() => setOpen(on ? null : it.q)}
+                          className="flex w-full items-center justify-between gap-6 py-5 text-left text-[16.5px] text-fg transition-colors hover:text-white lg:py-6 lg:text-[17.5px]"
+                        >
+                          {it.q}
+                          <Plus open={on} />
+                        </button>
+                      </h3>
+                      <div id={`a-${id}`} role="region" aria-labelledby={`q-${id}`} className="faq-body" data-open={on}>
+                        <div>
+                          <p className="max-w-[64ch] pb-6 text-[15.5px] leading-[1.65] text-muted">{it.a}</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Rv>
+          ))}
         </div>
       </div>
     </Reveal>

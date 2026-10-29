@@ -1,27 +1,25 @@
-import Cta from "@/components/Cta";
-import Experience from "@/components/Experience";
+import Band from "@/components/Band";
+import Closing from "@/components/Closing";
 import Faq from "@/components/Faq";
-import Footer from "@/components/Footer";
+import Features from "@/components/Features";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
-import Problem from "@/components/Problem";
-import Roles from "@/components/Roles";
-import Stack from "@/components/Stack";
+import Integrations from "@/components/Integrations";
+import Principles from "@/components/Principles";
+import Steps from "@/components/Steps";
 
 export default function Home() {
   return (
-    <main id="top" className="relative">
+    <main className="relative">
       <Header />
       <Hero />
-      <Problem />
-      <HowItWorks />
-      <Experience />
-      <Stack />
-      <Roles />
+      <Integrations />
+      <Features />
+      <Band />
+      <Steps />
+      <Principles />
       <Faq />
-      <Cta />
-      <Footer />
+      <Closing />
     </main>
   );
 }

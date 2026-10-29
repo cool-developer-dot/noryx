@@ -10,9 +10,9 @@ const geist = Geist({
   display: "swap",
 });
 
-const TITLE = "NORYX — The Connected Revenue System";
+const TITLE = "NORYX — One engine for your next best action";
 const DESCRIPTION =
-  "NORYX turns fragmented sales data, research, conversations, and workflows into one intelligent revenue system.";
+  "NORYX connects your sales tools with what you sell, checks the evidence, and tells you which account to work, who to contact, why now and what to say.";
 
 export const metadata: Metadata = {
   title: TITLE,
