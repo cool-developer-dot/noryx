@@ -15,9 +15,11 @@ const DESCRIPTION =
   "NORYX connects your sales tools with what you sell, checks the evidence, and tells you which account to work, who to contact, why now and what to say.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://heynoryx.com"),
   title: TITLE,
   description: DESCRIPTION,
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "website", siteName: "NORYX" },
+  openGraph: { title: TITLE, description: DESCRIPTION, type: "website", siteName: "NORYX", url: "/" },
+  alternates: { canonical: "/" },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
