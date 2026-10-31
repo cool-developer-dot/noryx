@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 /** Where "Join the pilot" goes. Point this at your booking page or form when you have one. */
 export const PILOT_URL = "#pilot";
 /** The NORYX web app. */
-export const APP_URL = "https://noryx-hq.vercel.app/login";
+export const APP_URL = "https://app.heynoryx.com/login";
 
 export function Arrow({ className = "" }: { className?: string }) {
   return (
