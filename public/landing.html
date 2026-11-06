@@ -68,10 +68,8 @@ p{margin:0;text-wrap:pretty}
 #tile::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(110% 110% at 28% 18%,#ff6a55 0%,#ff2a2a 46%,#c9131c 100%);transition:opacity .5s}
 #tile svg{position:relative;display:block;width:100%;height:100%}
 #tile path{stroke:var(--on-red);transition:stroke .5s}
-#tile circle{fill:#f7f5f0;transition:fill .5s}
-.fly #tile{animation:none;background-color:var(--tile);box-shadow:0 0 0 1px rgba(255,255,255,.14);transition:transform .8s cubic-bezier(.75,0,.22,1),background-color .55s ease .1s,box-shadow .5s}
-.fly #tile::before{opacity:0}
-.fly #tile path{stroke:var(--fg)}.fly #tile circle{fill:var(--red)}
+#tile circle{fill:#fff6f1}
+.fly #tile{animation:none;box-shadow:0 6px 16px -8px rgba(255,42,42,.7),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .8s cubic-bezier(.75,0,.22,1),box-shadow .5s}
 @keyframes tileIn{0%{transform:scale(1.7);opacity:0;filter:blur(20px)}60%{opacity:1;filter:blur(0)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
 
 /* header */
@@ -83,7 +81,7 @@ p{margin:0;text-wrap:pretty}
 .top.solid{background:rgba(6,7,8,.72);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-color:var(--line)}
 .top .wrap{display:flex;align-items:center;gap:20px;height:66px}
 .brand{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.04em}
-.mk{display:block;width:30px;height:30px;border-radius:9px;background:var(--tile);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.1);flex-shrink:0}
+.mk{display:block;width:30px;height:30px;border-radius:9px;background:radial-gradient(110% 110% at 28% 18%,#ff6a55 0%,#ff2a2a 46%,#c9131c 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),inset 0 1px 0 rgba(255,255,255,.35),0 6px 16px -8px rgba(255,42,42,.7);flex-shrink:0}
 .mk svg{display:block;width:100%;height:100%}
 .intro .top .mk{opacity:0}
 .nav{display:flex;gap:32px;margin-inline:auto;font-size:13.5px;color:var(--mute)}
@@ -555,13 +553,13 @@ h2 .s{font-size:1.1em}
 
 <div id="intro" aria-hidden="true">
   <div class="veil"></div>
-  <div id="tile"><svg viewBox="0 0 32 32"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65"/></svg></div>
+  <div id="tile"><svg viewBox="0 0 64 64"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4"/></svg></div>
 </div>
 
 <div id="page">
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#f4efe6" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65" fill="#ff2a2a"/></svg></span>NORYX</a>
+    <a class="brand" href="#top" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>NORYX</a>
     <nav class="nav" aria-label="Main"><a href="#product">Product</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#pilot">Pilot</a></nav>
     <div class="right">
       <span class="pill hide-s"><i class="ping"></i>apollo + csv live</span>
@@ -689,7 +687,7 @@ h2 .s{font-size:1.1em}
       <div class="panel rv" style="--d:.1s">
         <div class="ph"><span class="mono">approval queue</span><span class="mono dim">3 waiting</span></div>
         <div class="msg">
-          <span class="mk"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#f4efe6" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65" fill="#ff2a2a"/></svg></span>
+          <span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>
           <div>
             <div class="who">NORYX <span class="chip">brief</span><span class="mono dim">09:41</span></div>
             <div class="mc">
@@ -725,7 +723,7 @@ h2 .s{font-size:1.1em}
         <span class="mono lab">[ what we are building ]</span>
         <p class="say"><span>The</span> <span>best</span> <span>account</span> <span>research</span> <span>is</span> <span>the</span> <span>kind</span> <span>your</span> <span>reps</span> <span>never</span> <span>do</span> <span><em class="s">by hand.</em></span></p>
       </div>
-      <span class="big mk"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#f4efe6" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65" fill="#ff2a2a"/></svg></span>
+      <span class="big mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>
     </div>
   </div>
 </section>
@@ -751,7 +749,7 @@ h2 .s{font-size:1.1em}
           <circle class="gdot" r="2.6"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite"><mpath href="#h4"/></animateMotion></circle>
           <circle class="hring" cx="200" cy="105" r="44"/>
           <rect x="166" y="71" width="68" height="68" rx="19" fill="#ff2a2a"/>
-          <g transform="translate(166 71) scale(2.125)"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#17080a" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65" fill="#f7f5f0"/></g>
+          <g transform="translate(166 71) scale(1.0625)"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></g>
           <g><circle class="hn" cx="52" cy="50" r="19"/><text x="52" y="54">AP</text><text class="lb" x="52" y="88">apollo</text></g>
           <g><circle class="hn" cx="52" cy="160" r="19"/><text x="52" y="164">CSV</text><text class="lb" x="52" y="198">csv</text></g>
           <g><circle class="hn" cx="348" cy="50" r="19"/><text x="348" y="54">WEB</text><text class="lb" x="348" y="88">websites</text></g>
@@ -867,8 +865,8 @@ h2 .s{font-size:1.1em}
   <div class="wrap">
     <div class="end-grid">
       <div class="panel ec rv">
-        <span class="brand"><span class="mk"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#f4efe6" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.65" fill="#ff2a2a"/></svg></span>NORYX</span>
-        <svg class="art" viewBox="0 0 32 32" aria-hidden="true"><path d="M9.6 22.4V9.7l12.8 12.7V15.6" fill="none" stroke="#f4efe6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="22.4" cy="9.7" r="2.3" fill="#ff2a2a"/></svg>
+        <span class="brand"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>NORYX</span>
+        <svg class="art" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" fill="none" stroke="#f4efe6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5" fill="#ff2a2a"/></svg>
         <p class="tl">Account research that ends in one next best action.</p>
         <p class="mono dim">already in the pilot? <a href="https://app.heynoryx.com/login">sign in</a></p>
       </div>
