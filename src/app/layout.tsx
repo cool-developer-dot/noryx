@@ -10,9 +10,9 @@ const geist = Geist({
   display: "swap",
 });
 
-const TITLE = "NORYX — One engine for your next best action";
+const TITLE = "NORYX: Find leads, reach them and close";
 const DESCRIPTION =
-  "NORYX connects your sales tools with what you sell, checks the evidence, and tells you which account to work, who to contact, why now and what to say.";
+  "NORYX finds leads from your own Apollo or LinkedIn, keeps them in one pipeline, runs outreach you approve and researches each account before you reply.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://heynoryx.com"),
