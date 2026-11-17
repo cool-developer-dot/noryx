@@ -12,7 +12,7 @@ const geist = Geist({
 
 const TITLE = "NORYX: Find leads, reach them and close";
 const DESCRIPTION =
-  "NORYX finds leads and their work emails, keeps them in one pipeline, reaches them from your own accounts on six channels and answers every reply with you.";
+  "NORYX finds your leads for you, with their verified work emails and phone numbers, keeps them in one pipeline, reaches them from your own accounts on six channels and answers every reply with you.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://heynoryx.com"),
