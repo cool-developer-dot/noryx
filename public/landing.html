@@ -106,7 +106,7 @@ p{margin:0;text-wrap:pretty}
 /* hero */
 .hero{position:relative}
 .hero::before{content:"";position:absolute;inset:0 0 -8%;background-image:radial-gradient(rgba(244,239,230,.085) 1px,transparent 1.3px);background-size:26px 26px;-webkit-mask-image:radial-gradient(55% 65% at 74% 42%,#000 15%,transparent 72%);mask-image:radial-gradient(55% 65% at 74% 42%,#000 15%,transparent 72%);pointer-events:none}
-.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:48px;align-items:center;padding-block:78px 34px}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:48px;align-items:center;padding-block:58px 34px}
 .copy{position:relative;max-width:560px}
 .copy::before{content:"";position:absolute;inset:-30% -28% -30% -60%;background:radial-gradient(closest-side,rgba(6,7,8,.86),rgba(6,7,8,.55) 58%,rgba(6,7,8,0));z-index:-1;pointer-events:none}
 .badge{display:inline-flex;align-items:center;gap:9px;height:30px;padding:0 13px 0 11px;border-radius:999px;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));font:11.5px var(--mono);color:var(--mute);max-width:100%}
@@ -782,6 +782,69 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
 }
 @media (pointer:coarse){.blur #product{filter:blur(9px) brightness(.55)}}
 @media (prefers-reduced-motion:reduce){.js .ppl .pr{opacity:1}}
+/* hero: everything NORYX does, in four tiles */
+.svc{grid-column:1/-1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.svc a{position:relative;display:grid;align-content:start;gap:11px;height:100%;padding:16px 18px 18px 20px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(18,19,23,.78),rgba(10,11,13,.88));box-shadow:inset 0 1px 0 rgba(255,255,255,.05);color:inherit;transition:border-color .3s,transform .3s}
+.svc a::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:2px;border-radius:2px;background:var(--c)}
+.svc a:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.svc .sh{display:flex;align-items:center;gap:10px}
+.svc .si{display:grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:8px;color:color-mix(in srgb,var(--c) 70%,#fff);background:color-mix(in srgb,var(--c) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 30%,transparent)}
+.svc .si svg{width:15px;height:15px}
+.svc b{font-weight:500;font-size:15.5px;letter-spacing:-.02em}
+.svc .sn{margin-left:auto;font:11px var(--mono);color:var(--dim)}
+.svc p{font-size:13px;line-height:1.45;color:var(--mute)}
+@media (min-width:981px){.svc{margin-top:-14px}}
+@media (max-width:980px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.svc{grid-template-columns:minmax(0,1fr)}.svc a{padding:14px 16px 15px 18px}}
+/* close: the path from a reply to a deal, and what happens to each reply */
+.sublab{display:flex;align-items:center;gap:12px;margin:0 0 16px;font:500 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.sublab::after{content:"";flex:1;height:1px;background:var(--line)}
+.path{list-style:none;margin:0 0 72px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:pt}
+.pc{display:flex;flex-direction:column;padding:22px 18px 20px}
+.pc .pn{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--dim)}
+.pc .pn b{font-weight:400;color:var(--mute)}
+.pc h3{font-size:18px;letter-spacing:-.03em;line-height:1.18;margin-top:14px}
+.pc>p{color:var(--mute);font-size:13.5px;line-height:1.5;margin-top:10px}
+.pc .pv{margin-top:auto;padding-top:18px;display:flex;flex-wrap:wrap;gap:6px}
+.pc .pv.col{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.pc .pv .dc{white-space:normal;height:auto;min-height:19px;padding-block:4px;line-height:1.25}
+.pc .pq{width:100%;padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);font-size:12.5px;line-height:1.45;color:var(--fg-2)}
+.pc .pq span{display:block;margin-bottom:5px;font:10.5px var(--mono);color:var(--dim)}
+.pc .pv .jb{grid-template-columns:44px minmax(0,1fr);width:100%;padding:7px 0 0;margin:0}
+.pc .pv .jb p{font-size:12.5px}
+.pc .pv .arw{display:inline-flex;align-items:center;color:var(--dim)}
+.pc .pv .arw svg{width:11px;height:11px}
+.rl{padding:8px 30px}
+.rl-h,.rl-r{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.9fr) minmax(0,.7fr);gap:28px;align-items:start}
+.rl-h{padding:16px 0 14px;border-bottom:1px solid var(--line);font:500 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.rl-r{padding:20px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.5;color:var(--fg-2)}
+.rl-h+.rl-r{border-top:0}
+.rl-r .w{display:flex;flex-wrap:wrap;gap:6px}
+.rl-r small{display:block;margin-top:4px;font-size:13px;color:var(--mute)}
+.rl-r .by{font:12px var(--mono);color:var(--mute)}
+.rl-r .by.you{color:var(--fg)}
+.rl-n{padding:16px 0 14px;border-top:1px solid var(--line);font-size:13px;line-height:1.5;color:var(--mute)}
+@media (max-width:1180px){
+.path{grid-template-columns:repeat(2,minmax(0,1fr))}
+.path>:last-child{grid-column:1/-1}
+}
+@media (max-width:980px){
+.rl{padding:6px 24px}
+.rl-h,.rl-r{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:20px}
+.rl-h span:last-child{display:none}
+.rl-r .by{grid-column:2}
+}
+@media (max-width:760px){
+.path{grid-template-columns:none;margin-bottom:56px}
+.path>:last-child{grid-column:auto}
+.sublab{justify-content:center}
+.sublab::after{display:none}
+.rl{padding:4px 20px}
+.rl-h{display:none}
+.rl-r{grid-template-columns:minmax(0,1fr);gap:10px;padding:18px 0;font-size:14.5px}
+.rl-r:first-of-type{border-top:0}
+.rl-r .by{grid-column:auto}
+}
 </style>
 
 </head>
@@ -817,13 +880,15 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
   <symbol id="i-ar" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-lk" viewBox="0 0 12 12"><rect x="2" y="5.5" width="8" height="5.5" rx="1.2" fill="none" stroke="currentColor"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" fill="none" stroke="currentColor"/></symbol>
   <symbol id="i-se" viewBox="0 0 14 14"><circle cx="6.2" cy="6.2" r="4.2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="m9.4 9.4 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+  <symbol id="i-bd" viewBox="0 0 14 14"><rect x="1.6" y="2" width="3" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="5.5" y="2" width="3" height="6.4" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="9.4" y="2" width="3" height="8.4" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  <symbol id="i-pl" viewBox="0 0 14 14"><path d="M12.6 1.4 1.6 5.9l4.2 2 2 4.2z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.6 1.4 5.8 7.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
 </svg>
 <section class="hero">
   <div class="wrap">
     <div class="copy">
       <a class="badge hx" style="--i:0" href="#product"><b class="nw">New</b><span>Every reply, on every channel, answered with you</span><svg class="ar" width="12" height="12" aria-hidden="true"><use href="#i-ar"/></svg></a>
       <h1><span class="hx" style="--i:1">Find</span> <span class="hx" style="--i:2">leads.</span><br><span class="hx" style="--i:3">Reach</span> <span class="hx" style="--i:4">them.</span><br><em class="s hx" style="--i:5">Close.</em></h1>
-      <p class="lede hx" style="--i:6">NORYX finds your leads for you, with their work emails and phone numbers, keeps them in one pipeline and writes to them from your own LinkedIn, email, WhatsApp, Instagram, Telegram or Messenger. Every reply lands in one inbox with the answer ready, and a brief on the account behind it.</p>
+      <p class="lede hx" style="--i:6">NORYX does the whole sales job in one product: it finds your leads, keeps them in one pipeline, writes to them from your own accounts and answers every reply until the deal is won.</p>
       <div class="ctas hx" style="--i:7"><a class="btn btn-red" href="https://app.heynoryx.com/login">Start free</a><a class="btn btn-ghost" href="#how"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="#f4efe6"/></svg>See how it works</a></div>
       <ul class="fine hx" style="--i:8"><li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M4.3 7.2 6.1 9l3.6-3.8" fill="none" stroke="#ff5c4d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>No credit card</li><li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M4.3 7.2 6.1 9l3.6-3.8" fill="none" stroke="#ff5c4d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Leads found for you, sent from your accounts</li><li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.25" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M4.3 7.2 6.1 9l3.6-3.8" fill="none" stroke="#ff5c4d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Nothing is sent that you did not approve</li></ul>
     </div>
@@ -852,6 +917,13 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
         <div class="c-next"><span class="dc k-rep">Replied</span><p><b>Maya Okafor</b> answered on LinkedIn. Answer ready in Replies.</p><span class="mono c-go hide-s">open reply<svg width="12" height="12" aria-hidden="true"><use href="#i-ar"/></svg></span></div>
       </div>
     </div>
+
+    <ul class="svc" aria-label="Everything NORYX does">
+      <li class="hx k-new" style="--i:13"><a href="#find"><span class="sh"><span class="si"><svg aria-hidden="true"><use href="#i-se"/></svg></span><b>Find</b><span class="sn">01</span></span><p>Leads from a sentence, with verified work emails and phone numbers.</p></a></li>
+      <li class="hx k-con" style="--i:14"><a href="#organise"><span class="sh"><span class="si"><svg aria-hidden="true"><use href="#i-bd"/></svg></span><b>Organise</b><span class="sn">02</span></span><p>One pipeline in colour, from New to Won, with owners, labels and a timeline.</p></a></li>
+      <li class="hx k-rep" style="--i:15"><a href="#reach"><span class="sh"><span class="si"><svg aria-hidden="true"><use href="#i-pl"/></svg></span><b>Reach</b><span class="sn">03</span></span><p>Email, LinkedIn, WhatsApp, Instagram, Telegram or Messenger, from your own accounts.</p></a></li>
+      <li class="hx k-won" style="--i:16"><a href="#close"><span class="sh"><span class="si"><svg aria-hidden="true"><use href="#i-ck"/></svg></span><b>Close</b><span class="sn">04</span></span><p>Every reply read and answered, a brief on the account and the deal tracked to Won.</p></a></li>
+    </ul>
   </div>
 </section>
 
@@ -907,8 +979,8 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
           <div class="jb"><span class="k mono">who</span><div><p>Maya Okafor, CFO.</p><span class="src">noryx data · search</span></div></div>
           <div class="jb"><span class="k mono">reply</span><div><p>Wants a call. Answer ready.</p><span class="src inf">waiting on your yes</span></div></div>
         </div>
-        <div class="jt"><span class="jn"><b>04</b> · Close</span><h3>Every reply, answered</h3><p>Every reply lands in one inbox. NORYX says what it means, writes the answer from what you sell and researches the account, each line linked to its source. You send it with one click.</p></div>
-        <a class="more" href="#close">See a brief<svg width="12" height="12" aria-hidden="true"><use href="#i-ar"/></svg></a>
+        <div class="jt"><span class="jn"><b>04</b> · Close</span><h3>From reply to closed deal</h3><p>Every reply lands in one inbox. NORYX says what it means, writes the answer from what you sell and briefs you on the account before the call. You send it with one click, then take the deal to Won on the same board.</p></div>
+        <a class="more" href="#close">See how it closes<svg width="12" height="12" aria-hidden="true"><use href="#i-ar"/></svg></a>
       </li>
     </ol>
   </div>
@@ -928,7 +1000,7 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
           <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Keep them in one pipeline.</span></li>
           <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Write to them by email and on LinkedIn, WhatsApp, Instagram, Telegram and Messenger, from your own accounts.</span></li>
           <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Stop when they answer, and bring every reply into one inbox with the answer written.</span></li>
-          <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Research the account before you reply.</span></li>
+          <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Help you close: say what each reply means, research the account before the call and take the deal to Won or Lost.</span></li>
           <li><svg aria-hidden="true"><use href="#i-ok"/></svg><span>Show a source for every claim.</span></li>
         </ul>
       </div>
@@ -1109,9 +1181,79 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
 <section class="sec" id="close">
   <div class="wrap">
     <div class="head rv">
-      <div><span class="eyebrow"><i></i>04 · Close</span><h2>Every reply, answered with <em class="s">you.</em></h2></div>
-      <p>Every reply lands in one inbox, whatever the channel. NORYX says what it means, writes the answer from what you sell, and researches the account, every signal checked against its source and date.</p>
+      <div><span class="eyebrow"><i></i>04 · Close</span><h2>From first reply to a closed <em class="s">deal.</em></h2></div>
+      <p>A reply is not a sale yet. NORYX stays with you through the part where deals are won or lost: it reads every reply, writes the answer, briefs you on the account before the call and keeps the deal on your board until it is Won or Lost.</p>
     </div>
+
+    <p class="sublab rv">The path from a reply to a deal</p>
+    <ol class="path">
+      <li class="panel pc rv">
+        <div class="pn mono"><b>01</b><span>A lead answers</span></div>
+        <h3>NORYX reads it and says what it means</h3>
+        <p>On any channel, in one inbox. You see what the reply means and one line on what was said, not a thread to decode.</p>
+        <div class="pv" aria-hidden="true"><span class="dc xs k-won">Interested</span><span class="dc xs k-con">Wants a call</span><span class="dc xs k-new">Question</span><span class="dc xs k-rep">Objection</span><span class="dc xs k-off">Not now</span></div>
+      </li>
+      <li class="panel pc rv" style="--d:.07s">
+        <div class="pn mono"><b>02</b><span>They ask or push back</span></div>
+        <h3>It writes the answer from what you sell</h3>
+        <p>Questions and objections get an answer in your words, built from your seller profile. You read it, edit it or ask for another, then send it in the same chat.</p>
+        <div class="pv col" aria-hidden="true"><div class="pq"><span>answer · not sent</span>Fair question. Most finance teams start with one carrier’s invoices and add the rest later. Want me to show how?</div><span class="dc xs k-rep">A price or link it cannot back up is marked for you</span></div>
+      </li>
+      <li class="panel pc rv" style="--d:.14s">
+        <div class="pn mono"><b>03</b><span>They want a call</span></div>
+        <h3>The answer goes out while they are warm</h3>
+        <p>On email and LinkedIn NORYX can send it for you after a natural pause, in the channel’s own voice, with a line saying an AI wrote it. You can stop it before it goes. On the other channels it is one click from you.</p>
+        <div class="pv" aria-hidden="true"><span class="dc xs k-con">Wants a call</span><span class="dc xs off">sent like a person would</span></div>
+      </li>
+      <li class="panel pc rv" style="--d:.21s">
+        <div class="pn mono"><b>04</b><span>Before the call</span></div>
+        <h3>You walk in knowing the account</h3>
+        <p>A brief on the company behind the reply: why now, why you and who you are speaking to, each line linked to its source and date.</p>
+        <div class="pv col" aria-hidden="true">
+          <div class="jb"><span class="k mono">why now</span><div><p>Second hub in Dallas.</p><span class="src">newsroom · nov 4</span></div></div>
+          <div class="jb"><span class="k mono">who</span><div><p>Maya Okafor, CFO.</p><span class="src">noryx data · search</span></div></div>
+        </div>
+      </li>
+      <li class="panel pc rv" style="--d:.28s">
+        <div class="pn mono"><b>05</b><span>The deal</span></div>
+        <h3>It stays on one board to the end</h3>
+        <p>Move the lead from Interested to Meeting to Won, or to Lost with the reason. Every message, note and move stays on its timeline.</p>
+        <div class="pv" aria-hidden="true"><span class="dc xs k-int">Interested</span><span class="dc xs k-mtg">Meeting</span><span class="dc xs k-won">Won</span><span class="dc xs k-lost">Lost · reason kept</span></div>
+      </li>
+    </ol>
+
+    <p class="sublab rv">What happens to each reply</p>
+    <div class="panel rl rv" role="table" aria-label="What NORYX does with each kind of reply" style="margin-bottom:72px">
+      <div class="rl-h" role="row"><span role="columnheader">A lead writes</span><span role="columnheader">NORYX</span><span role="columnheader">Sent by</span></div>
+      <div class="rl-r" role="row">
+        <div class="w" role="cell"><span class="dc k-won">Interested</span><span class="dc k-con">Wants a call</span><span class="dc k-off">Not now</span><span class="dc k-ap">Wrong person</span></div>
+        <div role="cell">Writes the answer. On email and LinkedIn it sends it for you after a natural pause, one at a time and inside your campaign’s hours, with a line saying an AI wrote it.<small>No more than two automatic answers in a conversation, and you can stop one before it goes.</small></div>
+        <div class="by" role="cell">NORYX, or you</div>
+      </div>
+      <div class="rl-r" role="row">
+        <div class="w" role="cell"><span class="dc k-new">Question</span><span class="dc k-rep">Objection</span><span class="dc k-lost">A no</span></div>
+        <div role="cell">Writes the answer from your seller profile. You read it, edit it or ask for another, and send it.</div>
+        <div class="by you" role="cell">You</div>
+      </div>
+      <div class="rl-r" role="row">
+        <div class="w" role="cell"><span class="dc k-rep">Price or link</span><span class="dc k-rep">Are you a person?</span><span class="dc k-rep">Complaint</span></div>
+        <div role="cell">Writes the answer and marks it “needs you to look”. NORYX does not guess a price, a link or a promise.</div>
+        <div class="by you" role="cell">You</div>
+      </div>
+      <div class="rl-r" role="row">
+        <div class="w" role="cell"><span class="dc k-lost">Asks to stop</span></div>
+        <div role="cell">Marks the lead do-not-contact for every campaign and answers nothing.</div>
+        <div class="by" role="cell">Nothing is sent</div>
+      </div>
+      <div class="rl-r" role="row">
+        <div class="w" role="cell"><span class="dc k-off">Out of office</span></div>
+        <div role="cell">Keeps it on the timeline and carries on with the sequence.</div>
+        <div class="by" role="cell">The sequence</div>
+      </div>
+      <p class="rl-n">On WhatsApp, Instagram, Telegram and Messenger NORYX writes the answer and you send it with one click. It never answers by itself there.</p>
+    </div>
+
+    <p class="sublab rv">Behind every answer</p>
     <div class="tri">
       <div class="panel bc wf rv">
         <h3>Every signal, checked</h3>
@@ -1180,7 +1322,7 @@ a.badge::after{content:"";position:absolute;inset:-5px 0}
       <div class="panel step on" tabindex="0" role="button"><span class="tag">now</span><span class="mono dim">step 1</span><h3>Tell NORYX what you sell and who you want</h3><ul><li>Your offer in plain words</li><li>Who you want, in one sentence</li><li>The account you send from, linked</li></ul></div>
       <div class="panel step" tabindex="0" role="button"><span class="tag">now</span><span class="mono dim">step 2</span><h3>It finds the leads and fills your pipeline</h3><ul><li>Up to 500 people per search</li><li>Every person saved as a lead</li><li>All of them start in New</li></ul></div>
       <div class="panel step" tabindex="0" role="button"><span class="tag">now</span><span class="mono dim">step 3</span><h3>Launch a campaign</h3><ul><li>You approve the words once</li><li>You set the hours and daily limits</li><li>A reply stops the sequence</li></ul></div>
-      <div class="panel step" tabindex="0" role="button"><span class="tag">now</span><span class="mono dim">step 4</span><h3>Answer every reply, and close</h3><ul><li>Every reply in one inbox</li><li>What it means, and the answer written</li><li>You send it, from the same account</li></ul></div>
+      <div class="panel step" tabindex="0" role="button"><span class="tag">now</span><span class="mono dim">step 4</span><h3>Answer every reply, and close</h3><ul><li>Every reply in one inbox, with the answer written</li><li>A brief on the account before the call</li><li>Take the deal to Won or Lost</li></ul></div>
     </div>
   </div>
 </section>
