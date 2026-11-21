@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://heynoryx.com/twitter-image.png">
 <link rel="preload" href="/fonts/geist-v5-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/instrument-serif-italic-v5-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script>document.documentElement.classList.add('js')</script>
+<script>(function(d){d.classList.add('js');if(window.matchMedia&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window)d.classList.add('js-lines')})(document.documentElement)</script>
 <noscript><style>.hub .pl,.hub .core,.hub .core::before,.hub .core .ping{animation-play-state:running}</style></noscript>
 <style>
 /* The same Geist, Geist Mono and Instrument Serif files Google Fonts serves (SIL Open Font License), hosted here. */
@@ -355,6 +355,22 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 .js .rv.in{opacity:1;transform:none}
 .js .rv.d1{transition-delay:.08s}.js .rv.d2{transition-delay:.16s}.js .rv.d3{transition-delay:.24s}
 .js .tile.rv.in:hover{transform:translateY(-3px);transition-delay:0s}
+
+/* Headings and lead lines rise line by line. Only once the script has split them into lines,
+   so nothing stays hidden without it; a missed split shows the text after 2.5s anyway. */
+.lr-mask{display:block;clip-path:inset(-.45em -.6em -.26em -.6em)}
+.lr-line{display:block}
+.js-lines :is(.hero h1,.hero .lede,.head h2,.head>p,.end-box h2,.end-box>p:not(.fine-print)):not(.lr),
+.js-lines :is(.hero .badge,.hero .ctas,.hero .fine,.head.rv>:not(h2):not(p),.end-box.rv>:not(h2):not(p),.end-box.rv>.fine-print):not(.lr-fade){opacity:0;animation:lr-show 0s 2.5s forwards}
+@keyframes lr-show{to{opacity:1}}
+.js-lines .lr .lr-line{opacity:0;transform:translate3d(0,108%,0);filter:blur(8px);transition:transform .85s cubic-bezier(.2,.7,.2,1),opacity .7s cubic-bezier(.2,.7,.2,1),filter .85s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--lb,0ms) + var(--i,0) * 75ms)}
+.js-lines .lr.lr-in .lr-line{opacity:1;transform:none;filter:none}
+.js-lines .lr-fade{opacity:0;transform:translateY(10px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--after,0ms)}
+.js-lines .lr-g .lr-fade{opacity:1;transform:none}
+.js-lines .lr-now .lr-line,.js-lines .lr-now .lr-fade,.js-lines .lr-now.lr-fade{transition:none}
+/* The block around the lines stays still: its lines and small parts move instead */
+.js-lines .head.rv{opacity:1;transform:none}
+.js-lines .end-box.rv{transform:none}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
@@ -737,6 +753,157 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
   } else {
     reveal.forEach(function(el){ el.classList.add('in'); });
   }
+
+  // Headings and lead lines rise line by line: split into the lines the browser drew, then each
+  // group (the hero, a section head, the closing box) reveals once, as it scrolls in.
+  // Its own scope: its names never meet the rest of this script's.
+  (function(){
+    if (!document.documentElement.classList.contains('js-lines')) return;
+    var INLINE = /^(SPAN|EM|STRONG|B|I|A|MARK|SMALL|BR)$/;
+    var STEP = 75;
+    var groups = [];
+    var heroCol = document.querySelector('.hero .wrap > div');
+    if (heroCol) groups.push({ el: heroCol, base: 90, now: true,
+      lines: ['h1', '.lede'], fades: [['.badge', 0], ['.ctas', 1], ['.fine', 1]] });
+    [].slice.call(document.querySelectorAll('.head')).forEach(function(h){
+      groups.push({ el: h, base: 140, lines: ['h2', ':scope > p'], fades: [[':scope > .eye', -1], [':scope > :not(h2):not(p):not(.eye)', 1]] });
+    });
+    [].slice.call(document.querySelectorAll('.end-box')).forEach(function(b){
+      groups.push({ el: b, base: 160, lines: ['h2', ':scope > p:not(.fine-print)'],
+        fades: [[':scope > :not(h2):not(p)', 1], [':scope > .fine-print', 1]] });
+    });
+
+    // Every word and space of an element, with the inline elements it sits in; null if the
+    // element holds anything but plain inline text (it is then left as it is).
+    function tokensOf(el){
+      var out = [], ok = true;
+      (function walk(node, chain){
+        for (var c = node.firstChild; c; c = c.nextSibling) {
+          if (c.nodeType === 3) {
+            c.nodeValue.split(/(\s+)/).forEach(function(t){ if (t) out.push({ t: t, space: !/\S/.test(t), chain: chain, node: c }); });
+          } else if (c.nodeType === 1) {
+            if (!INLINE.test(c.tagName)) { ok = false; return; }
+            if (c.tagName !== 'BR') walk(c, chain.concat(c));
+          }
+        }
+      })(el, []);
+      return ok ? out : null;
+    }
+
+    // Splits one element into lines; returns how many, or 0 when it was left alone.
+    function split(el, first){
+      if (el.__lr === undefined) el.__lr = el.innerHTML; else el.innerHTML = el.__lr;
+      var toks = tokensOf(el);
+      if (!toks || !toks.length) { el.classList.add('lr', 'lr-in'); return 0; }
+      // Measure: each word in a span, where it already is.
+      var byNode = new Map();
+      toks.forEach(function(k){ if (!byNode.has(k.node)) byNode.set(k.node, []); byNode.get(k.node).push(k); });
+      byNode.forEach(function(list, node){
+        var frag = document.createDocumentFragment();
+        list.forEach(function(k){
+          if (k.space) { frag.appendChild(document.createTextNode(k.t)); return; }
+          k.span = document.createElement('span'); k.span.textContent = k.t; frag.appendChild(k.span);
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+      var lines = [], cur = null, top = -1e9;
+      toks.forEach(function(k){
+        if (k.span) {
+          var r = k.span.getBoundingClientRect();
+          if (!cur || r.top > top + r.height * 0.5) { cur = []; lines.push(cur); top = r.top; }
+        }
+        if (cur && !(k.space && cur.length === 0)) cur.push(k);
+      });
+      // Rebuild: one masked line each, inline elements cloned where a line crosses them.
+      el.textContent = '';
+      lines.forEach(function(line, i){
+        var mask = document.createElement('span'); mask.className = 'lr-mask';
+        var inner = document.createElement('span'); inner.className = 'lr-line';
+        inner.style.setProperty('--i', String(first + i));
+        mask.appendChild(inner);
+        var open = [];
+        line.forEach(function(k){
+          var n = 0;
+          while (n < open.length && n < k.chain.length && open[n].from === k.chain[n]) n++;
+          open.length = n;
+          for (var j = n; j < k.chain.length; j++) {
+            var copy = k.chain[j].cloneNode(false); copy.removeAttribute('id');
+            (j === 0 ? inner : open[j - 1].to).appendChild(copy);
+            open.push({ from: k.chain[j], to: copy });
+          }
+          (open.length ? open[open.length - 1].to : inner).appendChild(document.createTextNode(k.t));
+        });
+        el.appendChild(mask);
+      });
+      el.classList.add('lr');
+      return lines.length;
+    }
+
+    function build(g){
+      var at = 0;
+      g.el.style.setProperty('--lb', g.base + 'ms');
+      g.targets = [];
+      g.lines.forEach(function(sel){
+        [].slice.call(g.el.querySelectorAll(sel)).forEach(function(el){
+          var n = split(el, at);
+          if (n) { at += n + 1; g.targets.push(el); }
+        });
+      });
+      var end = g.base + Math.max(0, at - 1) * STEP + 200;
+      g.fades.forEach(function(f){
+        [].slice.call(g.el.querySelectorAll(f[0])).forEach(function(el){
+          if (el.classList.contains('lr')) return;
+          el.classList.add('lr-fade');
+          el.style.setProperty('--after', (f[1] === 0 ? 0 : f[1] < 0 ? Math.max(0, g.base - 120) : end) + 'ms');
+        });
+      });
+    }
+    function revealGroup(g){
+      g.shown = true;
+      g.el.classList.add('lr-g');
+      g.targets.forEach(function(el){ el.classList.add('lr-in'); });
+    }
+    function buildAll(again){
+      groups.forEach(function(g){
+        if (again && g.shown) {
+          g.el.classList.add('lr-now');
+          build(g); revealGroup(g);
+          void g.el.offsetWidth; g.el.classList.remove('lr-now');
+        } else build(g);
+      });
+    }
+
+    var started = false;
+    function start(){
+      if (started) return; started = true;
+      buildAll(false);
+      var watch = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (!e.isIntersecting) return;
+          var g = e.target.__lrGroup; watch.unobserve(e.target);
+          if (g && !g.shown) revealGroup(g);
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+      groups.forEach(function(g){
+        // Styles are worked out in the hidden state first, so the lines move from there.
+        if (g.now) { void g.el.offsetWidth; revealGroup(g); }
+        else { g.el.__lrGroup = g; watch.observe(g.el); }
+      });
+    }
+    // Lines are measured in the page's own fonts: wait for them, a second at most.
+    var fonts = document.fonts && document.fonts.ready;
+    if (fonts) {
+      fonts.then(function(){ if (started) buildAll(true); else start(); });
+      setTimeout(start, 1000);
+    } else start();
+    // A new width draws new lines: measure again, keeping what was already shown.
+    var width = window.innerWidth, resizing = null;
+    addEventListener('resize', function(){
+      if (window.innerWidth === width) return;
+      width = window.innerWidth; clearTimeout(resizing);
+      resizing = setTimeout(function(){ if (started) buildAll(true); }, 180);
+    }, { passive: true });
+  })();
 
   // The hero window: find, pipeline and replies take turns; a tab jumps to its scene.
   var scenes = [].slice.call(document.querySelectorAll('.scene'));
