@@ -360,7 +360,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
    so nothing stays hidden without it; a missed split shows the text after 2.5s anyway. */
 .lr-mask{display:block;clip-path:inset(-.45em -.6em -.26em -.6em)}
 .lr-line{display:block}
-.js-lines :is(.hero h1,.hero .lede,.head h2,.head>p,.end-box h2,.end-box>p:not(.fine-print),.tile .t-h h3,.tile>.d,.h-step h3,.h-step>p):not(.lr),
+.js-lines :is(.hero h1,.hero .lede,.tile .t-h h3,.tile>.d,.h-step h3,.h-step>p):not(.lr),
 .js-lines :is(.hero .badge,.hero .ctas,.hero .fine,.head.rv>:not(h2):not(p),.end-box.rv>:not(h2):not(p),.end-box.rv>.fine-print):not(.lr-fade){opacity:0;animation:lr-show 0s 2.5s forwards}
 @keyframes lr-show{to{opacity:1}}
 /* Never left hidden: the hero shows by itself if its reveal has not run 2.4s in. */
@@ -374,6 +374,25 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 /* The block around the lines stays still: its lines and small parts move instead */
 .js-lines .head.rv{opacity:1;transform:none}
 .js-lines .end-box.rv{transform:none}
+
+/* The statement under the hero, and every section title: each word lights as it scrolls up the
+   screen and dims again (never hides) on the way back up. */
+.say{padding:120px 0 0}
+.say .wrap{display:grid;grid-template-columns:13rem minmax(0,1fr);gap:56px;align-items:start}
+.say .eye{color:var(--dim);display:flex;align-items:center;gap:10px;padding-top:1.1em}
+.say .eye::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
+.say p{margin:0;max-width:21em;font-size:clamp(28px,4.1vw,54px);line-height:1.17;letter-spacing:-.035em;font-weight:600;text-wrap:pretty}
+.say .hot{font-style:italic;color:var(--red-2)}
+.pen{position:relative;white-space:nowrap}
+.pen-l{position:absolute;left:-.05em;right:-.05em;border-radius:99px;transform-origin:left center;transform:rotate(var(--r));pointer-events:none}
+.pen-x{--r:-2deg}.pen-x .pen-l{top:52%;height:.085em;background:var(--red)}
+.pen-u{--r:-1deg}.pen-u .pen-l{bottom:-.07em;height:.09em;background:linear-gradient(90deg,#ff4a3c,#ffb39b)}
+.js-lines .sc .sw{transition:opacity .32s cubic-bezier(.2,.7,.2,1)}
+.js-lines .sc .pen-l{transform:rotate(var(--r)) scaleX(0);transition:transform .7s var(--ease)}
+.js-lines .sc .pen.on .pen-l{transform:rotate(var(--r)) scaleX(1)}
+.js-lines .sc-now .sw,.js-lines .sc-now .pen-l{transition:none}
+@media (max-width:1020px){.say .wrap{grid-template-columns:1fr;gap:20px}.say .eye{padding-top:0}}
+@media (max-width:640px){.say{padding-top:80px}}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
@@ -499,6 +518,13 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="say" aria-label="Why NORYX">
+  <div class="wrap">
+    <span class="eye mono">Why NORYX</span>
+    <p class="sc">Most sales tools <span class="pen pen-x">hand you a list.<span class="pen-l" aria-hidden="true"></span></span> NORYX gets you <span class="pen pen-u">the meeting.<span class="pen-l" aria-hidden="true"></span></span> It finds the right people, writes to them like you on your best day, warms them up before any link, follows up when you would forget and puts the call on your calendar. <span class="s">You stop chasing.</span> <span class="s hot">You start closing.</span></p>
   </div>
 </section>
 
@@ -772,7 +798,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
     if (heroCol) groups.push({ el: heroCol, base: 90, now: true,
       lines: ['h1', '.lede'], fades: [['.badge', 0], ['.ctas', 1], ['.fine', 1]] });
     [].slice.call(document.querySelectorAll('.head')).forEach(function(h){
-      groups.push({ el: h, base: 140, lines: ['h2', ':scope > p'], fades: [[':scope > .eye', -1], [':scope > :not(h2):not(p):not(.eye)', 1]] });
+      groups.push({ el: h, base: 140, lines: [], fades: [[':scope > .eye', -1], [':scope > :not(h2):not(p):not(.eye)', 1]] });
     });
     // The feature tiles and the four steps: each title and its words, line by line.
     [].slice.call(document.querySelectorAll('.tile')).forEach(function(t){
@@ -782,7 +808,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       groups.push({ el: t, base: 160 + i * 90, lines: ['h3', ':scope > p'], fades: [] });
     });
     [].slice.call(document.querySelectorAll('.end-box')).forEach(function(b){
-      groups.push({ el: b, base: 160, lines: ['h2', ':scope > p:not(.fine-print)'],
+      groups.push({ el: b, base: 160, lines: [],
         fades: [[':scope > :not(h2):not(p)', 1], [':scope > .fine-print', 1]] });
     });
 
@@ -920,6 +946,71 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       resizing = setTimeout(function(){ if (started) buildAll(true); }, 180);
     }, { passive: true });
     } catch (e) { giveUp(); }
+  })();
+
+  // Words that light as they scroll in: the statement and the section titles. Each word starts
+  // dim and brightens as its block moves up the screen; scrolling back dims it again. Without
+  // the script, or with reduced motion, every word shows in full.
+  (function(){
+    if (!document.documentElement.classList.contains('js-lines')) return;
+    var LOW = 0.14, SOFT = 1.6;
+    var blocks = [];
+    function giveUp(){
+      blocks.forEach(function(b){ b.words.forEach(function(w){ w.style.opacity = ''; }); b.el.classList.remove('sc'); });
+      blocks = [];
+    }
+    try {
+      [].slice.call(document.querySelectorAll('.say .sc, .head > h2, .head > p, .end-box > h2, .end-box > p:not(.fine-print)')).forEach(function(el){
+        var texts = [], walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+        for (var n = walker.nextNode(); n; n = walker.nextNode()) texts.push(n);
+        var words = [];
+        texts.forEach(function(t){
+          if (!/\S/.test(t.nodeValue)) return;
+          var frag = document.createDocumentFragment();
+          t.nodeValue.split(/(\s+)/).forEach(function(part){
+            if (!part) return;
+            if (!/\S/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var w = document.createElement('span'); w.className = 'sw'; w.textContent = part;
+            frag.appendChild(w); words.push(w);
+          });
+          t.parentNode.replaceChild(frag, t);
+        });
+        if (!words.length) return;
+        // A marked phrase draws its line once its last word is lit.
+        var marks = [].slice.call(el.querySelectorAll('.pen')).map(function(m){
+          var inside = m.querySelectorAll('.sw');
+          return { el: m, last: words.indexOf(inside[inside.length - 1]) };
+        });
+        el.classList.add('sc', 'sc-now');
+        blocks.push({ el: el, words: words, marks: marks, lit: [] });
+      });
+    } catch (e) { giveUp(); return; }
+
+    var ticking = false;
+    function update(){
+      ticking = false;
+      var vh = window.innerHeight || 800;
+      blocks.forEach(function(b){
+        var r = b.el.getBoundingClientRect();
+        // From the block's top at 88% of the screen to its bottom at 60%: dim to fully lit.
+        var from = vh * 0.88, to = vh * 0.6 - r.height;
+        var p = Math.min(1, Math.max(0, (from - r.top) / Math.max(1, from - to)));
+        var x = p * (b.words.length + SOFT);
+        b.words.forEach(function(w, i){
+          var o = Math.round((LOW + (1 - LOW) * Math.min(1, Math.max(0, (x - i) / SOFT))) * 100) / 100;
+          if (b.lit[i] !== o) { b.lit[i] = o; w.style.opacity = String(o); }
+        });
+        b.marks.forEach(function(m){ m.el.classList.toggle('on', (b.lit[m.last] || 0) >= 0.98); });
+      });
+    }
+    function ask(){ if (!ticking) { ticking = true; requestAnimationFrame(function(){ try { update(); } catch (e) { giveUp(); } }); } }
+    try { update(); } catch (e) { giveUp(); return; }
+    // The first state is set without a fade; after that every change eases.
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      blocks.forEach(function(b){ b.el.classList.remove('sc-now'); });
+    }); });
+    addEventListener('scroll', ask, { passive: true });
+    addEventListener('resize', ask, { passive: true });
   })();
 
   // The hero window: find, pipeline and replies take turns; a tab jumps to its scene.
