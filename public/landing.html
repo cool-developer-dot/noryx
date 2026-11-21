@@ -360,9 +360,12 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
    so nothing stays hidden without it; a missed split shows the text after 2.5s anyway. */
 .lr-mask{display:block;clip-path:inset(-.45em -.6em -.26em -.6em)}
 .lr-line{display:block}
-.js-lines :is(.hero h1,.hero .lede,.head h2,.head>p,.end-box h2,.end-box>p:not(.fine-print)):not(.lr),
+.js-lines :is(.hero h1,.hero .lede,.head h2,.head>p,.end-box h2,.end-box>p:not(.fine-print),.tile .t-h h3,.tile>.d,.h-step h3,.h-step>p):not(.lr),
 .js-lines :is(.hero .badge,.hero .ctas,.hero .fine,.head.rv>:not(h2):not(p),.end-box.rv>:not(h2):not(p),.end-box.rv>.fine-print):not(.lr-fade){opacity:0;animation:lr-show 0s 2.5s forwards}
 @keyframes lr-show{to{opacity:1}}
+/* Never left hidden: the hero shows by itself if its reveal has not run 2.4s in. */
+.js-lines .hero .lr:not(.lr-in) .lr-line{animation:lr-force 0s 2.4s forwards}
+@keyframes lr-force{to{opacity:1;transform:none;filter:none}}
 .js-lines .lr .lr-line{opacity:0;transform:translate3d(0,108%,0);filter:blur(8px);transition:transform .85s cubic-bezier(.2,.7,.2,1),opacity .7s cubic-bezier(.2,.7,.2,1),filter .85s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--lb,0ms) + var(--i,0) * 75ms)}
 .js-lines .lr.lr-in .lr-line{opacity:1;transform:none;filter:none}
 .js-lines .lr-fade{opacity:0;transform:translateY(10px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--after,0ms)}
@@ -759,6 +762,9 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
   // Its own scope: its names never meet the rest of this script's.
   (function(){
     if (!document.documentElement.classList.contains('js-lines')) return;
+    // Anything goes wrong: drop the effect, and every word shows as written.
+    function giveUp(){ document.documentElement.classList.remove('js-lines'); }
+    try {
     var INLINE = /^(SPAN|EM|STRONG|B|I|A|MARK|SMALL|BR)$/;
     var STEP = 75;
     var groups = [];
@@ -767,6 +773,13 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       lines: ['h1', '.lede'], fades: [['.badge', 0], ['.ctas', 1], ['.fine', 1]] });
     [].slice.call(document.querySelectorAll('.head')).forEach(function(h){
       groups.push({ el: h, base: 140, lines: ['h2', ':scope > p'], fades: [[':scope > .eye', -1], [':scope > :not(h2):not(p):not(.eye)', 1]] });
+    });
+    // The feature tiles and the four steps: each title and its words, line by line.
+    [].slice.call(document.querySelectorAll('.tile')).forEach(function(t){
+      groups.push({ el: t, base: 180, lines: ['.t-h h3', ':scope > .d'], fades: [] });
+    });
+    [].slice.call(document.querySelectorAll('.h-step')).forEach(function(t, i){
+      groups.push({ el: t, base: 160 + i * 90, lines: ['h3', ':scope > p'], fades: [] });
     });
     [].slice.call(document.querySelectorAll('.end-box')).forEach(function(b){
       groups.push({ el: b, base: 160, lines: ['h2', ':scope > p:not(.fine-print)'],
@@ -890,11 +903,14 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
         else { g.el.__lrGroup = g; watch.observe(g.el); }
       });
     }
-    // Lines are measured in the page's own fonts: wait for them, a second at most.
+    // Lines are measured in the page's own fonts: wait for them, under half a second (a late
+    // font only measures the lines again).
+    var safely = function(fn){ return function(){ try { fn.apply(null, arguments); } catch (e) { giveUp(); } }; };
+    start = safely(start); buildAll = safely(buildAll);
     var fonts = document.fonts && document.fonts.ready;
     if (fonts) {
-      fonts.then(function(){ if (started) buildAll(true); else start(); });
-      setTimeout(start, 1000);
+      fonts.then(function(){ if (started) buildAll(true); else start(); }, start);
+      setTimeout(start, 450);
     } else start();
     // A new width draws new lines: measure again, keeping what was already shown.
     var width = window.innerWidth, resizing = null;
@@ -903,6 +919,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       width = window.innerWidth; clearTimeout(resizing);
       resizing = setTimeout(function(){ if (started) buildAll(true); }, 180);
     }, { passive: true });
+    } catch (e) { giveUp(); }
   })();
 
   // The hero window: find, pipeline and replies take turns; a tab jumps to its scene.
