@@ -1256,7 +1256,10 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     var t = a === b ? 0 : smooth(clamp((y - anchors[i]) / Math.max(1, anchors[i + 1] - anchors[i]), 0, 1));
     return { sp: lerp(a.sp, b.sp, t), fo: lerp(a.fo, b.fo, t), gl: lerp(a.gl, b.gl, t) };
   }
-  var cur = null, time = 0, grow = calm ? 1 : 0, growing = false;
+  // The piece of the ribbon that is lit runs from its tail to its head (page positions). As
+  // the page moves the head draws on ahead and the tail lets go behind, each a little after the
+  // page, so the line seems to be drawn as you go and to fade once you have passed it.
+  var cur = null, time = 0, armed = calm, headY = null, tailY = null, headOn = false, tailOn = false;
   function follow(to, k){
     if (!cur) { cur = to; return; }
     cur.sp = lerp(cur.sp, to.sp, k); cur.fo = lerp(cur.fo, to.fo, k); cur.gl = lerp(cur.gl, to.gl, k);
@@ -1273,8 +1276,11 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   var CAP = 260, X = new Float32Array(CAP), Y = new Float32Array(CAP), DY = new Float32Array(CAP), NX = new Float32Array(CAP), NY = new Float32Array(CAP), WP = new Float32Array(CAP), L = 0;
   function visible(scroll){
     var top = scroll - H * 0.3, bottom = scroll + H * 1.3, per = small ? 18 : 26;
-    var limit = grow >= 1 ? Infinity : top + grow * (H * 1.7);
+    tailOn = tailY !== null && tailY > top; headOn = headY !== null && headY < bottom;
+    if (tailOn) top = tailY;
+    if (headOn) bottom = headY;
     L = 0;
+    if (bottom - top < 8) return;
     for (var k = 0; k < turns.length - 1 && L < CAP - 1; k++) {
       var a = turns[k], b = turns[k + 1];
       if (b[1] < top || a[1] > bottom) continue;
@@ -1282,7 +1288,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       for (var j = (L ? 1 : 0); j <= per && L < CAP; j++) {
         var t = j / per, u = 1 - t;
         var py = u * u * u * a[1] + 3 * u * u * t * c1y + 3 * u * t * t * c2y + t * t * t * b[1];
-        if (py < top || py > bottom || py > limit) continue;
+        if (py < top || py > bottom) continue;
         var px = u * u * u * a[0] + 3 * u * u * t * a[0] + 3 * u * t * t * b[0] + t * t * t * b[0];
         X[L] = px; Y[L] = py - scroll; DY[L] = py;
         // Wide in the middle of each run, narrower where it turns; the first run fans out from
@@ -1314,14 +1320,21 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     hx.globalCompositeOperation = 'lighter';
     hx.lineCap = 'round'; hx.lineJoin = 'round';
     var sx = hz.width / W, sy = hz.height / H;
+    function hazeFade(rgb, alpha){
+      var hg = hx.createLinearGradient(X[0] * sx, Y[0] * sy, X[L - 1] * sx, Y[L - 1] * sy);
+      hg.addColorStop(0, 'rgba(' + rgb + ',0)');
+      hg.addColorStop(tailOn ? 0.35 : 0.08, 'rgba(' + rgb + ',' + alpha.toFixed(3) + ')');
+      hg.addColorStop(1, 'rgba(' + rgb + ',' + alpha.toFixed(3) + ')');
+      return hg;
+    }
     function hazePath(shift){
       hx.beginPath();
       for (var j = 0; j < L; j++) { var x = (X[j] + NX[j] * shift * WP[j]) * sx, y = (Y[j] + NY[j] * shift * WP[j]) * sy; j ? hx.lineTo(x, y) : hx.moveTo(x, y); }
     }
-    hazePath(0); hx.lineWidth = spread * 1.9 * sx; hx.strokeStyle = 'rgba(255,50,38,' + (0.13 * g * (0.55 + fo)).toFixed(3) + ')'; hx.stroke();
-    hazePath(0); hx.lineWidth = spread * 0.95 * sx; hx.strokeStyle = 'rgba(255,124,82,' + (0.17 * g * (0.5 + fo)).toFixed(3) + ')'; hx.stroke();
-    hazePath(-spread * 0.25); hx.lineWidth = spread * 0.5 * sx; hx.strokeStyle = 'rgba(122,162,255,' + (0.05 * g).toFixed(3) + ')'; hx.stroke();
-    hazePath(0); hx.lineWidth = Math.max(1, spread * 0.26 * sx); hx.strokeStyle = 'rgba(255,220,200,' + (0.26 * g * (1 - fo * 0.5)).toFixed(3) + ')'; hx.stroke();
+    hazePath(0); hx.lineWidth = spread * 1.9 * sx; hx.strokeStyle = hazeFade('255,50,38', 0.13 * g * (0.55 + fo)); hx.stroke();
+    hazePath(0); hx.lineWidth = spread * 0.95 * sx; hx.strokeStyle = hazeFade('255,124,82', 0.17 * g * (0.5 + fo)); hx.stroke();
+    hazePath(-spread * 0.25); hx.lineWidth = spread * 0.5 * sx; hx.strokeStyle = hazeFade('122,162,255', 0.05 * g); hx.stroke();
+    hazePath(0); hx.lineWidth = Math.max(1, spread * 0.26 * sx); hx.strokeStyle = hazeFade('255,220,200', 0.26 * g * (1 - fo * 0.5)); hx.stroke();
     cx.globalCompositeOperation = 'lighter';
     cx.imageSmoothingEnabled = true;
     cx.drawImage(hz, 0, 0, cv.width, cv.height);
@@ -1343,10 +1356,11 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       var al = st.a * g * sharp;
       var as = Math.abs(st.s), col = st.cool ? '140,175,255' : as < 0.28 ? '255,222,204' : as < 0.6 ? '255,146,98' : '255,62,46';
       var gr = cx.createLinearGradient(X[0], Y[0], X[L - 1], Y[L - 1]);
+      var full = al * (st.cool ? 0.55 : 1);
       gr.addColorStop(0, 'rgba(' + col + ',0)');
-      gr.addColorStop(0.12, 'rgba(' + col + ',' + (al * (st.cool ? 0.55 : 1)).toFixed(3) + ')');
-      gr.addColorStop(0.88, 'rgba(' + col + ',' + (al * (st.cool ? 0.55 : 1)).toFixed(3) + ')');
-      gr.addColorStop(1, 'rgba(' + col + ',0)');
+      gr.addColorStop(tailOn ? 0.38 : 0.1, 'rgba(' + col + ',' + (full * 0.85).toFixed(3) + ')');
+      gr.addColorStop(headOn ? 0.9 : 0.9, 'rgba(' + col + ',' + full.toFixed(3) + ')');
+      gr.addColorStop(1, 'rgba(' + col + ',' + (headOn ? Math.min(1, full * 1.25) : 0).toFixed(3) + ')');
       cx.strokeStyle = gr;
       cx.lineWidth = st.w * (1 + fo * 0.8);
       cx.stroke();
@@ -1365,6 +1379,21 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
           cx.lineWidth = st.w + 1.1;
           cx.stroke();
         }
+      }
+    }
+    // The tip where the line is being drawn: a warm flare and a white point.
+    if (headOn && L > 2) {
+      var hxp = X[L - 1], hyp = Y[L - 1];
+      if (hyp > -60 && hyp < H + 60) {
+        var fr = Math.max(18, spread * 0.85);
+        var fl = cx.createRadialGradient(hxp, hyp, 0, hxp, hyp, fr);
+        fl.addColorStop(0, 'rgba(255,240,232,' + (0.6 * g).toFixed(3) + ')');
+        fl.addColorStop(0.25, 'rgba(255,150,104,' + (0.32 * g).toFixed(3) + ')');
+        fl.addColorStop(1, 'rgba(255,60,44,0)');
+        cx.fillStyle = fl;
+        cx.beginPath(); cx.arc(hxp, hyp, fr, 0, 6.283); cx.fill();
+        cx.fillStyle = 'rgba(255,248,244,' + (0.95 * g).toFixed(3) + ')';
+        cx.beginPath(); cx.arc(hxp, hyp, 2.2, 0, 6.283); cx.fill();
       }
     }
     // Sparks drifting down along it.
@@ -1433,8 +1462,17 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       frames = 0; slowFrames = 0;
     }
     time += dt;
-    if (growing && grow < 1) grow = Math.min(1, grow + dt / 1.1);
     var y = window.scrollY;
+    if (headY === null) { headY = -H * 0.3; tailY = -H * 0.34; }
+    if (armed) {
+      // The tail sits off the top of the screen in the hero (the line comes in from the top
+      // right), then just inside it, so what you have passed fades away.
+      var lead = lerp(-0.3, 0.12, clamp(y / (H * 0.7), 0, 1));
+      var hT = y + H * 0.94, tT = y + H * lead;
+      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 1.35 : 2.2)));
+      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * (tT > tailY ? 0.85 : 2.4)));
+      if (tailY > headY - 60) tailY = headY - 60;
+    }
     follow(target(y), 1 - Math.exp(-dt * 3.2));
     scene(y, 1 - Math.exp(-dt * 9));
     draw();
@@ -1456,7 +1494,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   } else {
     start();
   }
-  function growIn(){ growing = true; }
+  function growIn(){ armed = true; }
 
   // Pause the moving parts of a picture while it is off screen.
   if ('IntersectionObserver' in window) {
