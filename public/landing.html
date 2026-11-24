@@ -140,7 +140,7 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .hero{position:relative;padding:64px 0 30px}
 .hero::before{content:"";position:absolute;inset:-68px 0 0;background-image:radial-gradient(rgba(244,239,230,.075) 1px,transparent 1.3px);background-size:28px 28px;-webkit-mask-image:radial-gradient(ellipse 72% 62% at 50% 38%,#000 25%,transparent 76%);mask-image:radial-gradient(ellipse 72% 62% at 50% 38%,#000 25%,transparent 76%);pointer-events:none}
 .hero-copy{position:relative}
-.hero-copy::before{content:"";position:absolute;inset:-14% -18% -16% -24%;background:radial-gradient(closest-side,rgba(6,7,8,.72),rgba(6,7,8,.35) 60%,transparent);z-index:-1;pointer-events:none}
+.hero-copy::before{content:"";position:absolute;inset:-14% -18% -4% -24%;background:radial-gradient(closest-side,rgba(6,7,8,.72),rgba(6,7,8,.35) 60%,transparent);z-index:-1;pointer-events:none}
 .hero-in{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:48px;align-items:center;min-height:min(760px,calc(100svh - 110px))}
 .hero h1{margin:22px 0 0;font-size:clamp(48px,6.8vw,96px);line-height:.96;letter-spacing:-.058em;font-weight:600}
 .hero h1 .s{color:var(--red-2);letter-spacing:-.03em}
@@ -1195,48 +1195,64 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   function makeStrands(n){
     strands = [];
     for (var i = 0; i < n; i++) {
-      var k = n === 1 ? 0 : i / (n - 1);
-      var sv = k * 2 - 1 + (Math.random() - 0.5) * 0.06, core = 1 - Math.pow(Math.abs(sv), 1.4);
-      strands.push({ s: sv, ph: Math.random() * 6.283, w: 0.5 + Math.random() * 0.8, a: (0.22 + 0.78 * core) * (0.65 + 0.35 * Math.random()), cool: i % 9 === 4 });
+      // More strands near the middle of the band; the brightest there too.
+      var r0 = Math.random() * 2 - 1, sv = (r0 < 0 ? -1 : 1) * Math.pow(Math.abs(r0), 1.25);
+      var core = 1 - Math.pow(Math.abs(sv), 1.3);
+      strands.push({ s: sv, ph: Math.random() * 6.283, w: 0.45 + Math.random() * 0.6, a: (0.2 + 0.8 * core) * (0.55 + 0.45 * Math.random()), cool: i % 8 === 5, glint: i % 4 === 0 ? 0.17 + Math.random() * 0.16 : 0 });
     }
+    // Colour by place in the band (white-hot core, ember, red edge, a few cool blue), brightness
+    // in three steps: strands that share both are drawn as one stroke.
+    groups = [];
+    var byKey = {};
+    strands.forEach(function(st){
+      var as = Math.abs(st.s), b = st.cool ? 3 : as < 0.22 ? 0 : as < 0.55 ? 1 : 2, lv = st.a < 0.42 ? 0 : st.a < 0.7 ? 1 : 2, key = b * 3 + lv;
+      if (!byKey[key]) { byKey[key] = { b: b, lv: lv, w: 0, list: [] }; groups.push(byKey[key]); }
+      byKey[key].list.push(st); byKey[key].w += st.w;
+    });
+    groups.forEach(function(gp){ gp.w /= gp.list.length; });
   }
-  makeStrands(small ? 22 : 44);
-  for (var si = 0; si < (small ? 12 : 24); si++) sparks.push({ u: Math.random(), s: Math.random() * 2 - 1, v: 0.015 + Math.random() * 0.04, r: 0.6 + Math.random() * 1.5, ph: Math.random() * 6.283 });
+  var groups = [];
+  makeStrands(small ? 30 : 64);
+  for (var si = 0; si < (small ? 18 : 40); si++) {
+    var big = si % 5 === 0;
+    sparks.push({ u: Math.random(), s: Math.random() * 2 - 1, d: (Math.random() - 0.5) * 0.5, v: 0.01 + Math.random() * 0.03, r: big ? 6 + Math.random() * 12 : 0.6 + Math.random() * 1.3, big: big, ph: Math.random() * 6.283 });
+  }
 
-  // The path: one ribbon laid down the whole page. It comes in at the top right, sweeps down to
-  // the left, turns and runs down to the right, then down to the left again, to the bottom.
-  // Scrolling travels down it; light runs along it from the top right; it waves as it goes.
+  // The path: one ribbon laid down the whole page, fixed to it like everything else on it. It
+  // comes in wide at the top right, gathers to a white-hot point at the lower left of the hero,
+  // opens out again down to the right, turns, runs down to the left, and so on to the bottom.
+  // Each turn is a twist: tight at the hero, looser further down.
   function rnd(i){ var x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); }
   var turns = [];
   function buildPath(){
     var docH = Math.max(document.documentElement.scrollHeight, H * 2);
-    var step = small ? H * 0.95 : clamp(H * 1.0, 640, 1080);
-    turns = [[W * 1.14, -H * 0.22], [W * (small ? 0.06 : 0.1), H * 1.22]];
-    var y = H * 1.22, left = true, i = 1;
+    var step = small ? H * 1.0 : clamp(H * 1.06, 680, 1120);
+    turns = [[W * 1.1, -H * 0.2, 1], [W * (small ? 0.26 : 0.4), H * (small ? 1.0 : 0.86), 0.035]];
+    var y = turns[1][1], left = true, i = 1;
     while (y < docH + H) {
-      y += step * (0.88 + 0.24 * rnd(i));
+      y += step * (0.9 + 0.2 * rnd(i));
       left = !left;
-      turns.push([left ? W * (0.08 + 0.16 * rnd(i + 3)) : W * (0.78 + 0.16 * rnd(i + 5)), y]);
+      turns.push([left ? W * (0.1 + 0.14 * rnd(i + 3)) : W * (0.8 + 0.14 * rnd(i + 5)), y, 0.2 + 0.3 * rnd(i + 9)]);
       i++;
     }
   }
-  // How bright, wide and sharp the ribbon is where you are: bright behind the hero and at
-  // pricing, a soft glow out of focus through the middle, nearly gone behind the plate.
+  // Where you are sets how bright it is and how far in focus: sharp behind the hero and at
+  // pricing, out of focus and soft through the middle, nearly gone behind the plate.
   var KEYS = [
-    { sel: '.hero', sp: 0.117, fo: 0, gl: 1 },
-    { sel: '.strip', sp: 0.097, fo: 0.1, gl: 0.8 },
-    { sel: '.say', sp: 0.131, fo: 0.72, gl: 0.42 },
-    { sel: '#find', sp: 0.117, fo: 0.32, gl: 0.55 },
-    { sel: '#replies', sp: 0.117, fo: 0.36, gl: 0.52 },
-    { sel: '#ask', sp: 0.117, fo: 0.32, gl: 0.52 },
-    { sel: '#careful-plate', sp: 0.083, fo: 0.7, gl: 0.16 },
-    { sel: '#careful', sp: 0.117, fo: 0.32, gl: 0.54 },
-    { sel: '#automations', sp: 0.117, fo: 0.28, gl: 0.55 },
-    { sel: '#dashboard', sp: 0.131, fo: 0.55, gl: 0.46 },
-    { sel: '#numbers', sp: 0.11, fo: 0.45, gl: 0.46 },
-    { sel: '#how', sp: 0.103, fo: 0.5, gl: 0.42 },
-    { sel: '#pricing', sp: 0.124, fo: 0.02, gl: 0.95 },
-    { sel: '#start', sp: 0.124, fo: 0.05, gl: 0.92 }
+    { sel: '.hero', sp: 1, fo: 0, gl: 1 },
+    { sel: '.strip', sp: 1, fo: 0.25, gl: 0.85 },
+    { sel: '.say', sp: 1.05, fo: 0.7, gl: 0.55 },
+    { sel: '#find', sp: 1, fo: 0.6, gl: 0.5 },
+    { sel: '#replies', sp: 1, fo: 0.62, gl: 0.48 },
+    { sel: '#ask', sp: 1, fo: 0.6, gl: 0.48 },
+    { sel: '#careful-plate', sp: 0.8, fo: 0.85, gl: 0.16 },
+    { sel: '#careful', sp: 1, fo: 0.55, gl: 0.5 },
+    { sel: '#automations', sp: 1, fo: 0.5, gl: 0.52 },
+    { sel: '#dashboard', sp: 1.05, fo: 0.62, gl: 0.46 },
+    { sel: '#numbers', sp: 0.95, fo: 0.5, gl: 0.5 },
+    { sel: '#how', sp: 0.9, fo: 0.55, gl: 0.45 },
+    { sel: '#pricing', sp: 1, fo: 0.05, gl: 0.95 },
+    { sel: '#start', sp: 1, fo: 0.12, gl: 0.9 }
   ].filter(function(k){ return document.querySelector(k.sel); });
   var anchors = [];
   function measure(){
@@ -1256,9 +1272,8 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     var t = a === b ? 0 : smooth(clamp((y - anchors[i]) / Math.max(1, anchors[i + 1] - anchors[i]), 0, 1));
     return { sp: lerp(a.sp, b.sp, t), fo: lerp(a.fo, b.fo, t), gl: lerp(a.gl, b.gl, t) };
   }
-  // The piece of the ribbon that is lit runs from its tail to its head (page positions). As
-  // the page moves the head draws on ahead and the tail lets go behind, each a little after the
-  // page, so the line seems to be drawn as you go and to fade once you have passed it.
+  // The lit piece runs from a tail to a head (page positions). Both sit off screen and keep up
+  // with the page; at load the head draws the ribbon in from the top right in about half a second.
   var cur = null, time = 0, armed = calm, headY = null, tailY = null, headOn = false, tailOn = false;
   function follow(to, k){
     if (!cur) { cur = to; return; }
@@ -1266,148 +1281,175 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   }
   function size(){
     if (!cx) return;
-    DPR = Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.5);
+    DPR = Math.min(window.devicePixelRatio || 1, 1.25);
     W = window.innerWidth; H = window.innerHeight;
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-    hz.width = Math.max(2, Math.round(W / 8)); hz.height = Math.max(2, Math.round(H / 8));
+    hz.width = Math.max(2, Math.round(W / 6)); hz.height = Math.max(2, Math.round(H / 6));
     measure();
   }
-  // The part of the path on screen (and a little beyond), in screen pixels.
-  var CAP = 260, X = new Float32Array(CAP), Y = new Float32Array(CAP), DY = new Float32Array(CAP), NX = new Float32Array(CAP), NY = new Float32Array(CAP), WP = new Float32Array(CAP), L = 0;
+  var CAP = 320, X = new Float32Array(CAP), Y = new Float32Array(CAP), DY = new Float32Array(CAP), NX = new Float32Array(CAP), NY = new Float32Array(CAP), WP = new Float32Array(CAP), L = 0;
+  var pins = [];
   function visible(scroll){
-    var top = scroll - H * 0.3, bottom = scroll + H * 1.3, per = small ? 18 : 26;
+    var top = scroll - H * 0.35, bottom = scroll + H * 1.35, per = small ? 30 : 42;
     tailOn = tailY !== null && tailY > top; headOn = headY !== null && headY < bottom;
     if (tailOn) top = tailY;
     if (headOn) bottom = headY;
-    L = 0;
+    L = 0; pins.length = 0;
     if (bottom - top < 8) return;
     for (var k = 0; k < turns.length - 1 && L < CAP - 1; k++) {
       var a = turns[k], b = turns[k + 1];
       if (b[1] < top || a[1] > bottom) continue;
+      if (b[2] < 0.1 && b[1] > top && b[1] < bottom) pins.push([b[0], b[1] - scroll, b[2]]);
       var dy = b[1] - a[1], c1y = a[1] + dy * 0.55, c2y = b[1] - dy * 0.55;
       for (var j = (L ? 1 : 0); j <= per && L < CAP; j++) {
         var t = j / per, u = 1 - t;
         var py = u * u * u * a[1] + 3 * u * u * t * c1y + 3 * u * t * t * c2y + t * t * t * b[1];
         if (py < top || py > bottom) continue;
-        var px = u * u * u * a[0] + 3 * u * u * t * a[0] + 3 * u * t * t * b[0] + t * t * t * b[0];
-        X[L] = px; Y[L] = py - scroll; DY[L] = py;
-        // Wide in the middle of each run, narrower where it turns; the first run fans out from
-        // the top right and gathers to the lower left, like the light coming in.
-        WP[L] = k === 0 ? 0.42 + 0.58 * Math.pow(1 - t, 0.8) : 0.62 + 0.38 * Math.sin(Math.PI * t);
+        X[L] = u * u * u * a[0] + 3 * u * u * t * a[0] + 3 * u * t * t * b[0] + t * t * t * b[0];
+        Y[L] = py - scroll; DY[L] = py;
+        // An hourglass: wide in the middle of each run, gathered where it turns.
+        var pinch = lerp(a[2], b[2], t), open = Math.pow(Math.sin(Math.PI * t), 0.7);
+        WP[L] = k === 0 ? lerp(1, b[2], Math.pow(t, 1.6)) : pinch + (1 - pinch) * open;
         L++;
       }
     }
-    var mn = Math.min(W, H), amp = mn * (calm ? 0 : 0.018);
+    var amp = Math.min(W, H) * (calm ? 0 : 0.012);
     for (var i = 0; i < L; i++) {
       var i0 = Math.max(0, i - 1), i1 = Math.min(L - 1, i + 1), tx = X[i1] - X[i0], ty = Y[i1] - Y[i0], l = Math.hypot(tx, ty) || 1;
       NX[i] = -ty / l; NY[i] = tx / l;
-      var wv = Math.sin(DY[i] * 0.0058 - time * 1.05) * amp + Math.sin(DY[i] * 0.0021 + time * 0.55) * amp * 0.6;
+      var wv = Math.sin(DY[i] * 0.004 - time * 0.7) * amp * WP[i];
       X[i] += NX[i] * wv; Y[i] += NY[i] * wv;
     }
   }
-  var PAL = ['255,52,40', '255,92,64', '255,132,82', '255,170,130', '255,210,190'];
   function draw(){
     if (!cx || !cur) return;
-    var g = cur.gl * (small ? 0.72 : 1), fo = cur.fo, mn = Math.min(W, H), spread = cur.sp * mn;
+    var g = cur.gl * (small ? 0.8 : 1), fo = cur.fo, spread = Math.min(small ? 0.22 * W : 0.15 * W, 250) * cur.sp;
     cx.setTransform(1, 0, 0, 1, 0, 0);
     cx.clearRect(0, 0, cv.width, cv.height);
     if (g < 0.02 || !turns.length) return;
     visible(window.scrollY);
     if (L < 2) return;
-    // The haze: wide soft strokes drawn small, then stretched over the screen.
+    var PX = draw.px || (draw.px = new Float32Array(CAP)), PY = draw.py || (draw.py = new Float32Array(CAP));
+    var sharp = 1 - fo * 0.8;
+    // The glow: a few of the strands drawn thick on a small canvas, then stretched over the
+    // screen, so the soft light follows the ribbon's own shape; out of focus, it is most of it.
     hx.setTransform(1, 0, 0, 1, 0, 0);
     hx.clearRect(0, 0, hz.width, hz.height);
     hx.globalCompositeOperation = 'lighter';
     hx.lineCap = 'round'; hx.lineJoin = 'round';
     var sx = hz.width / W, sy = hz.height / H;
-    function hazeFade(rgb, alpha){
-      var hg = hx.createLinearGradient(X[0] * sx, Y[0] * sy, X[L - 1] * sx, Y[L - 1] * sy);
-      hg.addColorStop(0, 'rgba(' + rgb + ',0)');
-      hg.addColorStop(tailOn ? 0.35 : 0.08, 'rgba(' + rgb + ',' + alpha.toFixed(3) + ')');
-      hg.addColorStop(1, 'rgba(' + rgb + ',' + alpha.toFixed(3) + ')');
-      return hg;
+    function lineOf(st){
+      for (var j = 0; j < L; j++) {
+        var o = spread * (st.s * WP[j] + 0.035 * Math.sin(DY[j] * 0.0042 + time * 0.65 + st.ph) * (0.3 + WP[j]));
+        PX[j] = X[j] + NX[j] * o; PY[j] = Y[j] + NY[j] * o;
+      }
     }
-    function hazePath(shift){
+    for (var h = 0; h < strands.length; h += 6) {
+      var hs = strands[h];
+      lineOf(hs);
       hx.beginPath();
-      for (var j = 0; j < L; j++) { var x = (X[j] + NX[j] * shift * WP[j]) * sx, y = (Y[j] + NY[j] * shift * WP[j]) * sy; j ? hx.lineTo(x, y) : hx.moveTo(x, y); }
+      for (var q = 0; q < L; q++) q ? hx.lineTo(PX[q] * sx, PY[q] * sy) : hx.moveTo(PX[q] * sx, PY[q] * sy);
+      hx.lineWidth = Math.max(1, spread * 0.09 * sx * (1 + fo * 1.6));
+      hx.strokeStyle = (hs.cool ? 'rgba(122,162,255,' : Math.abs(hs.s) < 0.4 ? 'rgba(255,150,104,' : 'rgba(255,58,42,') + (0.2 * g * (0.35 + fo * 1.2)).toFixed(3) + ')';
+      hx.stroke();
     }
-    hazePath(0); hx.lineWidth = spread * 1.9 * sx; hx.strokeStyle = hazeFade('255,50,38', 0.13 * g * (0.55 + fo)); hx.stroke();
-    hazePath(0); hx.lineWidth = spread * 0.95 * sx; hx.strokeStyle = hazeFade('255,124,82', 0.17 * g * (0.5 + fo)); hx.stroke();
-    hazePath(-spread * 0.25); hx.lineWidth = spread * 0.5 * sx; hx.strokeStyle = hazeFade('122,162,255', 0.05 * g); hx.stroke();
-    hazePath(0); hx.lineWidth = Math.max(1, spread * 0.26 * sx); hx.strokeStyle = hazeFade('255,220,200', 0.26 * g * (1 - fo * 0.5)); hx.stroke();
     cx.globalCompositeOperation = 'lighter';
     cx.imageSmoothingEnabled = true;
     cx.drawImage(hz, 0, 0, cv.width, cv.height);
-    // The strands: around the path, twisting slowly over each other.
+    // The strands: hair-thin, close to parallel, each shimmering on its own; one stroke per
+    // colour and brightness.
     cx.setTransform(DPR, 0, 0, DPR, 0, 0);
     cx.lineCap = 'round'; cx.lineJoin = 'round';
-    var sharp = 1 - fo * 0.72;
-    var PX = draw.px || (draw.px = new Float32Array(CAP)), PY = draw.py || (draw.py = new Float32Array(CAP));
-    for (var i = 0; i < strands.length; i++) {
-      var st = strands[i];
-      cx.beginPath();
-      for (var j = 0; j < L; j++) {
-        var v = DY[j] * 0.0024;
-        var tw = 0.55 + 0.45 * Math.cos(v * 3.1 + st.ph * 0.5 + time * 0.36);
-        var o = spread * st.s * WP[j] * tw * (0.82 + 0.18 * Math.sin(v * 5 + st.ph + time * 0.45));
-        PX[j] = X[j] + NX[j] * o; PY[j] = Y[j] + NY[j] * o;
-        j ? cx.lineTo(PX[j], PY[j]) : cx.moveTo(PX[j], PY[j]);
-      }
-      var al = st.a * g * sharp;
-      var as = Math.abs(st.s), col = st.cool ? '140,175,255' : as < 0.28 ? '255,222,204' : as < 0.6 ? '255,146,98' : '255,62,46';
+    var COLS = ['255,232,218', '255,150,100', '255,66,48', '135,172,255'], LV = [0.36, 0.62, 0.92];
+    var grads = COLS.map(function(col){
       var gr = cx.createLinearGradient(X[0], Y[0], X[L - 1], Y[L - 1]);
-      var full = al * (st.cool ? 0.55 : 1);
       gr.addColorStop(0, 'rgba(' + col + ',0)');
-      gr.addColorStop(tailOn ? 0.38 : 0.1, 'rgba(' + col + ',' + (full * 0.85).toFixed(3) + ')');
-      gr.addColorStop(headOn ? 0.9 : 0.9, 'rgba(' + col + ',' + full.toFixed(3) + ')');
-      gr.addColorStop(1, 'rgba(' + col + ',' + (headOn ? Math.min(1, full * 1.25) : 0).toFixed(3) + ')');
-      cx.strokeStyle = gr;
-      cx.lineWidth = st.w * (1 + fo * 0.8);
-      cx.stroke();
-      // Light running down the strand, from the top right onwards.
-      if (!calm && i % 2 === 0 && Math.abs(st.s) < 0.75 && fo < 0.8 && L > 12) {
-        var span = Math.max(4, Math.round(L * 0.06));
-        var head = Math.floor(((time * (0.16 + 0.05 * (i % 4)) + st.ph / 6.283) % 1) * (L + span));
+      gr.addColorStop(tailOn ? 0.25 : 0.06, 'rgba(' + col + ',1)');
+      gr.addColorStop(headOn ? 0.92 : 0.94, 'rgba(' + col + ',1)');
+      gr.addColorStop(1, 'rgba(' + col + ',' + (headOn ? 1 : 0) + ')');
+      return gr;
+    });
+    var glinting = [];
+    for (var gi = 0; gi < groups.length; gi++) {
+      var gp = groups[gi], alpha = LV[gp.lv] * g * sharp * (gp.b === 3 ? 0.6 : 1);
+      if (alpha < 0.01) continue;
+      cx.globalAlpha = Math.min(1, alpha);
+      cx.strokeStyle = grads[gp.b];
+      for (var m = 0; m < gp.list.length; m++) {
+        var st = gp.list[m];
+        lineOf(st);
+        cx.beginPath();
+        cx.moveTo(PX[0], PY[0]);
+        for (var j = 1; j < L; j++) cx.lineTo(PX[j], PY[j]);
+        cx.lineWidth = st.w;
+        cx.stroke();
+        if (st.glint && !calm && fo < 0.85 && L > 12) glinting.push(st);
+      }
+    }
+    cx.globalAlpha = 1;
+    // Glints of light running along some strands, from the top right onwards.
+    if (glinting.length) {
+      cx.beginPath();
+      var span = Math.max(5, Math.round(L * 0.07));
+      for (var gl2 = 0; gl2 < glinting.length; gl2++) {
+        var sg = glinting[gl2];
+        var head = Math.floor(((time * sg.glint + sg.ph / 6.283) % 1) * (L + span));
         var from = Math.max(0, head - span), to = Math.min(L - 1, head);
-        if (to - from >= 2) {
-          cx.beginPath();
-          for (var q = from; q <= to; q++) q === from ? cx.moveTo(PX[q], PY[q]) : cx.lineTo(PX[q], PY[q]);
-          var pg = cx.createLinearGradient(PX[from], PY[from], PX[to], PY[to]);
-          pg.addColorStop(0, 'rgba(255,226,212,0)');
-          pg.addColorStop(1, 'rgba(255,242,234,' + (0.95 * g * (1 - fo * 0.8)).toFixed(3) + ')');
-          cx.strokeStyle = pg;
-          cx.lineWidth = st.w + 1.1;
-          cx.stroke();
-        }
+        if (to - from < 2) continue;
+        lineOf(sg);
+        cx.moveTo(PX[from], PY[from]);
+        for (var q2 = from + 1; q2 <= to; q2++) cx.lineTo(PX[q2], PY[q2]);
       }
+      cx.globalAlpha = Math.min(1, 0.85 * g * (1 - fo * 0.85));
+      cx.strokeStyle = 'rgb(255,244,236)';
+      cx.lineWidth = 1.5;
+      cx.stroke();
+      cx.globalAlpha = 1;
     }
-    // The tip where the line is being drawn: a warm flare and a white point.
-    if (headOn && L > 2) {
-      var hxp = X[L - 1], hyp = Y[L - 1];
-      if (hyp > -60 && hyp < H + 60) {
-        var fr = Math.max(18, spread * 0.85);
-        var fl = cx.createRadialGradient(hxp, hyp, 0, hxp, hyp, fr);
-        fl.addColorStop(0, 'rgba(255,240,232,' + (0.6 * g).toFixed(3) + ')');
-        fl.addColorStop(0.25, 'rgba(255,150,104,' + (0.32 * g).toFixed(3) + ')');
-        fl.addColorStop(1, 'rgba(255,60,44,0)');
-        cx.fillStyle = fl;
-        cx.beginPath(); cx.arc(hxp, hyp, fr, 0, 6.283); cx.fill();
-        cx.fillStyle = 'rgba(255,248,244,' + (0.95 * g).toFixed(3) + ')';
-        cx.beginPath(); cx.arc(hxp, hyp, 2.2, 0, 6.283); cx.fill();
-      }
+    // The point where it gathers: white-hot, with a bloom.
+    for (var p = 0; p < pins.length; p++) {
+      var bx = pins[p][0], by = pins[p][1];
+      if (by < -200 || by > H + 200) continue;
+      var br = Math.max(60, W * 0.075);
+      var bl = cx.createRadialGradient(bx, by, 0, bx, by, br);
+      bl.addColorStop(0, 'rgba(255,246,238,' + (0.85 * g).toFixed(3) + ')');
+      bl.addColorStop(0.12, 'rgba(255,196,160,' + (0.55 * g).toFixed(3) + ')');
+      bl.addColorStop(0.4, 'rgba(255,84,58,' + (0.18 * g).toFixed(3) + ')');
+      bl.addColorStop(1, 'rgba(255,42,42,0)');
+      cx.fillStyle = bl;
+      cx.beginPath(); cx.arc(bx, by, br, 0, 6.283); cx.fill();
     }
-    // Sparks drifting down along it.
-    if (fo < 0.85) {
-      for (var k = 0; k < sparks.length; k++) {
-        var sp = sparks[k];
-        var jj = Math.floor(((sp.u + time * sp.v * 0.6) % 1) * L);
-        if (jj >= L) continue;
-        var oo = spread * sp.s * WP[jj] * 0.95, tw2 = 0.45 + 0.55 * Math.sin(time * 2.1 + sp.ph);
-        var a2 = tw2 * g * (1 - fo) * 0.85;
+    // The tip while it is still drawing in.
+    if (headOn && L > 2 && Y[L - 1] > -60 && Y[L - 1] < H + 60) {
+      var tx2 = X[L - 1], ty2 = Y[L - 1], tr = Math.max(26, spread * WP[L - 1] * 0.9);
+      var tg = cx.createRadialGradient(tx2, ty2, 0, tx2, ty2, tr);
+      tg.addColorStop(0, 'rgba(255,240,230,' + (0.7 * g).toFixed(3) + ')');
+      tg.addColorStop(0.3, 'rgba(255,140,96,' + (0.3 * g).toFixed(3) + ')');
+      tg.addColorStop(1, 'rgba(255,60,44,0)');
+      cx.fillStyle = tg;
+      cx.beginPath(); cx.arc(tx2, ty2, tr, 0, 6.283); cx.fill();
+    }
+    // Sparkles around it: small points, and a few large soft ones out of focus.
+    for (var k = 0; k < sparks.length; k++) {
+      var sp = sparks[k];
+      var jj = Math.floor(((sp.u + time * sp.v * 0.5) % 1) * L);
+      if (jj >= L) continue;
+      var oo = spread * (sp.s * WP[jj] * 1.35 + sp.d), tw2 = 0.4 + 0.6 * Math.sin(time * 1.7 + sp.ph);
+      var px = X[jj] + NX[jj] * oo, py = Y[jj] + NY[jj] * oo;
+      if (sp.big) {
+        var a3 = 0.12 * tw2 * g;
+        if (a3 < 0.01) continue;
+        var bg = cx.createRadialGradient(px, py, 0, px, py, sp.r);
+        bg.addColorStop(0, 'rgba(255,170,130,' + a3.toFixed(3) + ')');
+        bg.addColorStop(1, 'rgba(255,90,60,0)');
+        cx.fillStyle = bg;
+        cx.beginPath(); cx.arc(px, py, sp.r, 0, 6.283); cx.fill();
+      } else {
+        var a2 = tw2 * g * (1 - fo * 0.6) * 0.9;
         if (a2 < 0.04) continue;
         cx.beginPath();
-        cx.arc(X[jj] + NX[jj] * oo, Y[jj] + NY[jj] * oo, sp.r * (1 + fo), 0, 6.283);
-        cx.fillStyle = 'rgba(255,226,212,' + a2.toFixed(3) + ')';
+        cx.arc(px, py, sp.r * (1 + fo), 0, 6.283);
+        cx.fillStyle = 'rgba(255,232,220,' + a2.toFixed(3) + ')';
         cx.fill();
       }
     }
@@ -1463,14 +1505,13 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     }
     time += dt;
     var y = window.scrollY;
-    if (headY === null) { headY = -H * 0.3; tailY = -H * 0.34; }
+    if (headY === null) { headY = -H * 0.25; tailY = -H * 0.45; }
     if (armed) {
-      // The tail sits off the top of the screen in the hero (the line comes in from the top
-      // right), then just inside it, so what you have passed fades away.
-      var lead = lerp(-0.3, 0.12, clamp(y / (H * 0.7), 0, 1));
-      var hT = y + H * 0.94, tT = y + H * lead;
-      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 2.7 : 3.4)));
-      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * (tT > tailY ? 1.7 : 3.4)));
+      // Both ends sit off screen and keep up with the page, so the ribbon moves with it; at load
+      // the head draws it in from the top right in about half a second.
+      var hT = y + H * 1.4, tT = y - H * 0.4;
+      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 4.6 : 6)));
+      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * 6));
       if (tailY > headY - 60) tailY = headY - 60;
     }
     follow(target(y), 1 - Math.exp(-dt * 3.2));
