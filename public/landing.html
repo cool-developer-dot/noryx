@@ -399,6 +399,81 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
   html{scroll-behavior:auto}
 }
 
+/* Close: the hero window's fourth scene, one lead marked Won */
+.scene[data-k="close"]{display:flex;flex-direction:column;gap:14px}
+.cl-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.cl-h p{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
+.cl-h small{display:block;margin-top:2px;font-size:12px;font-weight:400;color:var(--dim)}
+.cl-b{display:flex;gap:6px;flex:none}
+.cl-b i{font-style:normal;font-size:11.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);color:var(--mute)}
+.cl-b i.w{color:#86efac;border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.08)}
+.row.cl-x{position:relative}
+.cl-x .ok{position:absolute;right:12px;top:50%;margin-top:-11px;opacity:0;transform:scale(.9)}
+.scene.on .row.cl-x{animation:rise .5s var(--ease) 1.5s forwards,glow 3s var(--ease) 3s forwards}
+.scene.on .cl-x .cl-b{animation:cl-out .3s var(--ease) 2.9s forwards}
+.scene.on .cl-x .ok{animation:rise .4s var(--ease) 3.1s forwards}
+@keyframes cl-out{to{opacity:0;transform:scale(.94)}}
+
+/* Brand logos on a tile tinted with the brand's colour, as in the app */
+.lg{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--panel-2);background:color-mix(in srgb,var(--t) 24%,#24221f);box-shadow:inset 0 0 0 1px rgba(244,239,230,.08);transition:transform .3s var(--ease)}
+.lg svg{width:20px;height:20px;display:block}
+.lg.s{width:28px;height:28px;border-radius:9px}.lg.s svg{width:15px;height:15px}
+.lg.xs{width:20px;height:20px;border-radius:6px}.lg.xs svg{width:12px;height:12px}
+.via{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim)}
+
+/* Ask NORYX: an answer, then a card ready to add in an app */
+.ask .act{display:flex;align-items:center;gap:9px;border-radius:12px;border:1px solid var(--line);background:rgba(6,7,8,.5);padding:8px 10px;font-size:12px;color:var(--mute)}
+.ask .act b{color:var(--fg);font-weight:500}
+.ask .act .tag{margin-left:auto}
+
+/* Automations: one sentence becomes a standing instruction */
+.au{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:16px}
+.au-chat{position:relative;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(244,239,230,.045),rgba(244,239,230,.015));padding:24px;display:flex;flex-direction:column;justify-content:center;gap:14px;overflow:hidden}
+.au-chat::after{content:"";position:absolute;right:-20%;bottom:-40%;width:70%;height:70%;border-radius:50%;background:radial-gradient(closest-side,rgba(167,139,250,.14),transparent);pointer-events:none}
+.au-me{align-self:flex-end;max-width:88%;background:var(--panel-2);border:1px solid var(--line);border-radius:16px 16px 5px 16px;padding:11px 14px;font-size:14px;line-height:1.45}
+.au-card{position:relative;z-index:1;border-radius:18px;border:1px solid var(--line-2);background:rgba(6,7,8,.6);padding:16px 16px 14px;display:flex;flex-direction:column;gap:2px}
+.au-top{display:flex;align-items:center;gap:11px;padding-bottom:10px}
+.au-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(167,139,250,.14);color:var(--violet);flex:none}
+.au-ic svg{width:17px;height:17px}
+.au-top p{margin:0;font-size:14.5px;font-weight:600;line-height:1.25}
+.au-top small{display:block;font-size:12px;font-weight:400;color:var(--dim)}
+.au-on{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#86efac;padding:3px 9px;border-radius:999px;border:1px solid rgba(74,222,128,.3);background:rgba(74,222,128,.08)}
+.au-on i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.8s infinite}
+.au-step{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:7px 0;position:relative}
+.au-step+.au-step::before{content:"";position:absolute;left:13.5px;top:-7px;height:14px;width:1px;background:var(--line-2)}
+.au-step p{margin:0;font-size:13px;line-height:1.3}
+.au-step small{font-size:11px;color:var(--dim)}
+.au-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin-top:8px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+.au-btns{display:flex;gap:6px}
+.au-btns i{font-style:normal;font-size:11.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-2);color:var(--mute)}
+.au-log{position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:12.5px;color:var(--mute)}
+.au-log b{color:var(--fg);font-weight:500}
+.js .au-chat .au-card,.js .au-chat .au-step,.js .au-chat .au-log{opacity:0;transform:translateY(8px)}
+.au-chat.in .au-card{animation:rise .55s var(--ease) .35s forwards}
+.au-chat.in .au-step.s1{animation:rise .5s var(--ease) .8s forwards}
+.au-chat.in .au-step.s2{animation:rise .5s var(--ease) 1.05s forwards}
+.au-chat.in .au-log{animation:rise .5s var(--ease) 1.7s forwards}
+.au-list{display:flex;flex-direction:column;gap:10px}
+.au-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(244,239,230,.04),rgba(244,239,230,.012));padding:14px 16px;transition:border-color .3s}
+.au-row:hover{border-color:var(--line-2)}
+.au-when{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:6px;font:500 11px var(--mono);letter-spacing:.01em;padding:3px 9px;border-radius:999px;color:var(--c);border:1px solid var(--line-2);border-color:color-mix(in srgb,var(--c) 35%,transparent);background:color-mix(in srgb,var(--c) 9%,transparent)}
+.au-when svg{width:12px;height:12px}
+.au-row p{margin:0;font-size:14.5px;line-height:1.35}
+.au-apps{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px 28px;flex-wrap:wrap;border-radius:22px;border:1px solid var(--line);padding:18px 22px;background:linear-gradient(180deg,rgba(244,239,230,.03),rgba(244,239,230,.01))}
+.au-apps p{margin:0;font-size:14px;color:var(--mute);max-width:380px}
+.au-apps p b{color:var(--fg);font-weight:600}
+.au-logos{display:flex;flex-wrap:wrap;gap:10px}
+.au-logos .lg:hover{transform:translateY(-2px)}
+@media (max-width:1020px){.au{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .au-chat{padding:18px}.au-row{padding:12px 14px}.au-row p{font-size:14px}
+  .au-apps{padding:16px}.au-logos{gap:8px}
+  .lg{width:36px;height:36px;border-radius:11px}.lg svg{width:18px;height:18px}
+  .lg.s{width:28px;height:28px;border-radius:9px}.lg.s svg{width:15px;height:15px}
+  .lg.xs{width:20px;height:20px;border-radius:6px}.lg.xs svg{width:12px;height:12px}
+  .au-btns{display:none}
+}
+
 /* Tablets */
 @media (max-width:1020px){
   .hero .wrap{grid-template-columns:1fr;gap:44px}
@@ -447,12 +522,13 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="b-gmail" viewBox="0 0 24 24"><path fill="#4285F4" d="M1.5 7.1 6 10.5V20H3.2a1.7 1.7 0 0 1-1.7-1.7Z"/><path fill="#34A853" d="M22.5 7.1 18 10.5V20h2.8a1.7 1.7 0 0 0 1.7-1.7Z"/><path fill="#EA4335" d="M6 10.5 12 15l6-4.5V5.8L12 10.3 6 5.8Z"/><path fill="#FBBC04" d="M18 5.8v4.7l4.5-3.4V6.4a2.4 2.4 0 0 0-3.8-1.9Z"/><path fill="#C5221F" d="M6 5.8v4.7L1.5 7.1V6.4a2.4 2.4 0 0 1 3.8-1.9Z"/></symbol><symbol id="b-trello" viewBox="0 0 24 24"><path fill="#2684FF" d="M21.147 0H2.853A2.86 2.86 0 000 2.853v18.294A2.86 2.86 0 002.853 24h18.294A2.86 2.86 0 0024 21.147V2.853A2.86 2.86 0 0021.147 0zM10.34 17.287a.953.953 0 01-.953.953h-4a.954.954 0 01-.954-.953V5.38a.953.953 0 01.954-.953h4a.954.954 0 01.953.953zm9.233-5.467a.944.944 0 01-.953.947h-4a.947.947 0 01-.953-.947V5.38a.953.953 0 01.953-.953h4a.954.954 0 01.953.953z"/></symbol><symbol id="b-slack" viewBox="0 0 24 24"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z"/><path fill="#E01E5A" d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z"/><path fill="#36C5F0" d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z"/><path fill="#2EB67D" d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z"/><path fill="#ECB22E" d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></symbol><symbol id="b-linkedin" viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="3" fill="#fff"/><path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol><symbol id="b-notion" viewBox="0 0 24 24"><path fill="#F4EFE6" d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/></symbol><symbol id="b-linear" viewBox="0 0 24 24"><path fill="#5E6AD2" d="M2.886 4.18A11.982 11.982 0 0 1 11.99 0C18.624 0 24 5.376 24 12.009c0 3.64-1.62 6.903-4.18 9.105L2.887 4.18ZM1.817 5.626l16.556 16.556c-.524.33-1.075.62-1.65.866L.951 7.277c.247-.575.537-1.126.866-1.65ZM.322 9.163l14.515 14.515c-.71.172-1.443.282-2.195.322L0 11.358a12 12 0 0 1 .322-2.195Zm-.17 4.862 9.823 9.824a12.02 12.02 0 0 1-9.824-9.824Z"/></symbol><symbol id="b-asana" viewBox="0 0 24 24"><path fill="#F06A6A" d="M18.78 12.653c-2.882 0-5.22 2.336-5.22 5.22s2.338 5.22 5.22 5.22 5.22-2.34 5.22-5.22-2.336-5.22-5.22-5.22zm-13.56 0c-2.88 0-5.22 2.337-5.22 5.22s2.338 5.22 5.22 5.22 5.22-2.338 5.22-5.22-2.336-5.22-5.22-5.22zm12-6.525c0 2.883-2.337 5.22-5.22 5.22-2.882 0-5.22-2.337-5.22-5.22 0-2.88 2.338-5.22 5.22-5.22 2.883 0 5.22 2.34 5.22 5.22z"/></symbol><symbol id="b-todoist" viewBox="0 0 24 24"><path fill="#E44332" d="M21 0H3C1.35 0 0 1.35 0 3v3.858s3.854 2.24 4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.608 8.136-4.675.279-.161.58-.107.748-.01.164.097.606.348.84.48.232.134.221.502.013.622l-9.712 5.59c-.346.2-.69.204-1.048.002C3.478 10.907.998 9.463 0 8.882v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.008.164.096.606.347.84.48.232.133.221.5.013.62-.208.121-9.288 5.346-9.712 5.59-.346.2-.69.205-1.048.002C3.478 14.951.998 13.506 0 12.926v2.02l4.098 2.38c.31.18.694.177 1.004 0 .26-.147 8.02-4.609 8.136-4.676.279-.16.58-.106.748-.009.164.097.606.348.84.48.232.133.221.502.013.622l-9.712 5.59c-.346.199-.69.204-1.048.001C3.478 18.994.998 17.55 0 16.97V21c0 1.65 1.35 3 3 3h18c1.65 0 3-1.35 3-3V3c0-1.65-1.35-3-3-3z"/></symbol><symbol id="b-github" viewBox="0 0 24 24"><path fill="#F4EFE6" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol><symbol id="b-gitlab" viewBox="0 0 24 24"><path fill="#FC6D26" d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.405.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4399l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4412.8748.8748 0 0 0-.9997-.0537.8585.8585 0 0 0-.3362.4049L.4332 9.5015l-.0325.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.0087.03.0213 4.976 3.7264 2.462 1.8633 1.4995 1.1321a1.0085 1.0085 0 0 0 1.2197 0l1.4995-1.1321 2.4619-1.8633 5.006-3.7489.0125-.01a6.0682 6.0682 0 0 0 2.0094-7.003z"/></symbol><symbol id="b-hubspot" viewBox="0 0 24 24"><path fill="#FF7A59" d="M18.164 7.93V5.084a2.198 2.198 0 001.267-1.978v-.067A2.2 2.2 0 0017.238.845h-.067a2.2 2.2 0 00-2.193 2.193v.067a2.196 2.196 0 001.252 1.973l.013.006v2.852a6.22 6.22 0 00-2.969 1.31l.012-.01-7.828-6.095A2.497 2.497 0 104.3 4.656l-.012.006 7.697 5.991a6.176 6.176 0 00-1.038 3.446c0 1.343.425 2.588 1.147 3.607l-.013-.02-2.342 2.343a1.968 1.968 0 00-.58-.095h-.002a2.033 2.033 0 102.033 2.033 1.978 1.978 0 00-.1-.595l.005.014 2.317-2.317a6.247 6.247 0 104.782-11.134l-.036-.005zm-.964 9.378a3.206 3.206 0 113.215-3.207v.002a3.206 3.206 0 01-3.207 3.207z"/></symbol></svg>
 <div class="bg" aria-hidden="true"><div class="grid"></div></div>
 
 <header class="top" id="top-bar">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>NORYX</a>
-    <nav class="nav" aria-label="Main"><a href="#product">Product</a><a href="#how">How it works</a><a href="#pricing">Pricing</a></nav>
+    <nav class="nav" aria-label="Main"><a href="#product">Product</a><a href="#automations">Automations</a><a href="#how">How it works</a><a href="#pricing">Pricing</a></nav>
     <div class="right">
       <a class="signin" href="https://app.heynoryx.com/login">Sign in</a>
       <a class="btn btn-red btn-sm" href="https://app.heynoryx.com/login?mode=sign-up">Start free</a>
@@ -465,9 +541,9 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 <section class="hero">
   <div class="wrap">
     <div>
-      <a class="badge" href="#replies"><b>New</b>Every reply answered, in your voice</a>
+      <a class="badge" href="#automations"><b>New</b>Automations, set up in one sentence</a>
       <h1>Find leads.<br>Reach them.<br><span class="s">Close.</span></h1>
-      <p class="lede">The whole sales job in one product. Leads with verified emails, one pipeline, outreach from your own accounts, and every reply answered.</p>
+      <p class="lede">The whole sales job in one product. Verified leads, outreach from your own accounts, every reply answered, and automations that run on time.</p>
       <div class="ctas">
         <a class="btn btn-red" href="https://app.heynoryx.com/login?mode=sign-up">Start free <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <a class="btn btn-ghost" href="#product">See what it does</a>
@@ -482,11 +558,12 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
           <button class="w-tab on" data-go="find" type="button" tabindex="-1">Find</button>
           <button class="w-tab" data-go="pipe" type="button" tabindex="-1">Pipeline</button>
           <button class="w-tab" data-go="reply" type="button" tabindex="-1">Replies</button>
+          <button class="w-tab" data-go="close" type="button" tabindex="-1">Close</button>
         </div>
         <span class="w-live" aria-hidden="true"><i></i><span>live</span></span>
       </div>
       <div class="w-prog" aria-hidden="true"><i></i></div>
-      <div class="w-body" role="img" aria-label="NORYX at work: one sentence finds 500 people with verified emails, the pipeline moves a lead to Won, and a reply is answered in your voice.">
+      <div class="w-body" role="img" aria-label="NORYX at work: one sentence finds 500 people with verified emails, the pipeline moves a lead to Won, a reply is answered in your voice, and a lead ready to close is marked Won in one click.">
         <div class="scene on" data-k="find" aria-hidden="true">
           <div class="q"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="t">Freight logistics leaders in Texas</span></div>
           <div class="chips"><span class="chip c1">Head of Logistics</span><span class="chip c2">Freight · 50–500</span><span class="chip c3">Texas, US</span><span class="chip">Email verified</span></div>
@@ -515,6 +592,15 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
             <div class="bub us">Thursday works, Maya. 20 minutes on how teams like Helio cut their dispatch time. 10:00 or 14:00?</div>
             <div class="meta"><span class="tag red">Written in your voice</span><span class="tag">Sending after a natural pause <span class="dots"><i></i><i></i><i></i></span></span></div>
           </div>
+        </div>
+        <div class="scene" data-k="close" aria-hidden="true">
+          <div class="cl-h"><p>Ready to close<small>They said yes or booked a meeting</small></p><span class="tag">Close deals</span></div>
+          <div class="rows">
+            <div class="row"><span class="av" style="background:var(--sky)">PN</span><p>Priya Nair<small>Kestrel Cargo · meeting Thu 10:00 · LinkedIn</small></p><span class="cl-b"><i class="w">Won</i><i>Lost</i></span></div>
+            <div class="row cl-x"><span class="av" style="background:var(--pink)">MO</span><p>Maya Okafor<small>Helio Freight · said yes · LinkedIn</small></p><span class="cl-b"><i class="w">Won</i><i>Lost</i></span><span class="ok">✓ Won</span></div>
+            <div class="row"><span class="av" style="background:var(--amber)">LH</span><p>Lucy Hart<small>Meridian · asked for Team pricing · Gmail</small></p><span class="cl-b"><i class="w">Won</i><i>Lost</i></span></div>
+          </div>
+          <div class="sum"><div><span>Ready</span><b>3</b></div><div><span>Meetings</span><b>2</b></div><div class="g"><span>Won</span><b>3</b></div></div>
         </div>
       </div>
     </div>
@@ -561,7 +647,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 
 <section class="sec" id="product">
   <div class="wrap">
-    <div class="head rv"><span class="eye mono">One product</span><h2>Everything a seller does, <span class="s">in one place.</span></h2><p>Find the people, keep them in one pipeline, write to them and win the reply.</p></div>
+    <div class="head rv"><span class="eye mono">One product</span><h2>Everything a seller does, <span class="s">in one place.</span></h2><p>Find the people, write to them, win the reply and close the deal.</p></div>
     <div class="bento">
 
       <article class="tile w4 rv" id="find" style="--glow:rgba(122,162,255,.16)">
@@ -583,8 +669,8 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       </article>
 
       <article class="tile rv d1" id="pipeline" style="--glow:rgba(167,139,250,.16)">
-        <div class="t-h"><span class="t-ic" style="background:rgba(167,139,250,.14);color:var(--violet)"><svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3" width="3.6" height="12" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.2" y="3" width="3.6" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="12.4" y="3" width="3.6" height="10" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><h3>One pipeline</h3></div>
-        <p class="d">Every lead from New to Won, with notes, history and a CSV export.</p>
+        <div class="t-h"><span class="t-ic" style="background:rgba(167,139,250,.14);color:var(--violet)"><svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3" width="3.6" height="12" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.2" y="3" width="3.6" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="12.4" y="3" width="3.6" height="10" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span><h3>Pipeline and closing</h3></div>
+        <p class="d">Every lead from New to Won. Close deals lists who is ready; one click marks them Won or Lost.</p>
         <div class="viz">
           <div class="p-cols"><span style="--h:92%;background:var(--blue)"><b>88</b></span><span style="--h:70%;background:var(--violet)"><b>61</b></span><span style="--h:38%;background:var(--amber)"><b>14</b></span><span style="--h:12%;background:var(--green)"><b>2</b></span></div>
           <div class="p-lab"><span>New</span><span>Contacted</span><span>Replied</span><span>Won</span></div>
@@ -603,9 +689,10 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 
       <article class="tile w4 rv d1" id="replies" style="--glow:rgba(255,42,42,.16)">
         <div class="t-h"><span class="t-ic" style="background:rgba(255,42,42,.14);color:#ff7a6b"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 4.5A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5v6a1.5 1.5 0 0 1-1.5 1.5H8l-3.5 3V12A1.5 1.5 0 0 1 3 10.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><h3>Every reply answered</h3></div>
-        <p class="d">NORYX reads each reply, tells you what it means and writes the answer in your voice. Send it, edit it, or let NORYX send it for you.</p>
+        <p class="d">Replies from every platform in one inbox, each marked with where it came from. NORYX writes the answer in your voice: send it, edit it, or let NORYX send it.</p>
         <div class="viz r-viz">
           <div class="r-thread">
+            <div class="via"><span class="lg xs" style="--t:#EA4335" role="img" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span><span>Gmail · Lucy Hart, Meridian</span></div>
             <div class="bub them">Interesting. Can you send pricing for a team of 12?</div>
             <div class="bub us">Sure, Lucy. For 12 people it’s the Team plan. Want me to walk you through it on a short call this week?</div>
           </div>
@@ -640,13 +727,43 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
 
       <article class="tile rv d2" id="ask" style="--glow:rgba(167,139,250,.14)">
         <div class="t-h"><span class="t-ic" style="background:rgba(167,139,250,.14);color:var(--violet)"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="currentColor"/><circle cx="14" cy="14" r="1.6" fill="currentColor"/></svg></span><h3>Ask NORYX</h3></div>
-        <p class="d">Ask about your leads, accounts and pipeline in plain words. Every answer shows where it came from.</p>
+        <p class="d">Ask about your leads and pipeline in plain words, or tell it what to do in your apps. It checks with you first.</p>
         <div class="viz ask">
-          <div class="qq">Who replied this week and wants a call?</div>
-          <div class="aa"><b>3 people:</b> Maya Okafor (Helio), Priya Nair (Kestrel) and Lucy Hart (Meridian).</div>
+          <div class="qq">Who wants a call? Add Maya to Trello for Thursday.</div>
+          <div class="aa"><b>3 people:</b> Maya Okafor, Priya Nair and Lucy Hart. Maya’s card is ready:</div>
+          <div class="act"><span class="lg xs" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span><span><b>Call Maya Okafor</b> · Thu</span><span class="tag red">Add</span></div>
         </div>
       </article>
 
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="automations">
+  <div class="wrap">
+    <div class="head rv"><span class="eye mono">Automations</span><h2>Say it once. <span class="s">NORYX does it on time.</span></h2><p>Tell the chat what to do and when. NORYX runs it as you, in your own accounts and apps, and tells you what it did.</p></div>
+    <div class="au">
+      <div class="au-chat rv" role="img" aria-label="In the chat: every Monday at 9, tell me who replied last week and post it in #sales. NORYX turns it into an automation that finds who replied and posts the list in Slack, and shows its last run.">
+        <div class="au-me" aria-hidden="true">Every Monday at 9, tell me who replied last week and post it in #sales.</div>
+        <div class="au-card" aria-hidden="true">
+          <div class="au-top"><span class="au-ic"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 5.5V9l2.4 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><p>Monday replies to #sales<small>Every Monday at 9:00, in your time zone</small></p><span class="au-on"><i></i>On</span></div>
+          <div class="au-step s1"><span class="lg s" style="--t:#a78bfa" role="img" aria-label="NORYX AI" title="NORYX AI"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span><p>Find who replied last week<br><small>NORYX AI · from your replies</small></p><span class="tag">step 1</span></div>
+          <div class="au-step s2"><span class="lg s" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><p>Post the list in #sales<br><small>Slack · as you</small></p><span class="tag">step 2</span></div>
+          <div class="au-foot"><span>Next run: Monday, 9:00</span><span class="au-btns"><i>Run now</i><i>Pause</i></span></div>
+        </div>
+        <div class="au-log" aria-hidden="true"><span class="ok">✓ Done</span><span>Last run <b>Monday 9:00</b> · 7 people posted in #sales</span></div>
+      </div>
+      <div class="au-list">
+        <div class="au-row rv"><span class="au-when" style="--c:var(--amber)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>At 6 pm</span><p>Launch my LinkedIn campaign</p><span class="au-logos" style="gap:6px"><span class="lg s" style="--t:#0A66C2" role="img" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg></span></span></div>
+        <div class="au-row rv d1"><span class="au-when" style="--c:#ff7a6b"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a lead replies</span><p>Add a Trello card to follow up with them</p><span class="au-logos" style="gap:6px"><span class="lg s" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span></span></div>
+        <div class="au-row rv d2"><span class="au-when" style="--c:var(--sky)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a meeting is booked</span><p>Create a Notion page to prepare the call</p><span class="au-logos" style="gap:6px"><span class="lg s" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span></span></div>
+        <div class="au-row rv d3"><span class="au-when" style="--c:var(--green)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a deal is won</span><p>Open a Linear issue to start onboarding</p><span class="au-logos" style="gap:6px"><span class="lg s" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span></span></div>
+        <div class="au-row rv d3"><span class="au-when" style="--c:var(--violet)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Every weekday at 8</span><p>Tell me who to call today</p><span class="au-logos" style="gap:6px"><span class="lg s" style="--t:#a78bfa" role="img" aria-label="NORYX AI" title="NORYX AI"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span></span></div>
+      </div>
+    </div>
+    <div class="au-apps rv">
+      <p><b>Works in the apps you already use.</b> Connect them once; the chat and every automation can then act in them, as you.</p>
+      <div class="au-logos"><span class="lg" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><span class="lg" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span><span class="lg" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span><span class="lg" style="--t:#F06A6A" role="img" aria-label="Asana" title="Asana"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-asana"/></svg></span><span class="lg" style="--t:#E44332" role="img" aria-label="Todoist" title="Todoist"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-todoist"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-github"/></svg></span><span class="lg" style="--t:#FC6D26" role="img" aria-label="GitLab" title="GitLab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gitlab"/></svg></span><span class="lg" style="--t:#FF7A59" role="img" aria-label="HubSpot" title="HubSpot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-hubspot"/></svg></span><span class="lg" style="--t:#EA4335" role="img" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span></div>
     </div>
   </div>
 </section>
@@ -739,7 +856,7 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
       <a class="brand" href="#top" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>NORYX</a>
       <p class="copy">Find leads, reach them and close, in one product.<br>© 2026 NORYX</p>
     </div>
-    <div><h4>Product</h4><a href="#find">Find leads</a><a href="#pipeline">Pipeline</a><a href="#outreach">Outreach</a><a href="#replies">Replies</a><a href="#meetings">Meetings</a><a href="#research">Account research</a></div>
+    <div><h4>Product</h4><a href="#find">Find leads</a><a href="#pipeline">Pipeline</a><a href="#outreach">Outreach</a><a href="#replies">Replies</a><a href="#automations">Automations</a><a href="#pipeline">Close deals</a><a href="#meetings">Meetings</a><a href="#research">Account research</a></div>
     <div><h4>Company</h4><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="https://app.heynoryx.com/contact?topic=sales&amp;from=footer">Contact sales</a><a href="https://app.heynoryx.com/login">Sign in</a></div>
     <div><h4>Legal</h4><a href="https://app.heynoryx.com/privacy">Privacy Policy</a><a href="https://app.heynoryx.com/terms">Terms of Service</a><a href="https://app.heynoryx.com/contact?topic=support&amp;from=footer">Help</a></div>
   </div>
@@ -1013,11 +1130,11 @@ footer .copy{margin:14px 0 0;font-size:12.5px}
     addEventListener('resize', ask, { passive: true });
   })();
 
-  // The hero window: find, pipeline and replies take turns; a tab jumps to its scene.
+  // The hero window: find, pipeline, replies and close take turns; a tab jumps to its scene.
   var scenes = [].slice.call(document.querySelectorAll('.scene'));
   var tabs = [].slice.call(document.querySelectorAll('.w-tab'));
   var prog = document.querySelector('.w-prog i');
-  var keys = ['find', 'pipe', 'reply'], at = 0, timer = null, wait = null;
+  var keys = ['find', 'pipe', 'reply', 'close'], at = 0, timer = null, wait = null;
   function show(i){
     at = i;
     scenes.forEach(function(s){
