@@ -1197,7 +1197,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     for (var i = 0; i < n; i++) {
       var k = n === 1 ? 0 : i / (n - 1);
       var sv = k * 2 - 1 + (Math.random() - 0.5) * 0.06, core = 1 - Math.pow(Math.abs(sv), 1.4);
-      strands.push({ s: sv, ph: Math.random() * 6.283, w: 0.4 + Math.random() * 0.7, a: (0.22 + 0.78 * core) * (0.65 + 0.35 * Math.random()), cool: i % 9 === 4 });
+      strands.push({ s: sv, ph: Math.random() * 6.283, w: 0.5 + Math.random() * 0.8, a: (0.22 + 0.78 * core) * (0.65 + 0.35 * Math.random()), cool: i % 9 === 4 });
     }
   }
   makeStrands(small ? 22 : 44);
@@ -1223,20 +1223,20 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   // How bright, wide and sharp the ribbon is where you are: bright behind the hero and at
   // pricing, a soft glow out of focus through the middle, nearly gone behind the plate.
   var KEYS = [
-    { sel: '.hero', sp: 0.085, fo: 0, gl: 1 },
-    { sel: '.strip', sp: 0.07, fo: 0.1, gl: 0.8 },
-    { sel: '.say', sp: 0.095, fo: 0.72, gl: 0.42 },
-    { sel: '#find', sp: 0.085, fo: 0.32, gl: 0.55 },
-    { sel: '#replies', sp: 0.085, fo: 0.36, gl: 0.52 },
-    { sel: '#ask', sp: 0.085, fo: 0.32, gl: 0.52 },
-    { sel: '#careful-plate', sp: 0.06, fo: 0.7, gl: 0.16 },
-    { sel: '#careful', sp: 0.085, fo: 0.32, gl: 0.54 },
-    { sel: '#automations', sp: 0.085, fo: 0.28, gl: 0.55 },
-    { sel: '#dashboard', sp: 0.095, fo: 0.55, gl: 0.46 },
-    { sel: '#numbers', sp: 0.08, fo: 0.45, gl: 0.46 },
-    { sel: '#how', sp: 0.075, fo: 0.5, gl: 0.42 },
-    { sel: '#pricing', sp: 0.09, fo: 0.02, gl: 0.95 },
-    { sel: '#start', sp: 0.09, fo: 0.05, gl: 0.92 }
+    { sel: '.hero', sp: 0.117, fo: 0, gl: 1 },
+    { sel: '.strip', sp: 0.097, fo: 0.1, gl: 0.8 },
+    { sel: '.say', sp: 0.131, fo: 0.72, gl: 0.42 },
+    { sel: '#find', sp: 0.117, fo: 0.32, gl: 0.55 },
+    { sel: '#replies', sp: 0.117, fo: 0.36, gl: 0.52 },
+    { sel: '#ask', sp: 0.117, fo: 0.32, gl: 0.52 },
+    { sel: '#careful-plate', sp: 0.083, fo: 0.7, gl: 0.16 },
+    { sel: '#careful', sp: 0.117, fo: 0.32, gl: 0.54 },
+    { sel: '#automations', sp: 0.117, fo: 0.28, gl: 0.55 },
+    { sel: '#dashboard', sp: 0.131, fo: 0.55, gl: 0.46 },
+    { sel: '#numbers', sp: 0.11, fo: 0.45, gl: 0.46 },
+    { sel: '#how', sp: 0.103, fo: 0.5, gl: 0.42 },
+    { sel: '#pricing', sp: 0.124, fo: 0.02, gl: 0.95 },
+    { sel: '#start', sp: 0.124, fo: 0.05, gl: 0.92 }
   ].filter(function(k){ return document.querySelector(k.sel); });
   var anchors = [];
   function measure(){
@@ -1469,8 +1469,8 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       // right), then just inside it, so what you have passed fades away.
       var lead = lerp(-0.3, 0.12, clamp(y / (H * 0.7), 0, 1));
       var hT = y + H * 0.94, tT = y + H * lead;
-      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 1.35 : 2.2)));
-      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * (tT > tailY ? 0.85 : 2.4)));
+      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 2.7 : 3.4)));
+      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * (tT > tailY ? 1.7 : 3.4)));
       if (tailY > headY - 60) tailY = headY - 60;
     }
     follow(target(y), 1 - Math.exp(-dt * 3.2));
