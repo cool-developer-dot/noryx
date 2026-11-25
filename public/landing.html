@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>NORYX: Find leads, reach them and close</title>
-<meta name="description" content="NORYX finds your leads with verified work emails and phone numbers, reaches them from your own LinkedIn, email, WhatsApp, Instagram, Telegram and Messenger, answers every reply in your voice, books the meeting and runs your follow-ups on time.">
+<title>NORYX: Find leads, reach them, close, and automate the rest</title>
+<meta name="description" content="NORYX finds your leads with verified work emails and phone numbers, reaches them from your own LinkedIn, email, WhatsApp, Instagram, Telegram and Messenger, answers every reply in your voice, books the meeting, and runs your follow-ups, updates and tasks on time with automations.">
 <link rel="canonical" href="https://heynoryx.com/">
 <meta name="theme-color" content="#060708">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -13,14 +13,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NORYX">
 <meta property="og:url" content="https://heynoryx.com/">
-<meta property="og:title" content="NORYX: Find leads, reach them and close">
-<meta property="og:description" content="Leads with verified emails, outreach from your own accounts on six channels, every reply answered, meetings booked and automations that run on time. One product.">
+<meta property="og:title" content="NORYX: Find leads, reach them, close, and automate the rest">
+<meta property="og:description" content="Leads with verified emails, outreach from your own accounts on six channels, every reply answered, meetings booked, and automations that run your follow-ups, updates and tasks on time.">
 <meta property="og:image" content="https://heynoryx.com/opengraph-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NORYX: Find leads, reach them and close">
-<meta name="twitter:description" content="Leads with verified emails, outreach from your own accounts on six channels, every reply answered, meetings booked and automations that run on time. One product.">
+<meta name="twitter:title" content="NORYX: Find leads, reach them, close, and automate the rest">
+<meta name="twitter:description" content="Leads with verified emails, outreach from your own accounts on six channels, every reply answered, meetings booked, and automations that run your follow-ups, updates and tasks on time.">
 <meta name="twitter:image" content="https://heynoryx.com/twitter-image.png">
 <link rel="preload" href="/fonts/geist-v5-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/instrument-serif-italic-v5-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -140,10 +140,13 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .hero{position:relative;padding:64px 0 30px}
 .hero::before{content:"";position:absolute;inset:-68px 0 0;background-image:radial-gradient(rgba(244,239,230,.075) 1px,transparent 1.3px);background-size:28px 28px;-webkit-mask-image:radial-gradient(ellipse 72% 62% at 50% 38%,#000 25%,transparent 76%);mask-image:radial-gradient(ellipse 72% 62% at 50% 38%,#000 25%,transparent 76%);pointer-events:none}
 .hero-copy{position:relative}
+.hero-in>*{min-width:0}
 .hero-copy::before{content:"";position:absolute;inset:-14% -18% -4% -24%;background:radial-gradient(closest-side,rgba(6,7,8,.72),rgba(6,7,8,.35) 60%,transparent);z-index:-1;pointer-events:none}
 .hero-in{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:48px;align-items:center;min-height:min(760px,calc(100svh - 110px))}
 .hero h1{margin:22px 0 0;font-size:clamp(48px,6.8vw,96px);line-height:.96;letter-spacing:-.058em;font-weight:600}
 .hero h1 .s{color:var(--red-2);letter-spacing:-.03em}
+.tagline{margin:16px 0 0;font-size:clamp(24px,2.7vw,36px);line-height:1.12;letter-spacing:-.035em;font-weight:500;color:var(--fg)}
+.tagline .s{color:#ffb39b}
 .lede{margin:24px 0 0;max-width:29em;color:var(--mute);font-size:18px;line-height:1.55}
 .ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
 .fine{margin:20px 0 0;color:var(--dim);font-size:12px}
@@ -401,6 +404,13 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .au-apps p b{color:var(--fg);font-weight:600}
 .au-logos{display:flex;flex-wrap:wrap;gap:10px}
 
+/* Automations: when, what, control */
+.au-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.au-facts>div{border-radius:20px;border:1px solid var(--line);padding:20px;background:linear-gradient(180deg,rgba(244,239,230,.035),rgba(244,239,230,.01));display:flex;flex-direction:column;gap:10px}
+.au-facts .pill{align-self:flex-start}
+.au-facts b{font-size:16.5px;letter-spacing:-.015em;line-height:1.3}
+.au-facts>div>span:last-child{font-size:14px;color:var(--mute)}
+
 /* Your Monday */
 .dash{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .dt{position:relative;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(21,19,21,.82),rgba(9,9,11,.88));padding:20px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;overflow:hidden}
@@ -430,6 +440,19 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .wave path{fill:none;stroke-width:2}
 .legend{display:flex;gap:16px;font:11.5px var(--mono);color:var(--dim)}
 .legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
+.runs{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.runs li{display:grid;grid-template-columns:42px 20px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(244,239,230,.03);border:1px solid var(--line)}
+.runs .t{font:500 11.5px var(--mono);color:var(--dim)}
+.runs b{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.runs small{display:block;font-size:11.5px;color:var(--dim);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.aw b{display:block;font-size:32px;line-height:1.05;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.aw span{font-size:11.5px;color:var(--dim)}
+.aw-bars{display:flex;align-items:flex-end;gap:6px;height:54px}
+.aw-bars i{flex:1;height:var(--h);border-radius:4px;background:rgba(244,239,230,.12)}
+.aw-bars i.now{background:linear-gradient(180deg,#ff8a4c,#ff2a2a)}
+.incl{margin:14px 0 0;text-align:center;color:var(--mute);font-size:14.5px}
+.incl b{color:var(--fg);font-weight:600}
 .src2{display:grid;gap:12px}
 .src2 .r{display:grid;grid-template-columns:24px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px}
 .src2 .r b{font:500 12px var(--mono);text-align:right}
@@ -439,7 +462,7 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .num{padding:30px 28px 0 0;display:flex;flex-direction:column;gap:18px}
 .num+.num{padding-left:28px;border-left:1px solid var(--line)}
 .num svg{width:100%;height:80px}
-.num .pill{align-self:flex-start;color:#ff9d91;border-color:rgba(255,92,77,.3);background:rgba(255,42,42,.06)}
+.num .pill{white-space:normal;line-height:1.35;align-self:flex-start;color:#ff9d91;border-color:rgba(255,92,77,.3);background:rgba(255,42,42,.06)}
 .num b{font-size:clamp(44px,5vw,64px);line-height:1;letter-spacing:-.05em;font-weight:600;font-variant-numeric:tabular-nums}
 .num p{margin:0;color:var(--mute);font-size:15.5px;max-width:22em}
 
@@ -540,6 +563,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   .tiles{grid-template-columns:repeat(7,minmax(0,1fr));row-gap:22px}
   .tiles::before,.tiles::after{display:none}
   .au{grid-template-columns:1fr}
+  .au-facts{grid-template-columns:1fr}
   .dash{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dt.w2{grid-column:span 2}
   .points{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -559,6 +583,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   .sheet{inset:62px 10px auto}
   .hero{padding:34px 0 10px}
   .hero h1{font-size:clamp(44px,13.4vw,64px)}
+  .hero .pill{white-space:normal;max-width:100%}
   .lede{font-size:16px}
   .ctas{width:100%}.ctas .btn{flex:1}
   .glass{--rx:6deg;--ry:0deg;--rz:0deg;-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(180deg,rgba(26,21,22,.95),rgba(10,10,12,.97))}
@@ -592,6 +617,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   .au-apps{padding:16px}.au-logos{gap:8px}
   .au-logos .lg{width:36px;height:36px}
   .dash{grid-template-columns:1fr}.dt.w2{grid-column:span 1}
+  .runs li{grid-template-columns:38px 20px minmax(0,1fr)}.runs li>span:last-child{display:none}
   .heat{gap:5px 5px;grid-template-columns:24px repeat(7,minmax(0,1fr))}
   .nums{grid-template-columns:1fr}
   .num,.num+.num{padding:28px 0;border-left:0}
@@ -653,19 +679,20 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
 <section class="hero" data-stream="1">
   <div class="wrap hero-in">
     <div class="hero-copy">
-      <a class="pill fx" href="#automations"><i></i>new · automations / 6 channels live</a>
+      <a class="pill fx" href="#automations"><i></i>new · automations that run on time</a>
       <h1 class="fx" style="--d:.08s">Find leads.<br>Reach them. <span class="s">Close.</span></h1>
-      <p class="lede fx" style="--d:.16s">NORYX finds the right people with verified emails, writes to them from your own accounts, answers every reply in your voice and books the meeting. The follow-ups run themselves.</p>
+      <p class="tagline fx" style="--d:.12s">And let the busywork <span class="s">run itself.</span></p>
+      <p class="lede fx" style="--d:.16s">NORYX finds the right people, writes to them from your own accounts, answers every reply in your voice and books the meeting. Say it once, and the follow-ups, Slack updates, CRM tasks and reminders run on time, in the apps you already use.</p>
       <div class="ctas fx" style="--d:.24s">
         <a class="btn btn-red" href="https://app.heynoryx.com/login?mode=sign-up">Start free <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <a class="btn btn-ghost" href="#product"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 3.2v7.6L10.8 7z" fill="currentColor"/></svg>See it work</a>
       </div>
-      <p class="fine mono fx" style="--d:.3s">free plan / no card / 7 days free on paid plans</p>
+      <p class="fine mono fx" style="--d:.3s">free plan / no card / automations on every plan</p>
     </div>
 
     <div class="hero-win fx" style="--d:.2s">
-      <div class="glass" id="glass" role="img" aria-label="NORYX at work: a lead replies on LinkedIn, NORYX AI reads that they want a call, answers in your voice and shares your calendar, and the meeting is booked. A reply that needs a person waits for you.">
-        <div class="g-head" aria-hidden="true"><span>reply → meeting</span><span class="dim">5 steps / 1 branch</span><span class="run"><i></i>running</span></div>
+      <div class="glass" id="glass" role="img" aria-label="An automation at work: when a lead replies on LinkedIn, NORYX AI reads that they want a call, answers in your voice and shares your calendar, then adds a follow-up card in Trello and a note in Slack. A reply that needs a person waits for you. Below it, what ran on its own today.">
+        <div class="g-head" aria-hidden="true"><span>automation · when a lead replies</span><span class="dim">5 steps / 1 branch</span><span class="run"><i></i>on</span></div>
         <div class="g-body" aria-hidden="true">
           <div class="g-tools">
             <span class="ic"><span><svg viewBox="0 0 12 12"><path d="M3 2.5 9 6 6.4 6.8 7.6 9.6 6.3 10.1 5.1 7.3 3 9z" fill="currentColor"/></svg></span><span><svg viewBox="0 0 12 12"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span><svg viewBox="0 0 12 12"><path d="M3.5 8.5 8.5 3.5M5 3.5h3.5V7" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span></span>
@@ -680,21 +707,21 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
               <path class="edge" d="M352 220 C352 246 240 238 240 262"/>
               <circle r="3.2" fill="#ff8a4c"><animateMotion dur="3.6s" repeatCount="indefinite" path="M240 52 V86 L240 132 C240 156 128 150 128 176 L128 220 C128 246 240 238 240 262"/></circle>
             </svg>
-            <div class="nd" style="--x:50%;--y:10.5%;--w:38%;--d:0s"><b>Reply received</b><small><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg>maya okafor · helio</small></div>
+            <div class="nd" style="--x:50%;--y:10.5%;--w:38%;--d:0s"><b>A lead replies</b><small><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg>maya okafor · helio</small></div>
             <div class="nd cond" style="--x:50%;--y:36.5%;--w:38%;--d:.8s"><b>Wants a call?</b><small>noryx ai reads it</small></div>
             <span class="eg" style="--x:33%;--y:52.5%">yes</span>
             <span class="eg" style="--x:67%;--y:52.5%">needs you</span>
-            <div class="nd" style="--x:26.7%;--y:66%;--w:42%;--d:1.6s"><b>Answer in your voice</b><small>shares your calendar</small></div>
+            <div class="nd" style="--x:26.7%;--y:66%;--w:42%;--d:1.6s"><b>Answer, share calendar</b><small>in your voice</small></div>
             <div class="nd" style="--x:73.3%;--y:66%;--w:42%;--d:99s"><b>Waits for you</b><small>in replies · you decide</small></div>
-            <div class="nd" style="--x:50%;--y:91%;--w:40%;--d:2.4s"><b>Meeting booked</b><small><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-calendly"/></svg>thu 10:00</small></div>
+            <div class="nd" style="--x:50%;--y:91%;--w:40%;--d:2.4s"><b>Follow-up in Trello</b><small><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg>card · <svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg>#sales</small></div>
             <span class="timer" style="--x:70%;--y:82%">◷ 4 min</span>
           </div>
           <div class="g-runs">
-            <span>last runs</span>
+            <span>ran on its own today</span>
             <ul>
-              <li><i></i><span class="t">09:41:02</span><b>Maya Okafor · answered, meeting booked</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg>linkedin</span></li>
-              <li><i></i><span class="t">09:38:17</span><b>Weekly replies · posted in #sales</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg>slack</span></li>
-              <li><i></i><span class="t">09:31:44</span><b>Tom Becker · marked won</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg>email</span></li>
+              <li><i></i><span class="t">09:41:02</span><b>Maya replied · answered, card added</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg>trello</span></li>
+              <li><i></i><span class="t">09:00:00</span><b>Monday replies · posted in #sales</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg>slack</span></li>
+              <li><i></i><span class="t">08:00:00</span><b>Today’s calls · sent to you</b><span class="p"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg>email</span></li>
             </ul>
           </div>
         </div>
@@ -705,7 +732,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
 
 <section class="strip" data-stream=".55" aria-label="Channels and apps">
   <div class="wrap">
-    <p class="cap fx">reaches people on 6 channels from your own accounts, and works in the apps you already use</p>
+    <p class="cap fx">reaches people on 6 channels from your own accounts, and runs automations in the apps you already use</p>
     <div class="tiles fx" style="--d:.1s">
       <div class="tl" style="--i:0"><span class="lg" style="--t:#0A66C2" role="img" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg></span><span>linkedin</span></div>
       <div class="tl" style="--i:1"><span class="lg" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span><span>gmail</span></div>
@@ -727,7 +754,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
 <section class="say" data-stream=".35" aria-label="Why NORYX">
   <div class="wrap">
     <span class="pill"><i></i>why noryx</span>
-    <p class="sc">Most sales tools <span class="pen pen-x">hand you a list.<span class="pen-l" aria-hidden="true"></span></span> NORYX gets you <span class="pen pen-u">the meeting.<span class="pen-l" aria-hidden="true"></span></span> It finds the right people, writes to them like you on your best day, warms them up before any link, follows up when you would forget and puts the call on your calendar. <span class="s">You stop chasing.</span> <span class="s hot">You start closing.</span></p>
+    <p class="sc">Most sales tools <span class="pen pen-x">hand you a list.<span class="pen-l" aria-hidden="true"></span></span> NORYX gets you <span class="pen pen-u">the meeting.<span class="pen-l" aria-hidden="true"></span></span> It finds the right people, writes to them like you on your best day, warms them up before any link, follows up when you would forget and puts the call on your calendar. Then the updates, reminders and handoffs run on their own. <span class="s">You stop chasing.</span> <span class="s hot">You start closing.</span></p>
   </div>
 </section>
 
@@ -736,7 +763,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     <div class="sh">
       <span class="pill fx"><i></i>one product</span>
       <h2 class="fx">Everything a seller does, <span class="s">in one place.</span></h2>
-      <p class="fx" style="--d:.1s">Find the people, write to them, win the reply and close the deal. Each step hands the next one what it needs, so nothing is copied between tools.</p>
+      <p class="fx" style="--d:.1s">Find the people, write to them, win the reply and close the deal, then hand the busywork to automations. Each step hands the next one what it needs, so nothing is copied between tools.</p>
     </div>
     <div class="rows2">
 
@@ -847,6 +874,44 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   </div>
 </section>
 
+<section class="sec" id="automations" data-stream=".35">
+  <div class="wrap">
+    <div class="sh">
+      <span class="pill fx"><i></i>automations</span>
+      <h2 class="fx">Say it once. <span class="s">NORYX does it on time.</span></h2>
+      <p class="fx" style="--d:.1s">Tell the chat what to do and when, in plain words. NORYX runs it as you, in your own accounts and apps, tells you what it did, and pauses the moment you say so.</p>
+    </div>
+    <div class="au">
+      <div class="au-chat fx" role="img" aria-label="In the chat: every Monday at 9, tell me who replied last week and post it in #sales. NORYX turns it into an automation that finds who replied and posts the list in Slack, and shows its last run.">
+        <div class="au-me" aria-hidden="true">Every Monday at 9, tell me who replied last week and post it in #sales.</div>
+        <div class="au-card" aria-hidden="true">
+          <div class="au-top"><span class="au-ic"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 5.5V9l2.4 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><p>Monday replies to #sales<small>Every Monday at 9:00, in your time zone</small></p><span class="au-on"><i></i>On</span></div>
+          <div class="au-step s1"><span class="lg s" style="--t:#a78bfa"><svg viewBox="0 0 18 18"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span><p>Find who replied last week<br><small>NORYX AI · from your replies</small></p><span class="tag">step 1</span></div>
+          <div class="au-step s2"><span class="lg s" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><p>Post the list in #sales<br><small>Slack · as you</small></p><span class="tag">step 2</span></div>
+          <div class="au-foot"><span>Next run: Monday, 9:00</span><span class="au-btns"><i>Run now</i><i>Pause</i></span></div>
+        </div>
+        <div class="au-log" aria-hidden="true"><span class="ok">✓ Done</span><span>Last run <b>Monday 9:00</b> · 7 people posted in #sales</span></div>
+      </div>
+      <div class="au-list">
+        <div class="au-row fx"><span class="au-when" style="--c:var(--amber)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>At 6 pm</span><p>Launch my LinkedIn campaign</p><span class="lg s" style="--t:#0A66C2" role="img" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg></span></div>
+        <div class="au-row fx" style="--d:.06s"><span class="au-when" style="--c:#ff7a6b"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a lead replies</span><p>Add a Trello card to follow up with them</p><span class="lg s" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span></div>
+        <div class="au-row fx" style="--d:.12s"><span class="au-when" style="--c:var(--sky)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a meeting is booked</span><p>Create a Notion page to prepare the call</p><span class="lg s" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span></div>
+        <div class="au-row fx" style="--d:.18s"><span class="au-when" style="--c:var(--green)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a deal is won</span><p>Open a Linear issue to start onboarding</p><span class="lg s" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span></div>
+        <div class="au-row fx" style="--d:.24s"><span class="au-when" style="--c:var(--violet)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Every weekday at 8</span><p>Tell me who to call today</p><span class="lg s" style="--t:#a78bfa" role="img" aria-label="NORYX AI"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span></div>
+      </div>
+    </div>
+    <div class="au-facts">
+      <div class="fx"><span class="pill"><i></i>when</span><b>At a time, on a schedule, or when a lead acts</b><span>Once, every weekday, monthly or every few hours; or when a lead replies, books a meeting, accepts your invite, says yes or is won.</span></div>
+      <div class="fx" style="--d:.06s"><span class="pill"><i></i>what</span><b>Up to three steps, in order</b><span>Launch a campaign, answer a question from your pipeline, add a card or a task, post in Slack, update HubSpot, send an email or remind you.</span></div>
+      <div class="fx" style="--d:.12s"><span class="pill"><i></i>control</span><b>As you, and only as you</b><span>Runs with your own accounts and keys, shows every run in its chat, and pauses after failed runs or the moment you say so.</span></div>
+    </div>
+    <div class="au-apps fx">
+      <p><b>Works in the apps you already use.</b> Connect them once; the chat and every automation can then act in them, as you.</p>
+      <div class="au-logos"><span class="lg" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><span class="lg" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span><span class="lg" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span><span class="lg" style="--t:#F06A6A" role="img" aria-label="Asana" title="Asana"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-asana"/></svg></span><span class="lg" style="--t:#E44332" role="img" aria-label="Todoist" title="Todoist"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-todoist"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-github"/></svg></span><span class="lg" style="--t:#FC6D26" role="img" aria-label="GitLab" title="GitLab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gitlab"/></svg></span><span class="lg" style="--t:#FF7A59" role="img" aria-label="HubSpot" title="HubSpot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-hubspot"/></svg></span><span class="lg" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
 <section class="plate" id="careful-plate" data-stream=".12" aria-label="Careful by design">
   <div class="plate-st">
     <div class="plate-b" id="plate">
@@ -907,45 +972,12 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   </div>
 </section>
 
-<section class="sec" id="automations" data-stream=".35">
-  <div class="wrap">
-    <div class="sh">
-      <span class="pill fx"><i></i>automations</span>
-      <h2 class="fx">Say it once. <span class="s">NORYX does it on time.</span></h2>
-      <p class="fx" style="--d:.1s">Tell the chat what to do and when. NORYX runs it as you, in your own accounts and apps, and tells you what it did.</p>
-    </div>
-    <div class="au">
-      <div class="au-chat fx" role="img" aria-label="In the chat: every Monday at 9, tell me who replied last week and post it in #sales. NORYX turns it into an automation that finds who replied and posts the list in Slack, and shows its last run.">
-        <div class="au-me" aria-hidden="true">Every Monday at 9, tell me who replied last week and post it in #sales.</div>
-        <div class="au-card" aria-hidden="true">
-          <div class="au-top"><span class="au-ic"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 5.5V9l2.4 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><p>Monday replies to #sales<small>Every Monday at 9:00, in your time zone</small></p><span class="au-on"><i></i>On</span></div>
-          <div class="au-step s1"><span class="lg s" style="--t:#a78bfa"><svg viewBox="0 0 18 18"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span><p>Find who replied last week<br><small>NORYX AI · from your replies</small></p><span class="tag">step 1</span></div>
-          <div class="au-step s2"><span class="lg s" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><p>Post the list in #sales<br><small>Slack · as you</small></p><span class="tag">step 2</span></div>
-          <div class="au-foot"><span>Next run: Monday, 9:00</span><span class="au-btns"><i>Run now</i><i>Pause</i></span></div>
-        </div>
-        <div class="au-log" aria-hidden="true"><span class="ok">✓ Done</span><span>Last run <b>Monday 9:00</b> · 7 people posted in #sales</span></div>
-      </div>
-      <div class="au-list">
-        <div class="au-row fx"><span class="au-when" style="--c:var(--amber)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>At 6 pm</span><p>Launch my LinkedIn campaign</p><span class="lg s" style="--t:#0A66C2" role="img" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg></span></div>
-        <div class="au-row fx" style="--d:.06s"><span class="au-when" style="--c:#ff7a6b"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a lead replies</span><p>Add a Trello card to follow up with them</p><span class="lg s" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span></div>
-        <div class="au-row fx" style="--d:.12s"><span class="au-when" style="--c:var(--sky)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a meeting is booked</span><p>Create a Notion page to prepare the call</p><span class="lg s" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span></div>
-        <div class="au-row fx" style="--d:.18s"><span class="au-when" style="--c:var(--green)"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6.9 1 2.6 7h3l-.7 4L9.4 5h-3z" fill="currentColor"/></svg>When a deal is won</span><p>Open a Linear issue to start onboarding</p><span class="lg s" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span></div>
-        <div class="au-row fx" style="--d:.24s"><span class="au-when" style="--c:var(--violet)"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.6V6l1.6 1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Every weekday at 8</span><p>Tell me who to call today</p><span class="lg s" style="--t:#a78bfa" role="img" aria-label="NORYX AI"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 10.2 6.3 14.5 7.5 10.2 8.7 9 13 7.8 8.7 3.5 7.5 7.8 6.3z" fill="#c4b5fd"/><circle cx="14" cy="14" r="1.6" fill="#c4b5fd"/></svg></span></div>
-      </div>
-    </div>
-    <div class="au-apps fx">
-      <p><b>Works in the apps you already use.</b> Connect them once; the chat and every automation can then act in them, as you.</p>
-      <div class="au-logos"><span class="lg" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><span class="lg" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span><span class="lg" style="--t:#5E6AD2" role="img" aria-label="Linear" title="Linear"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linear"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="Notion" title="Notion"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-notion"/></svg></span><span class="lg" style="--t:#F06A6A" role="img" aria-label="Asana" title="Asana"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-asana"/></svg></span><span class="lg" style="--t:#E44332" role="img" aria-label="Todoist" title="Todoist"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-todoist"/></svg></span><span class="lg" style="--t:#9C8F80" role="img" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-github"/></svg></span><span class="lg" style="--t:#FC6D26" role="img" aria-label="GitLab" title="GitLab"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gitlab"/></svg></span><span class="lg" style="--t:#FF7A59" role="img" aria-label="HubSpot" title="HubSpot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-hubspot"/></svg></span><span class="lg" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span></div>
-    </div>
-  </div>
-</section>
-
 <section class="sec" id="dashboard" data-stream=".3">
   <div class="wrap">
     <div class="sh">
       <span class="pill fx"><i></i>dashboard</span>
       <h2 class="fx">Your Monday, <span class="s">seen from NORYX.</span></h2>
-      <p class="fx" style="--d:.1s">The screen you keep open: who answered, what NORYX already handled, and who is still waiting on you. Shown here with an example workspace.</p>
+      <p class="fx" style="--d:.1s">The screen you keep open: who answered, what NORYX handled, what ran on its own, and who still waits for you. Shown here with an example workspace.</p>
     </div>
     <div class="dash">
       <div class="dt w2 fx">
@@ -966,6 +998,21 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       <div class="dt fx" style="--d:.06s">
         <span class="lb">answered for you</span>
         <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2a2a"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient></defs><circle class="tr" cx="60" cy="60" r="48"/><circle class="pr" cx="60" cy="60" r="48" pathLength="100" style="--off:29"/></svg><div><b>71%</b><span>of replies answered without you lifting a finger</span></div></div>
+      </div>
+      <div class="dt w2 fx">
+        <span class="lb"><span>ran on its own today</span><span>4 automations</span></span>
+        <ul class="runs">
+          <li><span class="t">08:00</span><span class="lg xs" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span><b>Today’s calls<small>sent to you by email</small></b><span class="ok">✓ done</span></li>
+          <li><span class="t">09:00</span><span class="lg xs" style="--t:#E01E5A" role="img" aria-label="Slack" title="Slack"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-slack"/></svg></span><b>Monday replies<small>7 people posted in #sales</small></b><span class="ok">✓ done</span></li>
+          <li><span class="t">09:41</span><span class="lg xs" style="--t:#0052CC" role="img" aria-label="Trello" title="Trello"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-trello"/></svg></span><b>When a lead replies<small>Maya Okafor · card added to follow up</small></b><span class="ok">✓ done</span></li>
+          <li><span class="t">18:00</span><span class="lg xs" style="--t:#0A66C2" role="img" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg></span><b>Texas freight campaign<small>launches at 6 pm</small></b><span class="tag">next</span></li>
+        </ul>
+      </div>
+      <div class="dt fx" style="--d:.06s">
+        <span class="lb">automations, this week</span>
+        <div class="aw"><div><b>6</b><span>on</span></div><div><b>38</b><span>runs</span></div><div><b>0</b><span>stopped</span></div></div>
+        <div class="aw-bars" aria-hidden="true"><i style="--h:70%" class="now"></i><i style="--h:52%"></i><i style="--h:60%"></i><i style="--h:46%"></i><i style="--h:56%"></i><i style="--h:18%"></i><i style="--h:12%"></i></div>
+        <span class="ft">Every run shows in its chat; one click pauses it.</span>
       </div>
       <div class="dt fx">
         <span class="lb">waiting on you</span>
@@ -1013,9 +1060,9 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       </div>
       <div class="num fx" style="--d:.16s">
         <svg viewBox="0 0 300 80" preserveAspectRatio="none" aria-hidden="true"><g stroke="#ff5c4d" stroke-width="2" fill="none"><path d="M0 40 H300" stroke="rgba(244,239,230,.12)"/><circle cx="40" cy="40" r="5"/><circle cx="95" cy="40" r="5"/><circle cx="150" cy="40" r="9" fill="#ff5c4d"/><circle cx="205" cy="40" r="5"/><circle cx="260" cy="40" r="5"/></g></svg>
-        <span class="pill">every reply read</span>
+        <span class="pill">every reply read, every run on time</span>
         <b>24/7</b>
-        <p>An answer is ready the moment someone writes back, day or night, in your voice.</p>
+        <p>Replies answered and automations run on time, day or night, while you sell or sleep.</p>
       </div>
     </div>
   </div>
@@ -1031,8 +1078,8 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     <div class="how">
       <div class="hs fx"><span class="n">01</span><h3>Say what you sell</h3><p>Five short answers. NORYX can read your website for you.</p></div>
       <div class="hs fx" style="--d:.06s"><span class="n">02</span><h3>Find your leads</h3><p>One sentence, hundreds of people with verified emails.</p></div>
-      <div class="hs fx" style="--d:.12s"><span class="n">03</span><h3>Link and launch</h3><p>Sign in to LinkedIn or email. Write the messages once.</p></div>
-      <div class="hs fx" style="--d:.18s"><span class="n">04</span><h3>Answer and close</h3><p>Every reply gets an answer. You close the deal.</p></div>
+      <div class="hs fx" style="--d:.12s"><span class="n">03</span><h3>Link and launch</h3><p>Sign in to LinkedIn, email and the apps you use. Write the messages once.</p></div>
+      <div class="hs fx" style="--d:.18s"><span class="n">04</span><h3>Automate and close</h3><p>Say what should run on its own. You close the deals.</p></div>
     </div>
   </div>
 </section>
@@ -1095,6 +1142,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
         <a class="btn btn-ghost" href="https://app.heynoryx.com/login?mode=sign-up">Try 7 days free</a>
       </div>
     </div>
+    <p class="incl fx"><b>Every plan includes</b> the chat, automations (up to 25 on for each member) and the apps you connect.</p>
     <div class="ent fx"><p><b>Enterprise.</b> 11 seats or more, research agreed with you, and invoices on net-30 terms.</p><a class="btn btn-ghost btn-sm" href="https://app.heynoryx.com/contact?topic=enterprise&amp;from=pricing">Talk to us</a></div>
   </div>
 </section>
@@ -1104,13 +1152,13 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     <div class="end2">
       <div class="e-l fx">
                 <a class="brand" href="#main" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span><span>NORYX</span></a>
-        <p>Sales that keeps moving while you sell: found, reached, answered and closed in one place.</p>
+        <p>Sales that keeps moving while you sell: found, reached, answered and closed, with the busywork on autopilot.</p>
         <div class="stay"><span>stay in touch</span><a href="mailto:contact@heynoryx.com">contact@heynoryx.com</a></div>
       </div>
       <div class="e-r fx" style="--d:.08s">
         <span class="k">what now</span>
         <h2>Bring the list you <span class="s">never got to.</span></h2>
-        <p>Tell NORYX who you want to reach. Your first 10 leads every month are free, and nothing goes out that you did not approve.</p>
+        <p>Tell NORYX who you want to reach and what should run on its own. Your first 10 leads every month are free, and nothing goes out that you did not approve.</p>
         <div class="ctas"><a class="btn btn-ink" href="https://app.heynoryx.com/login?mode=sign-up">Start free</a><a class="btn btn-line" href="https://app.heynoryx.com/contact?topic=sales&amp;from=closing">Talk to sales</a></div>
       </div>
     </div>
@@ -1123,7 +1171,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   <div class="wrap">
     <div>
       <a class="brand" href="#main" aria-label="NORYX home"><span class="mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span><span>NORYX</span></a>
-      <p>Find leads, reach them and close, in one product.</p>
+      <p>Find leads, reach them, close, and automate the rest, in one product.</p>
       <span class="m">your accounts / your pace / your say</span>
     </div>
     <nav aria-label="Product"><h4>product</h4><a href="#find">Find leads</a><a href="#outreach">Outreach</a><a href="#replies">Replies</a><a href="#close">Close deals</a><a href="#automations">Automations</a><a href="#pricing">Pricing</a></nav>
@@ -1245,9 +1293,9 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     { sel: '#find', sp: 1, fo: 0.6, gl: 0.5 },
     { sel: '#replies', sp: 1, fo: 0.62, gl: 0.48 },
     { sel: '#ask', sp: 1, fo: 0.6, gl: 0.48 },
+    { sel: '#automations', sp: 1, fo: 0.5, gl: 0.52 },
     { sel: '#careful-plate', sp: 0.8, fo: 0.85, gl: 0.16 },
     { sel: '#careful', sp: 1, fo: 0.55, gl: 0.5 },
-    { sel: '#automations', sp: 1, fo: 0.5, gl: 0.52 },
     { sel: '#dashboard', sp: 1.05, fo: 0.62, gl: 0.46 },
     { sel: '#numbers', sp: 0.95, fo: 0.5, gl: 0.5 },
     { sel: '#how', sp: 0.9, fo: 0.55, gl: 0.45 },
