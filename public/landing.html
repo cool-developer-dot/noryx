@@ -51,7 +51,8 @@ img,svg{display:block}
 ::selection{background:rgba(255,72,56,.35)}
 
 /* The stream of light behind the whole page (drawn by the script on one canvas) */
-.stream{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.stream-wrap{position:absolute;left:0;top:0;width:100%;height:100vh;overflow:hidden;pointer-events:none;z-index:0}
+.stream{position:absolute;left:0;top:0;width:100%;height:100vh;pointer-events:none;will-change:transform}
 .page{position:relative;z-index:1;overflow-x:clip}
 
 /* The opening: a ring counts in, floods into the NORYX plate, draws back and folds into the logo */
@@ -654,7 +655,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   <div class="boot-plate"><span class="boot-mk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span></div>
 </div>
 
-<canvas class="stream" id="stream" aria-hidden="true"></canvas>
+<div class="stream-wrap" aria-hidden="true"><canvas class="stream" id="stream"></canvas></div>
 
 <div class="page">
 <header class="top" id="top-bar">
@@ -1244,6 +1245,14 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   var hz = document.createElement('canvas'), hx = hz.getContext ? hz.getContext('2d') : null;
   var mz = document.createElement('canvas'), mx = mz.getContext ? mz.getContext('2d') : null;
   var W = 0, H = 0, DPR = 1;
+  // The canvas scrolls with the page (inside a wrapper as tall as the page), so when the browser
+  // scrolls before the next drawing, the stream moves with the words instead of lagging behind.
+  // It reaches PAD beyond the top and bottom of the screen for that moment.
+  var wrap = cv ? cv.parentNode : null, PAD = 0, placedAt = null;
+  function place(y){
+    var at = Math.round(y - PAD);
+    if (at !== placedAt) { cv.style.transform = 'translate3d(0,' + at + 'px,0)'; placedAt = at; }
+  }
   function rnd(i){ var x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); }
   // Pulses of light that flow down the stream, each at its own speed and place across it.
   var pulses = [];
@@ -1308,6 +1317,11 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       return Math.max(0, r.top + y + Math.min(r.height, H * 1.2) / 2 - H / 2);
     });
     for (var i = 1; i < anchors.length; i++) anchors[i] = Math.max(anchors[i], anchors[i - 1] + 1);
+    // The wrapper is exactly as tall as the page, so the canvas never makes the page longer.
+    if (wrap && wrap.classList && wrap.classList.contains('stream-wrap')) {
+      wrap.style.height = '0px';
+      wrap.style.height = document.documentElement.scrollHeight + 'px';
+    }
     buildPath();
   }
   function target(y){
@@ -1329,9 +1343,12 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     if (!cx) return;
     DPR = Math.min(window.devicePixelRatio || 1, 1.25);
     W = window.innerWidth; H = window.innerHeight;
-    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-    hz.width = Math.max(2, Math.round(W / 8)); hz.height = Math.max(2, Math.round(H / 8));
-    mz.width = Math.max(2, Math.round(W / 4)); mz.height = Math.max(2, Math.round(H / 4));
+    PAD = Math.round(H * 0.3);
+    cv.width = Math.round(W * DPR); cv.height = Math.round((H + 2 * PAD) * DPR);
+    cv.style.height = (H + 2 * PAD) + 'px';
+    placedAt = null;
+    hz.width = Math.max(2, Math.round(W / 8)); hz.height = Math.max(2, Math.round((H + 2 * PAD) / 8));
+    mz.width = Math.max(2, Math.round(W / 4)); mz.height = Math.max(2, Math.round((H + 2 * PAD) / 4));
     measure();
   }
   var CAP = 320, X = new Float32Array(CAP), Y = new Float32Array(CAP), DY = new Float32Array(CAP), NX = new Float32Array(CAP), NY = new Float32Array(CAP), WP = new Float32Array(CAP), L = 0;
@@ -1394,18 +1411,21 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   function draw(){
     if (!cx || !cur) return;
     var g = cur.gl * (small ? 0.85 : 1), fo = cur.fo, spread = Math.min(small ? 0.2 * W : 0.14 * W, 230) * cur.sp;
+    var scrolled = window.scrollY;
+    place(scrolled);
     cx.setTransform(1, 0, 0, 1, 0, 0);
     cx.clearRect(0, 0, cv.width, cv.height);
     if (g < 0.02 || !turns.length) return;
-    visible(window.scrollY);
+    visible(scrolled);
     if (L < 2) { endGlow(g); return; }
     var x0 = X[0], y0 = Y[0], x1 = X[L - 1], y1 = Y[L - 1];
     // Behind the reading part of the page it is quieter, so the words stay easy to read.
     var quiet = 1 - fo * 0.45;
     // 1. The glow around the water: the whole stream, wide and very soft.
-    var sx = hz.width / W, sy = hz.height / H;
+    var sx = hz.width / W, sy = hz.height / (H + 2 * PAD);
     hx.setTransform(1, 0, 0, 1, 0, 0);
     hx.clearRect(0, 0, hz.width, hz.height);
+    hx.setTransform(1, 0, 0, 1, 0, PAD * sy);
     hx.globalCompositeOperation = 'lighter';
     bandPath(hx, 1.45, sx, sy, spread);
     hx.fillStyle = along(hx, x0 * sx, y0 * sy, x1 * sx, y1 * sy, '255,70,48', 0.14 * g * (0.75 + fo * 0.35));
@@ -1436,9 +1456,10 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     cx.drawImage(hz, 0, 0, cv.width, cv.height);
     // 2. The body: nested layers from the red edge to the golden middle, drawn at a third of
     //    the size so every edge is soft.
-    var mxs = mz.width / W, mys = mz.height / H;
+    var mxs = mz.width / W, mys = mz.height / (H + 2 * PAD);
     mx.setTransform(1, 0, 0, 1, 0, 0);
     mx.clearRect(0, 0, mz.width, mz.height);
+    mx.setTransform(1, 0, 0, 1, 0, PAD * mys);
     mx.globalCompositeOperation = 'lighter';
     var sharp = 1 - fo * 0.55;
     var STEPS = lite ? 5 : 9;
@@ -1474,7 +1495,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     }
     cx.drawImage(mz, 0, 0, cv.width, cv.height);
     // 3. Currents: a few faint lines that wander slowly across the surface.
-    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cx.setTransform(DPR, 0, 0, DPR, 0, PAD * DPR);
     cx.lineCap = 'round'; cx.lineJoin = 'round';
     if (sharp > 0.3) {
       for (var c = 0; c < CURRENTS.length; c++) {
@@ -1510,7 +1531,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     if (absorb < 0.01 || endY === Infinity) return;
     var ex = endX, ey = endY - window.scrollY;
     if (ey < -300 || ey > H + 300) return;
-    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cx.setTransform(DPR, 0, 0, DPR, 0, PAD * DPR);
     cx.globalCompositeOperation = 'lighter';
     var rr = Math.max(90, W * 0.09) * (0.7 + 0.5 * absorb);
     var eg = cx.createRadialGradient(ex, ey, 0, ex, ey, rr);
