@@ -1233,59 +1233,39 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   }
 
   /* ---------------------------------------------------------------------------------------
-   * The stream of light: one ribbon of fine strands that runs the length of the page. Each
-   * section gives it a shape; scrolling glides it from one shape to the next a little behind
-   * the page, so it snakes; and it never stops moving: a slow wave runs along it, the strands
-   * twist around each other, sparks drift along it. Drawn on one canvas, with its haze drawn
-   * small and stretched, which blurs it for free.
+   * The stream of light: one soft, glossy stream that runs the length of the page like water.
+   * It is brightest and golden in its middle and soft at its edges; slow currents wander across
+   * it and soft pulses of light keep flowing down it, so it is always moving, never busy. Each
+   * section sets how bright and how soft it is; it draws in as you scroll and pours into the
+   * NORYX mark at the end. Drawn in three layers of sharpness: a wide glow, the body, the currents.
    * ------------------------------------------------------------------------------------- */
   var cv = document.getElementById('stream');
   var cx = cv && cv.getContext ? cv.getContext('2d') : null;
   var hz = document.createElement('canvas'), hx = hz.getContext ? hz.getContext('2d') : null;
-  var W = 0, H = 0, DPR = 1, M = small ? 30 : 44, strands = [], sparks = [];
-  function makeStrands(n){
-    strands = [];
-    for (var i = 0; i < n; i++) {
-      // More strands near the middle of the band; the brightest there too.
-      var r0 = Math.random() * 2 - 1, sv = (r0 < 0 ? -1 : 1) * Math.pow(Math.abs(r0), 1.25);
-      var core = 1 - Math.pow(Math.abs(sv), 1.3);
-      strands.push({ s: sv, ph: Math.random() * 6.283, w: 0.45 + Math.random() * 0.6, a: (0.2 + 0.8 * core) * (0.55 + 0.45 * Math.random()), cool: i % 8 === 5, glint: i % 4 === 0 ? 0.17 + Math.random() * 0.16 : 0 });
-    }
-    // Colour by place in the band (white-hot core, ember, red edge, a few cool blue), brightness
-    // in three steps: strands that share both are drawn as one stroke.
-    groups = [];
-    var byKey = {};
-    strands.forEach(function(st){
-      var as = Math.abs(st.s), b = st.cool ? 3 : as < 0.22 ? 0 : as < 0.55 ? 1 : 2, lv = st.a < 0.42 ? 0 : st.a < 0.7 ? 1 : 2, key = b * 3 + lv;
-      if (!byKey[key]) { byKey[key] = { b: b, lv: lv, w: 0, list: [] }; groups.push(byKey[key]); }
-      byKey[key].list.push(st); byKey[key].w += st.w;
-    });
-    groups.forEach(function(gp){ gp.w /= gp.list.length; });
-  }
-  var groups = [];
-  makeStrands(small ? 30 : 64);
-  for (var si = 0; si < (small ? 18 : 40); si++) {
-    var big = si % 5 === 0;
-    sparks.push({ u: Math.random(), s: Math.random() * 2 - 1, d: (Math.random() - 0.5) * 0.5, v: 0.01 + Math.random() * 0.03, r: big ? 6 + Math.random() * 12 : 0.6 + Math.random() * 1.3, big: big, ph: Math.random() * 6.283 });
-  }
-
-  // The path: one ribbon laid down the whole page, fixed to it like everything else on it. It
-  // comes in wide at the top right, gathers to a white-hot point at the lower left of the hero,
-  // opens out again down to the right, turns, runs down to the left, and so on to the bottom.
-  // Each turn is a twist: tight at the hero, looser further down.
+  var mz = document.createElement('canvas'), mx = mz.getContext ? mz.getContext('2d') : null;
+  var W = 0, H = 0, DPR = 1;
   function rnd(i){ var x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); }
+  // Pulses of light that flow down the stream, each at its own speed and place across it.
+  var pulses = [];
+  for (var pi = 0; pi < (small ? 7 : 12); pi++) pulses.push({ u: rnd(pi + 40), s: (rnd(pi + 60) * 2 - 1) * 0.5, v: 0.03 + 0.04 * rnd(pi + 80), len: 0.1 + 0.1 * rnd(pi + 90) });
+  // Currents: a few faint lines that wander across the surface, like the lines on running water.
+  var CURRENTS = small ? [-0.32, 0.12, 0.42] : [-0.5, -0.2, 0.08, 0.34, 0.58];
+  // The course: one stream laid down the whole page, fixed to it like everything else on it. It
+  // comes in wide at the top right, narrows at the lower left of the hero, widens again down to
+  // the right, turns, runs down to the left, and so on to the bottom.
   var turns = [];
   // It ends in the NORYX mark of the closing card: the last run gathers to a point there.
   var endMark = document.querySelector('.e-l .mk'), endX = 0, endY = Infinity;
   function buildPath(){
     var docH = Math.max(document.documentElement.scrollHeight, H * 2);
-    var step = small ? H * 1.0 : clamp(H * 1.06, 680, 1120);
+    // Never a zero step: a hidden or zero-height window would loop forever.
+    var step = Math.max(320, small ? H * 1.0 : clamp(H * 1.06, 680, 1120));
     endY = Infinity;
     if (endMark) {
       var er = endMark.getBoundingClientRect();
       if (er.width) { endX = er.left + er.width / 2; endY = er.top + window.scrollY + er.height / 2; }
     }
-    turns = [[W * 1.1, -H * 0.2, 1], [W * (small ? 0.26 : 0.4), H * (small ? 1.0 : 0.86), 0.035]];
+    turns = [[W * 1.1, -H * 0.2, 1], [W * (small ? 0.26 : 0.47), H * (small ? 1.0 : 0.9), 0.035]];
     var y = turns[1][1], left = true, i = 1;
     var stop = endY < Infinity ? endY - step * 0.6 : docH + H;
     while (y < stop) {
@@ -1346,7 +1326,8 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     DPR = Math.min(window.devicePixelRatio || 1, 1.25);
     W = window.innerWidth; H = window.innerHeight;
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
-    hz.width = Math.max(2, Math.round(W / 6)); hz.height = Math.max(2, Math.round(H / 6));
+    hz.width = Math.max(2, Math.round(W / 8)); hz.height = Math.max(2, Math.round(H / 8));
+    mz.width = Math.max(2, Math.round(W / 4)); mz.height = Math.max(2, Math.round(H / 4));
     measure();
   }
   var CAP = 320, X = new Float32Array(CAP), Y = new Float32Array(CAP), DY = new Float32Array(CAP), NX = new Float32Array(CAP), NY = new Float32Array(CAP), WP = new Float32Array(CAP), L = 0;
@@ -1383,142 +1364,122 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       X[i] += NX[i] * wv; Y[i] += NY[i] * wv;
     }
   }
+  // The stream's outline at a width (share of its full width), as one closed shape.
+  function bandPath(c, k, sx, sy, spread){
+    c.beginPath();
+    for (var j = 0; j < L; j++) {
+      var o = spread * WP[j] * k;
+      var px = (X[j] + NX[j] * o) * sx, py = (Y[j] + NY[j] * o) * sy;
+      j ? c.lineTo(px, py) : c.moveTo(px, py);
+    }
+    for (var j2 = L - 1; j2 >= 0; j2--) {
+      var o2 = -spread * WP[j2] * k;
+      c.lineTo((X[j2] + NX[j2] * o2) * sx, (Y[j2] + NY[j2] * o2) * sy);
+    }
+    c.closePath();
+  }
+  // Fade the stream in at its tail and out at its head (unless those are off screen).
+  function along(c, x0, y0, x1, y1, col, a){
+    var gr = c.createLinearGradient(x0, y0, x1, y1);
+    gr.addColorStop(0, 'rgba(' + col + ',0)');
+    gr.addColorStop(tailOn ? 0.22 : 0.05, 'rgba(' + col + ',' + a.toFixed(3) + ')');
+    gr.addColorStop(headOn ? 0.9 : 0.95, 'rgba(' + col + ',' + a.toFixed(3) + ')');
+    gr.addColorStop(1, 'rgba(' + col + ',' + (headOn ? a : 0).toFixed(3) + ')');
+    return gr;
+  }
   function draw(){
     if (!cx || !cur) return;
-    var g = cur.gl * (small ? 0.8 : 1), fo = cur.fo, spread = Math.min(small ? 0.22 * W : 0.15 * W, 250) * cur.sp;
+    var g = cur.gl * (small ? 0.85 : 1), fo = cur.fo, spread = Math.min(small ? 0.2 * W : 0.14 * W, 230) * cur.sp;
     cx.setTransform(1, 0, 0, 1, 0, 0);
     cx.clearRect(0, 0, cv.width, cv.height);
     if (g < 0.02 || !turns.length) return;
     visible(window.scrollY);
     if (L < 2) { endGlow(g); return; }
-    var PX = draw.px || (draw.px = new Float32Array(CAP)), PY = draw.py || (draw.py = new Float32Array(CAP));
-    var sharp = 1 - fo * 0.8;
-    // The glow: a few of the strands drawn thick on a small canvas, then stretched over the
-    // screen, so the soft light follows the ribbon's own shape; out of focus, it is most of it.
+    var x0 = X[0], y0 = Y[0], x1 = X[L - 1], y1 = Y[L - 1];
+    // Behind the reading part of the page it is quieter, so the words stay easy to read.
+    var quiet = 1 - fo * 0.45;
+    // 1. The glow around the water: the whole stream, wide and very soft.
+    var sx = hz.width / W, sy = hz.height / H;
     hx.setTransform(1, 0, 0, 1, 0, 0);
     hx.clearRect(0, 0, hz.width, hz.height);
     hx.globalCompositeOperation = 'lighter';
-    hx.lineCap = 'round'; hx.lineJoin = 'round';
-    var sx = hz.width / W, sy = hz.height / H;
-    function lineOf(st){
-      for (var j = 0; j < L; j++) {
-        var o = spread * (st.s * WP[j] + 0.035 * Math.sin(DY[j] * 0.0042 + time * 0.65 + st.ph) * (0.3 + WP[j]));
-        PX[j] = X[j] + NX[j] * o; PY[j] = Y[j] + NY[j] * o;
+    bandPath(hx, 1.45, sx, sy, spread);
+    hx.fillStyle = along(hx, x0 * sx, y0 * sy, x1 * sx, y1 * sy, '255,70,48', 0.14 * g * (0.75 + fo * 0.35));
+    hx.fill();
+    bandPath(hx, 0.7, sx, sy, spread);
+    hx.fillStyle = along(hx, x0 * sx, y0 * sy, x1 * sx, y1 * sy, '255,160,92', 0.11 * g * quiet);
+    hx.fill();
+    // Soft pulses flowing down it: the light moving on the water.
+    if (!calm && L > 8) {
+      hx.lineCap = 'round';
+      for (var p = 0; p < pulses.length; p++) {
+        var pl = pulses[p], at = (pl.u + time * pl.v) % 1, span = Math.max(3, Math.round(L * pl.len));
+        var hd = Math.floor(at * (L + span)), from = Math.max(0, hd - span), to = Math.min(L - 1, hd);
+        if (to - from < 2) continue;
+        hx.beginPath();
+        for (var q = from; q <= to; q++) {
+          var off = spread * WP[q] * (pl.s + 0.06 * Math.sin(DY[q] * 0.006 + p));
+          var qx = (X[q] + NX[q] * off) * sx, qy = (Y[q] + NY[q] * off) * sy;
+          q === from ? hx.moveTo(qx, qy) : hx.lineTo(qx, qy);
+        }
+        hx.lineWidth = Math.max(1.2, spread * 0.16 * sx);
+        hx.strokeStyle = 'rgba(255,220,168,' + (0.24 * g * quiet).toFixed(3) + ')';
+        hx.stroke();
       }
-    }
-    for (var h = 0; h < strands.length; h += 6) {
-      var hs = strands[h];
-      lineOf(hs);
-      hx.beginPath();
-      for (var q = 0; q < L; q++) q ? hx.lineTo(PX[q] * sx, PY[q] * sy) : hx.moveTo(PX[q] * sx, PY[q] * sy);
-      hx.lineWidth = Math.max(1, spread * 0.09 * sx * (1 + fo * 1.6));
-      hx.strokeStyle = (hs.cool ? 'rgba(122,162,255,' : Math.abs(hs.s) < 0.4 ? 'rgba(255,150,104,' : 'rgba(255,58,42,') + (0.2 * g * (0.35 + fo * 1.2)).toFixed(3) + ')';
-      hx.stroke();
     }
     cx.globalCompositeOperation = 'lighter';
     cx.imageSmoothingEnabled = true;
     cx.drawImage(hz, 0, 0, cv.width, cv.height);
-    // The strands: hair-thin, close to parallel, each shimmering on its own; one stroke per
-    // colour and brightness.
+    // 2. The body: nested layers from the red edge to the golden middle, drawn at a third of
+    //    the size so every edge is soft.
+    var mxs = mz.width / W, mys = mz.height / H;
+    mx.setTransform(1, 0, 0, 1, 0, 0);
+    mx.clearRect(0, 0, mz.width, mz.height);
+    mx.globalCompositeOperation = 'lighter';
+    var sharp = 1 - fo * 0.55;
+    var STEPS = lite ? 5 : 9;
+    for (var li = 0; li < STEPS; li++) {
+      var f = li / (STEPS - 1), k = 1 - 0.9 * Math.pow(f, 0.85);
+      // From the NORYX red at the edge, through amber, to warm gold and ivory in the middle.
+      var col = Math.round(lerp(255, 255, f)) + ',' + Math.round(lerp(56, 236, Math.pow(f, 0.9))) + ',' + Math.round(lerp(40, 200, Math.pow(f, 1.4)));
+      bandPath(mx, k, mxs, mys, spread);
+      mx.fillStyle = along(mx, x0 * mxs, y0 * mys, x1 * mxs, y1 * mys, col, (0.055 + 0.03 * f) * g * quiet * (f > 0.5 ? sharp : 1) * (9 / STEPS));
+      mx.fill();
+    }
+    cx.drawImage(mz, 0, 0, cv.width, cv.height);
+    // 3. Currents: a few faint lines that wander slowly across the surface.
     cx.setTransform(DPR, 0, 0, DPR, 0, 0);
     cx.lineCap = 'round'; cx.lineJoin = 'round';
-    var COLS = ['255,232,218', '255,150,100', '255,66,48', '135,172,255'], LV = [0.36, 0.62, 0.92];
-    var grads = COLS.map(function(col){
-      var gr = cx.createLinearGradient(X[0], Y[0], X[L - 1], Y[L - 1]);
-      gr.addColorStop(0, 'rgba(' + col + ',0)');
-      gr.addColorStop(tailOn ? 0.25 : 0.06, 'rgba(' + col + ',1)');
-      gr.addColorStop(headOn ? 0.92 : 0.94, 'rgba(' + col + ',1)');
-      gr.addColorStop(1, 'rgba(' + col + ',' + (headOn ? 1 : 0) + ')');
-      return gr;
-    });
-    var glinting = [];
-    for (var gi = 0; gi < groups.length; gi++) {
-      var gp = groups[gi], alpha = LV[gp.lv] * g * sharp * (gp.b === 3 ? 0.6 : 1);
-      if (alpha < 0.01) continue;
-      cx.globalAlpha = Math.min(1, alpha);
-      cx.strokeStyle = grads[gp.b];
-      for (var m = 0; m < gp.list.length; m++) {
-        var st = gp.list[m];
-        lineOf(st);
+    if (sharp > 0.3) {
+      for (var c = 0; c < CURRENTS.length; c++) {
         cx.beginPath();
-        cx.moveTo(PX[0], PY[0]);
-        for (var j = 1; j < L; j++) cx.lineTo(PX[j], PY[j]);
-        cx.lineWidth = st.w;
+        for (var j = 0; j < L; j++) {
+          var drift = CURRENTS[c] + 0.12 * Math.sin(DY[j] * 0.0045 - time * (0.55 + 0.1 * c) + c * 1.7);
+          var o = spread * WP[j] * drift;
+          var cxp = X[j] + NX[j] * o, cyp = Y[j] + NY[j] * o;
+          j ? cx.lineTo(cxp, cyp) : cx.moveTo(cxp, cyp);
+        }
+        cx.lineWidth = 1 + 0.6 * (1 - Math.abs(CURRENTS[c]));
+        cx.strokeStyle = along(cx, x0, y0, x1, y1, Math.abs(CURRENTS[c]) < 0.3 ? '255,236,210' : '255,170,120', 0.18 * g * sharp * quiet * (1 - Math.abs(CURRENTS[c]) * 0.6));
         cx.stroke();
-        if (st.glint && !calm && fo < 0.85 && L > 12) glinting.push(st);
       }
     }
-    cx.globalAlpha = 1;
-    // Glints of light running along some strands, from the top right onwards.
-    if (glinting.length) {
-      cx.beginPath();
-      var span = Math.max(5, Math.round(L * 0.07));
-      for (var gl2 = 0; gl2 < glinting.length; gl2++) {
-        var sg = glinting[gl2];
-        var head = Math.floor(((time * sg.glint + sg.ph / 6.283) % 1) * (L + span));
-        var from = Math.max(0, head - span), to = Math.min(L - 1, head);
-        if (to - from < 2) continue;
-        lineOf(sg);
-        cx.moveTo(PX[from], PY[from]);
-        for (var q2 = from + 1; q2 <= to; q2++) cx.lineTo(PX[q2], PY[q2]);
-      }
-      cx.globalAlpha = Math.min(1, 0.85 * g * (1 - fo * 0.85));
-      cx.strokeStyle = 'rgb(255,244,236)';
-      cx.lineWidth = 1.5;
-      cx.stroke();
-      cx.globalAlpha = 1;
-    }
-    // The point where it gathers: white-hot, with a bloom.
-    for (var p = 0; p < pins.length; p++) {
-      var bx = pins[p][0], by = pins[p][1];
+    // Where it narrows, the water runs bright: a gentle bloom.
+    for (var b = 0; b < pins.length; b++) {
+      var bx = pins[b][0], by = pins[b][1];
       if (by < -200 || by > H + 200) continue;
-      var br = Math.max(60, W * 0.075);
+      var br = Math.max(50, W * 0.06);
       var bl = cx.createRadialGradient(bx, by, 0, bx, by, br);
-      bl.addColorStop(0, 'rgba(255,246,238,' + (0.85 * g).toFixed(3) + ')');
-      bl.addColorStop(0.12, 'rgba(255,196,160,' + (0.55 * g).toFixed(3) + ')');
-      bl.addColorStop(0.4, 'rgba(255,84,58,' + (0.18 * g).toFixed(3) + ')');
-      bl.addColorStop(1, 'rgba(255,42,42,0)');
+      bl.addColorStop(0, 'rgba(255,240,214,' + (0.3 * g).toFixed(3) + ')');
+      bl.addColorStop(0.25, 'rgba(255,170,110,' + (0.14 * g).toFixed(3) + ')');
+      bl.addColorStop(1, 'rgba(255,60,44,0)');
       cx.fillStyle = bl;
       cx.beginPath(); cx.arc(bx, by, br, 0, 6.283); cx.fill();
-    }
-    // The tip while it is still drawing in.
-    if (headOn && L > 2 && Y[L - 1] > -60 && Y[L - 1] < H + 60) {
-      var tx2 = X[L - 1], ty2 = Y[L - 1], tr = Math.max(26, spread * WP[L - 1] * 0.9);
-      var tg = cx.createRadialGradient(tx2, ty2, 0, tx2, ty2, tr);
-      tg.addColorStop(0, 'rgba(255,240,230,' + (0.7 * g).toFixed(3) + ')');
-      tg.addColorStop(0.3, 'rgba(255,140,96,' + (0.3 * g).toFixed(3) + ')');
-      tg.addColorStop(1, 'rgba(255,60,44,0)');
-      cx.fillStyle = tg;
-      cx.beginPath(); cx.arc(tx2, ty2, tr, 0, 6.283); cx.fill();
-    }
-    // Sparkles around it: small points, and a few large soft ones out of focus.
-    for (var k = 0; k < sparks.length; k++) {
-      var sp = sparks[k];
-      var jj = Math.floor(((sp.u + time * sp.v * 0.5) % 1) * L);
-      if (jj >= L) continue;
-      var oo = spread * (sp.s * WP[jj] * 1.35 + sp.d), tw2 = 0.4 + 0.6 * Math.sin(time * 1.7 + sp.ph);
-      var px = X[jj] + NX[jj] * oo, py = Y[jj] + NY[jj] * oo;
-      if (sp.big) {
-        var a3 = 0.12 * tw2 * g;
-        if (a3 < 0.01) continue;
-        var bg = cx.createRadialGradient(px, py, 0, px, py, sp.r);
-        bg.addColorStop(0, 'rgba(255,170,130,' + a3.toFixed(3) + ')');
-        bg.addColorStop(1, 'rgba(255,90,60,0)');
-        cx.fillStyle = bg;
-        cx.beginPath(); cx.arc(px, py, sp.r, 0, 6.283); cx.fill();
-      } else {
-        var a2 = tw2 * g * (1 - fo * 0.6) * 0.9;
-        if (a2 < 0.04) continue;
-        cx.beginPath();
-        cx.arc(px, py, sp.r * (1 + fo), 0, 6.283);
-        cx.fillStyle = 'rgba(255,232,220,' + a2.toFixed(3) + ')';
-        cx.fill();
-      }
     }
     endGlow(g);
     cx.globalCompositeOperation = 'source-over';
   }
-  // The mark the ribbon pours into lights up behind the card as the light goes in.
+  // The mark the stream pours into lights up behind the card as the light goes in.
   function endGlow(g){
     if (absorb < 0.01 || endY === Infinity) return;
     var ex = endX, ey = endY - window.scrollY;
@@ -1579,7 +1540,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     prev = now;
     frames++; if (dt > 0.024) slowFrames++;
     if (frames === 90) {
-      if (slowFrames > 45 && !lite) { lite = true; makeStrands(Math.round(strands.length / 2)); DPR = 1; size(); }
+      if (slowFrames > 45 && !lite) { lite = true; DPR = 1; size(); }
       frames = 0; slowFrames = 0;
     }
     time += dt;
@@ -1618,7 +1579,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   size();
   cur = target(window.scrollY);
   if (calm) {
-    // Reduced motion: the ribbon holds its shape for where you are; nothing moves on its own.
+    // Reduced motion: the stream holds its shape for where you are; nothing moves on its own.
     draw();
     addEventListener('scroll', function(){ requestAnimationFrame(function(){ cur = target(window.scrollY); draw(); scene(window.scrollY, 1); }); }, { passive: true });
     scene(window.scrollY, 1);
