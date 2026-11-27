@@ -1247,7 +1247,11 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   function rnd(i){ var x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); }
   // Pulses of light that flow down the stream, each at its own speed and place across it.
   var pulses = [];
-  for (var pi = 0; pi < (small ? 7 : 12); pi++) pulses.push({ u: rnd(pi + 40), s: (rnd(pi + 60) * 2 - 1) * 0.5, v: 0.03 + 0.04 * rnd(pi + 80), len: 0.1 + 0.1 * rnd(pi + 90) });
+  for (var pi = 0; pi < (small ? 7 : 12); pi++) pulses.push({ u: rnd(pi + 40), s: (rnd(pi + 60) * 2 - 1) * 0.5, v: 0.11 + 0.1 * rnd(pi + 80), len: 0.1 + 0.1 * rnd(pi + 90) });
+  // Runs of bright light down the middle of the stream, quicker than the pulses: the shine on
+  // moving water.
+  var runs = [];
+  for (var ri = 0; ri < (small ? 2 : 3); ri++) runs.push({ u: rnd(ri + 120), s: (rnd(ri + 130) * 2 - 1) * 0.14, v: 0.17 + 0.08 * rnd(ri + 140), len: 0.12 + 0.06 * rnd(ri + 150) });
   // Currents: a few faint lines that wander across the surface, like the lines on running water.
   var CURRENTS = small ? [-0.32, 0.12, 0.42] : [-0.5, -0.2, 0.08, 0.34, 0.58];
   // The course: one stream laid down the whole page, fixed to it like everything else on it. It
@@ -1360,7 +1364,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     for (var i = 0; i < L; i++) {
       var i0 = Math.max(0, i - 1), i1 = Math.min(L - 1, i + 1), tx = X[i1] - X[i0], ty = Y[i1] - Y[i0], l = Math.hypot(tx, ty) || 1;
       NX[i] = -ty / l; NY[i] = tx / l;
-      var wv = Math.sin(DY[i] * 0.004 - time * 0.7) * amp * WP[i];
+      var wv = Math.sin(DY[i] * 0.004 - time * 1.15) * amp * WP[i];
       X[i] += NX[i] * wv; Y[i] += NY[i] * wv;
     }
   }
@@ -1446,6 +1450,28 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       mx.fillStyle = along(mx, x0 * mxs, y0 * mys, x1 * mxs, y1 * mys, col, (0.055 + 0.03 * f) * g * quiet * (f > 0.5 ? sharp : 1) * (9 / STEPS));
       mx.fill();
     }
+    if (!calm && L > 8) {
+      mx.lineCap = 'round'; mx.lineJoin = 'round';
+      for (var r = 0; r < runs.length; r++) {
+        var rn = runs[r], rat = (rn.u + time * rn.v) % 1, rspan = Math.max(3, Math.round(L * rn.len));
+        var rhd = Math.floor(rat * (L + rspan)), rfrom = Math.max(0, rhd - rspan), rto = Math.min(L - 1, rhd);
+        if (rto - rfrom < 2) continue;
+        // Brightest at its front, fading behind it.
+        var fx0 = X[rfrom] * mxs, fy0 = Y[rfrom] * mys, fx1 = X[rto] * mxs, fy1 = Y[rto] * mys;
+        var rg = mx.createLinearGradient(fx0, fy0, fx1, fy1);
+        rg.addColorStop(0, 'rgba(255,214,160,0)');
+        rg.addColorStop(1, 'rgba(255,246,228,' + (0.55 * g * quiet).toFixed(3) + ')');
+        mx.beginPath();
+        for (var rq = rfrom; rq <= rto; rq++) {
+          var roff = spread * WP[rq] * rn.s;
+          var rx = (X[rq] + NX[rq] * roff) * mxs, ry = (Y[rq] + NY[rq] * roff) * mys;
+          rq === rfrom ? mx.moveTo(rx, ry) : mx.lineTo(rx, ry);
+        }
+        mx.lineWidth = Math.max(1, spread * 0.09 * mxs);
+        mx.strokeStyle = rg;
+        mx.stroke();
+      }
+    }
     cx.drawImage(mz, 0, 0, cv.width, cv.height);
     // 3. Currents: a few faint lines that wander slowly across the surface.
     cx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -1454,7 +1480,7 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       for (var c = 0; c < CURRENTS.length; c++) {
         cx.beginPath();
         for (var j = 0; j < L; j++) {
-          var drift = CURRENTS[c] + 0.12 * Math.sin(DY[j] * 0.0045 - time * (0.55 + 0.1 * c) + c * 1.7);
+          var drift = CURRENTS[c] + 0.12 * Math.sin(DY[j] * 0.0045 - time * (1.15 + 0.15 * c) + c * 1.7);
           var o = spread * WP[j] * drift;
           var cxp = X[j] + NX[j] * o, cyp = Y[j] + NY[j] * o;
           j ? cx.lineTo(cxp, cyp) : cx.moveTo(cxp, cyp);
@@ -1531,19 +1557,23 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
 
   // One loop for everything that moves. It slows down on a device that cannot keep up, and
   // stops while the tab is hidden.
-  var running = false, prev = 0, slowFrames = 0, frames = 0, lite = false, skip = false;
+  var running = false, prev = 0, slowFrames = 0, frames = 0, lite = false, armedAt = -1;
   function loop(now){
     if (!running) return;
     requestAnimationFrame(loop);
     var dt = prev ? Math.min(0.05, (now - prev) / 1000) : 0.016;
-    if (lite && (skip = !skip)) return;
     prev = now;
-    frames++; if (dt > 0.024) slowFrames++;
-    if (frames === 90) {
-      if (slowFrames > 45 && !lite) { lite = true; DPR = 1; size(); }
-      frames = 0; slowFrames = 0;
-    }
     time += dt;
+    if (armed && armedAt < 0) armedAt = time;
+    // A device that cannot keep up gets a lighter stream, never a slower one. It is judged only
+    // once the opening is over and the page has settled, so loading never counts against it.
+    if (armedAt >= 0 && time - armedAt > 2) {
+      frames++; if (dt > 0.024) slowFrames++;
+      if (frames === 120) {
+        if (slowFrames > 60 && !lite) { lite = true; DPR = 1; size(); }
+        frames = 0; slowFrames = 0;
+      }
+    }
     var y = window.scrollY;
     if (headY === null) { headY = -H * 0.25; tailY = -H * 0.45; }
     if (armed) {
@@ -1559,13 +1589,16 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
         into = smooth(clamp((y - from) / (to - from), 0, 1));
         tT = lerp(tT, endY - 1, into);
       }
-      headY = lerp(headY, hT, 1 - Math.exp(-dt * (hT > headY ? 4.6 : 6)));
-      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * 7));
+      // It draws in once, gently; after that both ends keep up with the page at once, so the
+      // stream never trails behind the scroll.
+      var settled = time - armedAt > 1.1;
+      headY = lerp(headY, hT, 1 - Math.exp(-dt * (settled ? 18 : hT > headY ? 4.6 : 6)));
+      tailY = lerp(tailY, tT, 1 - Math.exp(-dt * (settled ? 18 : 7)));
       if (tailY > headY - 1) tailY = headY - 1;
       absorb = lerp(absorb, into, 1 - Math.exp(-dt * 6));
       if (endMark && Math.abs(absorb - absorbShown) > 0.004) { endMark.style.setProperty('--ab', absorb.toFixed(3)); absorbShown = absorb; }
     }
-    follow(target(y), 1 - Math.exp(-dt * 3.2));
+    follow(target(y), 1 - Math.exp(-dt * 4.5));
     scene(y, 1 - Math.exp(-dt * 9));
     draw();
   }
