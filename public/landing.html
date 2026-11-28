@@ -394,18 +394,24 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 .plate-st{display:grid;place-items:center;padding:20px 0}
 .js .plate-st{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;padding:0}
 .calm .plate-st{position:static;height:auto;padding:20px 0}
-.plate-b{position:relative;width:min(84vw,600px);aspect-ratio:1;border-radius:var(--pr,9%);background:radial-gradient(120% 120% at 24% 14%,#ff6a55,#ff2a2a 44%,#c3111a);box-shadow:0 40px 80px -40px rgba(150,16,22,.45),inset 0 1px 0 rgba(255,255,255,.3);transform:scale(var(--ps,1));will-change:transform;display:grid;place-items:center;color:#1a0809}
+.plate-b{position:relative;width:min(84vw,600px);aspect-ratio:1;border-radius:var(--pr,9%);background:radial-gradient(110% 90% at 18% 0%,#ff7058 0,#f2352b 36%,#cc161d 68%,#930d15 100%);box-shadow:0 50px 90px -45px rgba(150,16,22,.5),inset 0 1px 0 rgba(255,255,255,.32),inset 0 0 0 1px rgba(255,255,255,.08);transform:scale(var(--ps,1));will-change:transform;display:grid;place-items:center;color:#fff}
+.plate-b::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.09) 0,rgba(255,255,255,.025) 3px,rgba(255,255,255,0) 9px,rgba(0,0,0,0) 15px,rgba(0,0,0,.05) 21px,rgba(0,0,0,.09) 24px);background-size:24px 100%}
+.plate-b::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(to top,rgba(70,4,10,.42),rgba(70,4,10,0) 58%)}
 .js .plate-b{--ps:.1;--pr:28%;--pg:1;--pc:0}
 .calm .plate-b{--ps:1;--pr:9%;--pg:0;--pc:1}
-.plate-g{position:absolute;width:62%;height:62%;opacity:var(--pg,0)}
+.plate-g{position:absolute;width:62%;height:62%;opacity:var(--pg,0);z-index:1}
 .plate-g svg{width:100%;height:100%}
-.plate-c{position:absolute;inset:8%;display:flex;flex-direction:column;justify-content:space-between;opacity:var(--pc,1)}
-.plate-c .k{font:600 12px var(--mono);letter-spacing:.02em;opacity:.7}
-.plate-c p{margin:0;font-size:clamp(30px,5.6vw,62px);line-height:1.02;letter-spacing:-.05em;font-weight:600}
-.plate-c p .s{letter-spacing:-.02em}
-.plate-c ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font:600 12px var(--mono);opacity:.72}
-
-/* Careful */
+.plate-c{position:absolute;inset:8%;display:flex;flex-direction:column;justify-content:space-between;gap:18px;opacity:var(--pc,1);z-index:1}
+.plate-c .k{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font:500 11.5px var(--mono);letter-spacing:.02em;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28)}
+.plate-c .k i{width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.22)}
+.plate-c p{margin:auto 0 0;font-size:clamp(30px,5.6vw,60px);line-height:1.02;letter-spacing:-.05em;font-weight:600;text-wrap:balance;transform:translate3d(0,calc((1 - var(--pc,1)) * 18px),0)}
+.plate-c p .s{letter-spacing:-.02em;color:#ffe1d8}
+.plate-c ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.plate-c li{position:relative;padding:11px 12px 11px 38px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);transform:translate3d(0,calc((1 - var(--pc,1)) * var(--o,24px)),0)}
+.plate-c li:nth-child(2){--o:32px}.plate-c li:nth-child(3){--o:40px}.plate-c li:nth-child(4){--o:48px}
+.plate-c li::before{content:"";position:absolute;left:12px;top:12px;width:17px;height:17px;border-radius:50%;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M4.5 8.2 7 10.6l4.6-5' fill='none' stroke='%23d21b22' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/12px no-repeat}
+.plate-c li b{display:block;font-size:13.5px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.plate-c li small{display:block;font-size:12px;color:rgba(255,255,255,.75);margin-top:2px;line-height:1.3}
 .care{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .cc{border-radius:26px;border:1px solid var(--line);background:var(--card);padding:24px;min-height:330px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;overflow:hidden}
 .cc .lb{font:500 11.5px var(--mono);color:var(--dim)}
@@ -680,7 +686,14 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
   .plat .r{grid-template-columns:28px minmax(0,1fr) 60px 40px}
   .points{grid-template-columns:1fr}
   .js .plate{height:180vh}
-  .plate-c ul{display:none}
+  .plate-b{aspect-ratio:4/5;width:min(88vw,600px)}
+  .plate-c{inset:7%;gap:14px}
+  .plate-c p{font-size:clamp(28px,8.6vw,40px)}
+  .plate-c ul{gap:6px}
+  .plate-c li{padding:9px 10px 9px 33px;border-radius:12px}
+  .plate-c li::before{left:10px;top:10px;width:16px;height:16px;background-size:11px}
+  .plate-c li b{font-size:12px}
+  .plate-c li small{font-size:10.5px}
   .au-chat{padding:18px}.au-btns{display:none}
   .au-row{padding:12px 14px}.au-row p{font-size:14px}
   .au-apps{padding:16px}.au-logos{gap:8px}
@@ -1028,9 +1041,9 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
     <div class="plate-b" id="plate">
       <span class="plate-g" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 45.5V25C20 18.6 28.4 16.8 30.4 22.3L37.4 41.5C38.9 45.6 44 46.5 44 40.5V33" stroke="#17080a" fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="44" cy="21" r="5.4" fill="#fff6f1"/></svg></span>
       <div class="plate-c">
-        <span class="k">careful by design</span>
+        <span class="k"><i></i>careful by design</span>
         <p>Your accounts. Your pace. <span class="s">Your say.</span></p>
-        <ul><li>own accounts</li><li>human pace</li><li>you approve</li><li>kept apart</li></ul>
+        <ul><li><b>Your own accounts</b><small>Never a shared sender</small></li><li><b>A human pace</b><small>Daily limits and natural pauses</small></li><li><b>Nothing without your yes</b><small>You approve what goes out</small></li><li><b>Kept apart</b><small>Each workspace sealed off</small></li></ul>
       </div>
     </div>
   </div>
