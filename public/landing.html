@@ -340,6 +340,38 @@ a.pill:hover{color:var(--fg);border-color:rgba(255,92,77,.45)}
 @keyframes won{0%{background:transparent}30%{background:rgba(74,222,128,.09)}100%{background:rgba(74,222,128,.04)}}
 .cal{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mute)}
 .cal b{color:var(--fg);font-weight:600}
+/* replies: the filter moves to Email, the reply is typed, then sent */
+.vis.in .filters .all{animation:chipoff .45s ease .5s forwards}
+.vis.in .filters .em{animation:chipon .45s ease .5s forwards}
+@keyframes chipoff{to{background:transparent;color:var(--mute);border-color:var(--line-2);font-weight:400}}
+@keyframes chipon{to{background:var(--fg);color:var(--ink);border-color:var(--fg)}}
+.js .vis .via{opacity:0;transform:translateY(6px)}
+.vis.in .via{animation:rise .5s var(--ease) .75s forwards}
+.js .vis .tag.int{opacity:0;transform:scale(.7)}
+.vis.in .tag.int{animation:rise .45s cubic-bezier(.3,1.6,.5,1) 1.5s forwards}
+.tyb{height:0;margin-bottom:-10px;align-self:flex-end;position:relative;width:62px}
+.tyb>span{position:absolute;right:0;top:0;display:flex;align-items:center;justify-content:center;width:62px;height:40px;border-radius:16px 16px 5px 16px;background:#ffe6df;border:1px solid rgba(255,92,77,.36);color:var(--red-2);opacity:0;transform:translateY(8px)}
+.vis.in .tyb>span{animation:tyin 1.1s var(--ease) 1.8s forwards}
+@keyframes tyin{0%{opacity:0;transform:translateY(8px)}18%,82%{opacity:1;transform:none}100%{opacity:0;transform:none;visibility:hidden}}
+.vis.in .bub.them{animation-delay:1s}.vis.in .bub.us{animation-delay:2.85s}.vis.in .meta{animation-delay:3.4s}
+/* close: the call is shared, Maya is marked won, the counters roll */
+.js .vis .tag.cs{opacity:0;transform:scale(.7)}
+.vis.in .tag.cs{animation:rise .45s cubic-bezier(.3,1.6,.5,1) .5s forwards}
+.js .vis .cl{opacity:0;transform:translateY(8px)}
+.vis.in .cl{animation:rise .5s var(--ease) forwards}
+.vis.in .cl.x{animation:rise .5s var(--ease) .55s forwards,won 2.6s var(--ease) 1.6s forwards}
+.vis.in .cl.x+.cl{animation-delay:.7s}.vis.in .cl.x+.cl+.cl{animation-delay:.85s}
+.vis.in .cl.x .wl i.w{animation:press .3s ease 1.2s}
+@keyframes press{50%{transform:scale(.88);background:rgba(74,222,128,.22)}}
+.roll{display:block;height:30px;overflow:hidden;line-height:30px}
+.cd-n .roll span{display:block;font-size:inherit;color:inherit}
+.roll i{display:block;font-style:normal;height:30px}
+.vis.in .roll span{animation:roll .7s cubic-bezier(.3,1.4,.5,1) 2s forwards}
+@keyframes roll{to{transform:translate3d(0,-30px,0)}}
+.calm .vis .via,.calm .vis .tag.int,.calm .vis .tag.cs,.calm .vis .cl{opacity:1;transform:none;animation:none}
+.calm .tyb{display:none}
+.fx-off .vis .via,.fx-off .vis .tag.int,.fx-off .vis .tag.cs,.fx-off .vis .cl{opacity:1!important;transform:none!important}
+.fx-off .tyb{display:none}
 /* ask */
 .chat{display:flex;flex-direction:column;gap:10px}
 .qq{align-self:flex-end;max-width:86%;background:rgba(18,19,22,.06);border:1px solid var(--line);border-radius:16px 16px 5px 16px;padding:10px 14px;font-size:14px}
@@ -894,10 +926,11 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       <article class="r2" id="replies">
         <div class="vis fx" role="img" aria-label="Replies from every platform in one inbox. Lucy Hart asks on Gmail for Team pricing; NORYX writes the answer in your voice and sends it after a natural pause.">
           <div class="lb" aria-hidden="true"><span>replies</span><span>9 waiting · 21 answered for you</span></div>
-          <div class="filters" aria-hidden="true"><span class="on">All platforms</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg>LinkedIn</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg>Email</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-whatsapp"/></svg>WhatsApp</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-telegram"/></svg>Telegram</span></div>
+          <div class="filters" aria-hidden="true"><span class="on all">All platforms</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-linkedin"/></svg>LinkedIn</span><span class="em"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg>Email</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-whatsapp"/></svg>WhatsApp</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-telegram"/></svg>Telegram</span></div>
           <div class="thread" aria-hidden="true">
-            <div class="via"><span class="lg xs" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span><span>Gmail · Lucy Hart, Meridian</span><span class="tag" style="margin-left:auto;color:#86efac;border-color:rgba(74,222,128,.3)">interested</span></div>
+            <div class="via"><span class="lg xs" style="--t:#EA4335" role="img" aria-label="Gmail" title="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#b-gmail"/></svg></span><span>Gmail · Lucy Hart, Meridian</span><span class="tag int" style="margin-left:auto;color:#15803d;border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.08)">interested</span></div>
             <div class="bub them">Interesting. Can you send pricing for a team of 12?</div>
+            <div class="tyb"><span><span class="dots"><i></i><i></i><i></i></span></span></div>
             <div class="bub us">Sure, Lucy. For 12 people it’s the Team plan. Want me to walk you through it on a short call this week?</div>
             <div class="meta"><span class="tag red">Written in your voice</span><span class="tag">Sending after a natural pause <span class="dots"><i></i><i></i><i></i></span></span></div>
           </div>
@@ -913,10 +946,10 @@ footer .wrap.legal{margin-top:36px;display:flex;justify-content:space-between;ga
       <article class="r2 flip" id="close">
         <div class="vis fx" style="--gc:rgba(74,222,128,.11)" role="img" aria-label="Close deals: three leads are ready to close. Maya Okafor booked a meeting through your calendar and is marked won in one click.">
           <div class="lb" aria-hidden="true"><span>meetings and closing</span><span><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-calendly"/></svg> calendly connected</span></div>
-          <div class="cal" aria-hidden="true">“Sounds useful, what does a call look like?” <span class="tag" style="margin-left:auto">shared your calendar</span></div>
+          <div class="cal" aria-hidden="true">“Sounds useful, what does a call look like?” <span class="tag cs" style="margin-left:auto">✓ shared your calendar</span></div>
           <div class="cd" aria-hidden="true">
             <div class="cd-h"><span class="tr"><svg viewBox="0 0 18 18"><path d="M5 3h8v3.5A4 4 0 0 1 9 10.5 4 4 0 0 1 5 6.5zM5 4.5H3v1A2.5 2.5 0 0 0 5.5 8M13 4.5h2v1A2.5 2.5 0 0 1 12.5 8M9 10.5V13M6 15h6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p>Close deals<small>Interested, or a meeting booked</small></p></div>
-            <div class="cd-n"><div><span>Ready to close</span><b>3</b></div><div class="g"><span>Won so far</span><b>12</b></div></div>
+            <div class="cd-n"><div><span>Ready to close</span><b class="roll"><span><i>3</i><i>2</i></span></b></div><div class="g"><span>Won so far</span><b class="roll"><span><i>12</i><i>13</i></span></b></div></div>
             <div class="cl x"><span class="av" style="background:var(--pink)">MO</span><p>Maya Okafor<small>Helio Freight · meeting Thu 10:00</small></p><span class="wl"><i class="w">Won</i><i>Lost</i></span><span class="ok">✓ Won</span></div>
             <div class="cl"><span class="av" style="background:var(--sky)">PN</span><p>Priya Nair<small>Kestrel Cargo · said yes on LinkedIn</small></p><span class="wl"><i class="w">Won</i><i>Lost</i></span></div>
             <div class="cl"><span class="av" style="background:var(--amber)">LH</span><p>Lucy Hart<small>Meridian · asked for Team pricing</small></p><span class="wl"><i class="w">Won</i><i>Lost</i></span></div>
